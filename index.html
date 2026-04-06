@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Αυτό κάνει τη σελίδα να φαίνεται ωραία και σε κινητά! -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Το Dance Studio της Αριάνας με KATSEYE ✨</title>
+
+  <style>
+    /* ===== ΓΡΑΜΜΑΤΟΣΕΙΡΈΣ & ΒΑΣΙΚΆ ΧΡΏΜΑΤΑ ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+    :root {
+      --pink:    #ff4fa3;
+      --purple:  #a855f7;
+      --cyan:    #22d3ee;
+      --gold:    #fbbf24;
+      --dark:    #0f0a1e;
+      --card-bg: #1a1040;
+    }
+
+    /* ===== ΓΕΝΙΚΉ ΕΠΑΝΑΦΟΡΆ ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--dark);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== ΑΙΩΡΟΎΜΕΝΑ ΑΣΤΈΡΙΑ ΦΌΝΤΟΥ ===== */
+    /* Αυτά τα αστέρια ανεβαίνουν από κάτω — σαν μαγεία! */
+    .stars-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      bottom: -20px;
+      font-size: 1.2rem;
+      animation: floatUp linear infinite;
+      opacity: 0;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.8; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ===== ΔΙΆΤΑΞΗ ===== */
+    .page { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 20px 16px 60px; }
+
+    /* ===== ΚΕΦΑΛΊΔΑ ===== */
+    header { text-align: center; padding: 30px 0 20px; }
+
+    .logo {
+      font-size: 1rem;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 8px;
+    }
+
+    /* Το όνομα της Αριάνας παλλόταν με λάμψη! */
+    .ariana-name {
+      font-size: clamp(2.4rem, 8vw, 4rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: pulse-glow 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { filter: brightness(1) drop-shadow(0 0 8px var(--pink)); }
+      50%       { filter: brightness(1.3) drop-shadow(0 0 20px var(--purple)); }
+    }
+
+    .welcome-msg {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #c4b5fd;
+      line-height: 1.5;
+    }
+
+    /* ===== ΜΠΆΡΑ ΣΚΟΡ ===== */
+    .score-bar {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      background: var(--card-bg);
+      border-radius: 50px;
+      padding: 12px 30px;
+      margin: 20px 0;
+      border: 2px solid var(--purple);
+      font-size: 1.1rem;
+    }
+    .score-item { display: flex; align-items: center; gap: 6px; }
+    .score-num { font-weight: 900; color: var(--gold); font-size: 1.3rem; }
+
+    /* ===== ΚΆΡΤΕΣ ===== */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 2px solid rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(168, 85, 247, 0.3); }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ===== ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ ===== */
+    /* Διάλεξε το αγαπημένο σου μέλος KATSEYE! */
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 400px) { .members-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .member-btn {
+      background: linear-gradient(135deg, #1e1050, #2d1b69);
+      border: 2px solid rgba(168, 85, 247, 0.5);
+      border-radius: 16px;
+      padding: 14px 8px;
+      cursor: pointer;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .member-btn .emoji { font-size: 1.8rem; }
+    .member-btn:hover  { border-color: var(--pink); transform: scale(1.05); background: linear-gradient(135deg, #2d1b69, #4c1d95); }
+    .member-btn.active { border-color: var(--gold); background: linear-gradient(135deg, #78350f, #92400e); box-shadow: 0 0 20px var(--gold); }
+
+    /* ===== ΤΜΉΜΑ ΚΟΥΊΖ ===== */
+    .question-box {
+      background: linear-gradient(135deg, #1e1050, #1e3a5f);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.5;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .option-btn {
+      background: #1a1040;
+      border: 2px solid rgba(34, 211, 238, 0.4);
+      border-radius: 14px;
+      padding: 14px 10px;
+      cursor: pointer;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-align: center;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+    .option-btn:hover:not(:disabled)  { border-color: var(--cyan); background: #1e3a5f; transform: scale(1.03); }
+    .option-btn.correct  { border-color: #4ade80; background: #14532d; animation: pop 0.3s; }
+    .option-btn.wrong    { border-color: #f87171; background: #7f1d1d; }
+    .option-btn:disabled { cursor: default; }
+    @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+    /* ===== ΦΟΎΣΚΑ ΑΝΑΤΡΟΦΟΔΌΤΗΣΗΣ ===== */
+    .feedback {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .feedback.show { display: block; animation: slideIn 0.3s ease; }
+    .feedback.good { background: rgba(74, 222, 128, 0.2); color: #4ade80; border: 1px solid #4ade80; }
+    .feedback.bad  { background: rgba(248, 113, 113, 0.2); color: #f87171; border: 1px solid #f87171; }
+    @keyframes slideIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ===== ΚΟΥΜΠΙΆ ===== */
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .btn-pink   { background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; }
+    .btn-cyan   { background: linear-gradient(135deg, var(--cyan), #0ea5e9);        color: var(--dark); }
+    .btn-gold   { background: linear-gradient(135deg, var(--gold), #f59e0b);        color: var(--dark); }
+    .btn:hover  { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255,79,163,0.4); }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-center { text-align: center; margin-top: 10px; }
+
+    /* ===== ΠΡΌΚΛΗΣΗ ΧΟΡΟΎ ===== */
+    .challenge-card {
+      background: linear-gradient(135deg, #3b0764, #1e3a5f);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      display: none;
+    }
+    .challenge-card.show { display: block; animation: slideIn 0.4s ease; }
+    .challenge-emoji { font-size: 3.5rem; margin-bottom: 10px; }
+    .challenge-text  { font-size: 1.1rem; font-weight: 700; line-height: 1.6; color: #e9d5ff; }
+    .challenge-count { font-size: 2.5rem; font-weight: 900; color: var(--gold); margin: 10px 0; }
+
+    /* ===== ΟΘΌΝΗ ΑΠΟΤΕΛΕΣΜΆΤΩΝ ===== */
+    .results {
+      text-align: center;
+      display: none;
+      padding: 10px 0;
+    }
+    .results.show { display: block; animation: slideIn 0.5s ease; }
+    .results-emoji { font-size: 4rem; margin-bottom: 12px; }
+    .results-title { font-size: 2rem; font-weight: 900; color: var(--gold); margin-bottom: 8px; }
+    .results-msg   { font-size: 1.1rem; color: #c4b5fd; margin-bottom: 24px; line-height: 1.6; }
+
+    /* ===== ΜΠΆΡΑ ΠΡΟΌΔΟΥ ===== */
+    .progress-wrap { background: #1a1040; border-radius: 50px; height: 10px; margin-bottom: 20px; overflow: hidden; }
+    .progress-bar  { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--pink), var(--purple)); transition: width 0.5s ease; }
+
+    /* ===== ΥΠΟΣΈΛΙΔΟ ===== */
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #6b21a8;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Φόντο με αιωρούμενα αστέρια — η JavaScript τα δημιουργεί παρακάτω -->
+  <div class="stars-container" id="starsContainer"></div>
+
+  <div class="page">
+
+    <!-- ===== ΚΕΦΑΛΊΔΑ ===== -->
+    <header>
+      <div class="logo">✨ Καλώς ήρθες στο ✨</div>
+      <!-- Το όνομα της Αριάνας λάμπει στην κορυφή της σελίδας! -->
+      <h1 class="ariana-name">Της Αριάνας</h1>
+      <h2 style="font-size:clamp(1.4rem,5vw,2.2rem); color: var(--pink); margin: 4px 0 12px;">
+        KATSEYE Στούντιο Χορού 💃
+      </h2>
+      <p class="welcome-msg">
+        Γεια σου Αριάνα! 👋 Είσαι έτοιμη να γίνεις <strong>αστέρι χορού K-pop</strong>!<br>
+        Απάντησε στο κουίζ χορού, κέρδισε ⭐ αστέρια, και μην ξεχάσεις<br>
+        να δείξεις τις κινήσεις σου! 🎶
+      </p>
+    </header>
+
+    <!-- ===== ΜΠΆΡΑ ΣΚΟΡ ===== -->
+    <div class="score-bar">
+      <div class="score-item">⭐ Αστέρια: <span class="score-num" id="scoreDisplay">0</span></div>
+      <div class="score-item">❓ Ερ: <span class="score-num" id="qNumDisplay">0</span>/7</div>
+    </div>
+
+    <!-- ===== ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ ===== -->
+    <div class="card" id="memberSection">
+      <div class="card-title">💜 Διάλεξε το Αγαπημένο σου Μέλος της KATSEYE!</div>
+      <div class="members-grid" id="membersGrid">
+        <!-- Τα κουμπιά δημιουργούνται από τη JavaScript παρακάτω -->
+      </div>
+      <div class="btn-center" style="margin-top:20px;">
+        <button class="btn btn-pink" id="startBtn" onclick="startGame()" disabled>
+          Ας Χορέψουμε! 💃
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== ΤΜΉΜΑ ΚΟΥΊΖ ===== -->
+    <div class="card" id="quizSection" style="display:none;">
+      <div class="card-title">🎤 Ώρα για Κουίζ K-pop!</div>
+
+      <!-- Η μπάρα προόδου δείχνει πόσο έχεις προχωρήσει στο κουίζ -->
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+
+      <div class="question-box" id="questionBox"></div>
+
+      <div class="options-grid" id="optionsGrid"></div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="btn-center">
+        <button class="btn btn-cyan" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+          Επόμενη Ερώτηση ➡️
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== ΚΆΡΤΑ ΠΡΌΚΛΗΣΗΣ ΧΟΡΟΎ ===== -->
+    <!-- Μετά από κάθε σωστή απάντηση, η Αριάνα κερδίζει μια διασκεδαστική πρόκληση χορού ή αθλητισμού! -->
+    <div class="card">
+      <div class="card-title">🏅 Η Πρόκλησή σου!</div>
+      <div class="challenge-card" id="challengeCard">
+        <div class="challenge-emoji" id="challengeEmoji"></div>
+        <div class="challenge-count" id="challengeCount"></div>
+        <div class="challenge-text" id="challengeText"></div>
+      </div>
+      <p id="challengePlaceholder" style="color:#6b21a8; font-style:italic;">
+        Απάντησε σωστά σε μια ερώτηση για να ξεκλειδώσεις την πρόκληση χορού σου! 🎯
+      </p>
+    </div>
+
+    <!-- ===== ΟΘΌΝΗ ΑΠΟΤΕΛΕΣΜΆΤΩΝ ===== -->
+    <div class="card results" id="resultsSection">
+      <div class="results-emoji" id="resultsEmoji"></div>
+      <div class="results-title" id="resultsTitle"></div>
+      <div class="results-msg"   id="resultsMsg"></div>
+      <div class="btn-center">
+        <button class="btn btn-gold" onclick="resetGame()">Παίξε Ξανά! 🔄</button>
+      </div>
+    </div>
+
+    <!-- ===== ΥΠΟΣΈΛΙΔΟ ===== -->
+    <footer>Φτιαγμένο με 💖 για την Αριάνα · Το πρώτο της coding project!</footer>
+
+  </div><!-- τέλος .page -->
+
+  <script>
+    // ============================================================
+    //  ΜΈΛΗ KATSEYE
+    //  Αυτά είναι τα έξι καταπληκτικά μέλη της KATSEYE!
+    // ============================================================
+    const MEMBERS = [
+      { name: "Sophia",   emoji: "🌟", color: "#ff4fa3" },
+      { name: "Manon",    emoji: "💜", color: "#a855f7" },
+      { name: "Daniela",  emoji: "🔥", color: "#f97316" },
+      { name: "Lara",     emoji: "🌊", color: "#22d3ee" },
+      { name: "Megan",    emoji: "⚡", color: "#fbbf24" },
+      { name: "Hanning",  emoji: "🌸", color: "#f472b6" },
+    ];
+
+    // ============================================================
+    //  ΕΡΩΤΉΣΕΙΣ ΚΟΥΊΖ
+    //  Κάθε ερώτηση έχει: το κείμενο της ερώτησης, τέσσερις επιλογές,
+    //  τη σωστή απάντηση (0-3), και ένα διασκεδαστικό γεγονός!
+    // ============================================================
+    const QUESTIONS = [
+      {
+        q: "💃 Τι σημαίνει 'χορογραφία' στο K-pop;",
+        opts: ["Οι στίχοι του τραγουδιού", "Οι σχεδιασμένες κινήσεις χορού", "Τα ρούχα της μπάντας", "Το μουσικό βίντεο"],
+        ans: 1,
+        fact: "Η χορογραφία είναι η τέχνη του σχεδιασμού των κινήσεων χορού! Τα K-pop γκρουπ εξασκούνται για ΏΡΕΣ κάθε μέρα! 💪"
+      },
+      {
+        q: "🎶 Η KATSEYE έκανε ντεμπούτο το 2024! Από ποια χώρα είναι η εταιρεία τους;",
+        opts: ["Νότια Κορέα", "Ιαπωνία", "ΗΠΑ", "Βραζιλία"],
+        ans: 2,
+        fact: "Η KATSEYE έχει συμβόλαιο με την Geffen Records στις ΗΠΑ και την HYBE στη Νότια Κορέα — διεθνείς σούπερσταρ! 🌎"
+      },
+      {
+        q: "🌟 Στο K-pop, ποιος είναι το 'center' ενός γκρουπ;",
+        opts: [
+          "Το πιο κοντό μέλος",
+          "Το μέλος που στέκεται στη μέση κατά τις εμφανίσεις",
+          "Ο αρχηγός του γκρουπ",
+          "Ο βασικός τραγουδιστής"
+        ],
+        ans: 1,
+        fact: "Το center είναι συνήθως το πιο ορατό μέλος — στέκεται ακριβώς στη μέση της σκηνής! 🎯"
+      },
+      {
+        q: "💜 Τι σημαίνει το 'aegyo' (애교) στην κουλτούρα του K-pop;",
+        opts: [
+          "Ένα είδος γρήγορης κίνησης χορού",
+          "Ένα παραδοσιακό κορεατικό όργανο",
+          "Χαριτωμένη, γλυκιά συμπεριφορά για να χαμογελούν οι φαν",
+          "Το όνομα του fan club του γκρουπ"
+        ],
+        ans: 2,
+        fact: "Το aegyo είναι να συμπεριφέρεσαι υπερ-χαριτωμένα — όπως να κλείνεις το μάτι, να μιλάς με φωνούλα, ή να κάνεις καρδούλες με τα χέρια σου! 🥰"
+      },
+      {
+        q: "🎤 Τι είναι ένα 'fancam' στο K-pop;",
+        opts: [
+          "Μια κάμερα μέσα στο κινητό του φαν",
+          "Ένα βίντεο που εστιάζει σε ένα μόνο μέλος κατά τη διάρκεια παράστασης",
+          "Μια επανάληψη σε αργή κίνηση",
+          "Η κύρια κάμερα της συναυλίας"
+        ],
+        ans: 1,
+        fact: "Τα fancams είναι βίντεο όπου μια κάμερα ακολουθεί μόνο ΈΝΑ μέλος όλη την ώρα — κάθε αληθινός φαν έχει τον αγαπημένο του! 📹"
+      },
+      {
+        q: "🕺 Ποια από αυτές είναι μια αληθινή κίνηση χορού K-pop;",
+        opts: ["The Moonwalk Step", "The Body Roll", "The Star Hop", "The Rainbow Flip"],
+        ans: 1,
+        fact: "Το body roll είναι πολύ δημοφιλές στο K-pop! Κουνάς το σώμα σου σαν κύμα από το στήθος μέχρι τους γοφούς. Δοκίμασέ το! 🌊"
+      },
+      {
+        q: "⭐ Μέσα από ποιο τηλεοπτικό διαγωνισμό σχηματίστηκε η KATSEYE;",
+        opts: [
+          "American Idol",
+          "K-pop Star",
+          "The Debut: Dream Academy",
+          "Dancing with the Stars"
+        ],
+        ans: 2,
+        fact: "Το The Debut: Dream Academy ήταν το μέρος όπου έξι πανταλαντούχες κοπέλες ήρθαν μαζί για να σχηματίσουν την KATSEYE! 🏆"
+      },
+    ];
+
+    // ============================================================
+    //  ΠΡΟΚΛΉΣΕΙΣ ΧΟΡΟΎ & ΑΘΛΗΤΙΣΜΟΎ
+    //  Όταν απαντάς σωστά, ξεκλειδώνεις μία από αυτές!
+    //  Τέλειο για την Αριάνα που λατρεύει γυμναστική, κολύμπι & χορό!
+    // ============================================================
+    const CHALLENGES = [
+      { emoji:"💃", count:"8 φορές!", text:"Κάνε την καλύτερη K-pop idol πόζα σου! Κράτα τη για 3 δευτερόλεπτα κάθε φορά. Είσαι αστέρι, Αριάνα!" },
+      { emoji:"🤸", count:"5 τούμπες!", text:"Κάνε τις καλύτερες τούμπες γυμναστικής σου! Η KATSEYE θα ήταν ΤΌΣΟ εντυπωσιασμένη!" },
+      { emoji:"🌊", count:"20 δευτερόλεπτα!", text:"Κάνε πως κολυμπάς πεταλούδα όρθια — χέρια πάνω από το κεφάλι σου σαν κύματα! Συνέχισε!" },
+      { emoji:"⭐", count:"10 αστεράτα άλματα!", text:"Πήδα όσο πιο ψηλά μπορείς με τα χέρια και τα πόδια ανοιχτά σαν αστέρι! Μπορείς!" },
+      { emoji:"🎶", count:"1 ολόκληρο τραγούδι!", text:"Διάλεξε το αγαπημένο σου τραγούδι KATSEYE και χόρεψε ΟΛΟ. Χωρίς σταμάτημα! 🎤" },
+      { emoji:"🤸", count:"8 άλματα!", text:"Κάνε τα καλύτερα γυμναστικά άλματα τυφλοπόντικα — τράβα τα γόνατά σου όσο πιο ψηλά μπορείς κάθε φορά!" },
+      { emoji:"💫", count:"3 φορές!", text:"Φτιάξε τη δική σου κίνηση χορού K-pop 8 χτύπων και εκτέλεσέ τη 3 φορές. Γύρισέ το αν θες — είσαι χορογράφος τώρα!" },
+    ];
+
+    // ============================================================
+    //  ΚΑΤΆΣΤΑΣΗ ΠΑΙΧΝΙΔΙΟΎ
+    //  Αυτές οι μεταβλητές παρακολουθούν τι συμβαίνει στο παιχνίδι.
+    // ============================================================
+    let score = 0;           // Πόσα αστέρια έχει κερδίσει η Αριάνα
+    let currentQ = 0;        // Σε ποια ερώτηση βρισκόμαστε
+    let selectedMember = ""; // Ποιο μέλος KATSEYE διάλεξε η Αριάνα
+    let answered = false;    // Έχει ήδη απαντήσει σε αυτή την ερώτηση;
+
+    // ============================================================
+    //  ΚΙΝΟΎΜΕΝΗ ΕΙΚΌΝΑ ΑΙΩΡΟΎΜΕΝΩΝ ΑΣΤΕΡΙΏΝ
+    //  Αυτό δημιουργεί μικρά αστέρια που ανεβαίνουν στην οθόνη!
+    // ============================================================
+    function createStars() {
+      const container = document.getElementById("starsContainer");
+      const icons = ["⭐","💫","✨","🌟","💜","💗","🩷"];
+
+      // Φτιάξε 30 αστέρια και τοποθέτησέ τα τυχαία στην οθόνη
+      for (let i = 0; i < 30; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.textContent = icons[Math.floor(Math.random() * icons.length)];
+
+        // Τυχαία θέση αριστερά-δεξιά
+        star.style.left = Math.random() * 100 + "vw";
+        // Τυχαία ταχύτητα — κάποια ανεβαίνουν γρήγορα, κάποια αργά
+        star.style.animationDuration = (6 + Math.random() * 12) + "s";
+        // Τυχαία καθυστέρηση ώστε να μην ξεκινούν όλα μαζί
+        star.style.animationDelay = (Math.random() * 10) + "s";
+        star.style.fontSize = (0.8 + Math.random() * 1.2) + "rem";
+
+        container.appendChild(star);
+      }
+    }
+
+    // ============================================================
+    //  ΔΗΜΙΟΥΡΓΊΑ ΚΟΥΜΠΙΏΝ ΜΕΛΏΝ
+    //  Αυτό δημιουργεί ένα κουμπί για κάθε μέλος KATSEYE στην οθόνη.
+    // ============================================================
+    function buildMemberButtons() {
+      const grid = document.getElementById("membersGrid");
+
+      MEMBERS.forEach((member, index) => {
+        const btn = document.createElement("button");
+        btn.className = "member-btn";
+        btn.id = "member-" + index;
+        // Κάθε κουμπί δείχνει το emoji και το όνομα του μέλους
+        btn.innerHTML = `<span class="emoji">${member.emoji}</span>${member.name}`;
+        btn.onclick = () => selectMember(index);
+        grid.appendChild(btn);
+      });
+    }
+
+    // ============================================================
+    //  ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ
+    //  Όταν η Αριάνα κάνει κλικ σε ένα κουμπί μέλους, αυτή η συνάρτηση τρέχει.
+    // ============================================================
+    function selectMember(index) {
+      // Αφαίρεσε πρώτα το 'active' από όλα τα κουμπιά
+      MEMBERS.forEach((_, i) => {
+        document.getElementById("member-" + i).classList.remove("active");
+      });
+
+      // Σήμανε το κουμπί που πατήθηκε ως ενεργό
+      document.getElementById("member-" + index).classList.add("active");
+      selectedMember = MEMBERS[index].name;
+
+      // Ενεργοποίησε το κουμπί "Ας Χορέψουμε!"
+      document.getElementById("startBtn").disabled = false;
+    }
+
+    // ============================================================
+    //  ΈΝΑΡΞΗ ΠΑΙΧΝΙΔΙΟΎ
+    //  Κρύβει την επιλογή μέλους και δείχνει την πρώτη ερώτηση κουίζ!
+    // ============================================================
+    function startGame() {
+      document.getElementById("memberSection").style.display = "none";
+      document.getElementById("quizSection").style.display = "block";
+      showQuestion();
+    }
+
+    // ============================================================
+    //  ΕΜΦΆΝΙΣΗ ΕΡΏΤΗΣΗΣ
+    //  Εμφανίζει την τρέχουσα ερώτηση και τις τέσσερις επιλογές απάντησης.
+    // ============================================================
+    function showQuestion() {
+      answered = false;
+
+      const q = QUESTIONS[currentQ];
+
+      // Ενημέρωσε τη μπάρα προόδου (πόσο έχουμε προχωρήσει στο κουίζ)
+      const pct = (currentQ / QUESTIONS.length) * 100;
+      document.getElementById("progressBar").style.width = pct + "%";
+
+      // Ενημέρωσε την εμφάνιση αριθμού ερώτησης
+      document.getElementById("qNumDisplay").textContent = currentQ + 1;
+
+      // Δείξε το κείμενο της ερώτησης
+      document.getElementById("questionBox").textContent = q.q;
+
+      // Δημιούργησε κουμπιά επιλογών απάντησης
+      const grid = document.getElementById("optionsGrid");
+      grid.innerHTML = ""; // καθάρισε τα παλιά κουμπιά
+
+      q.opts.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        grid.appendChild(btn);
+      });
+
+      // Κρύψε την ανατροφοδότηση και το επόμενο κουμπί
+      const fb = document.getElementById("feedback");
+      fb.className = "feedback";
+      fb.textContent = "";
+      document.getElementById("nextBtn").style.display = "none";
+
+      // Κρύψε την κάρτα πρόκλησης μέχρι μια σωστή απάντηση
+      document.getElementById("challengeCard").classList.remove("show");
+    }
+
+    // ============================================================
+    //  ΈΛΕΓΧΟΣ ΑΠΆΝΤΗΣΗΣ
+    //  Διάλεξε η Αριάνα τη σωστή; Ας μάθουμε!
+    // ============================================================
+    function checkAnswer(chosen) {
+      if (answered) return; // Μην της επιτρέπεις να απαντήσει δύο φορές!
+      answered = true;
+
+      const q = QUESTIONS[currentQ];
+      const buttons = document.querySelectorAll(".option-btn");
+
+      // Απενεργοποίησε όλα τα κουμπιά ώστε να μην μπορεί να αλλάξει απάντηση
+      buttons.forEach(b => b.disabled = true);
+
+      const fb = document.getElementById("feedback");
+
+      if (chosen === q.ans) {
+        // ✅ ΣΩΣΤΌ!
+        buttons[chosen].classList.add("correct");
+        score += 10; // Πρόσθεσε 10 αστέρια για σωστή απάντηση
+        document.getElementById("scoreDisplay").textContent = score;
+
+        fb.textContent = "⭐ ΜΠΡΑΒΟ! Το έπιασες! " + q.fact;
+        fb.className = "feedback good show";
+
+        // Δείξε μια τυχαία πρόκληση χορού/αθλητισμού ως αμοιβή
+        showChallenge();
+
+      } else {
+        // ❌ Λάθος απάντηση
+        buttons[chosen].classList.add("wrong");
+        buttons[q.ans].classList.add("correct"); // Δείξε τη σωστή απάντηση
+
+        fb.textContent = "Όχι ακριβώς! Η απάντηση ήταν: " + q.opts[q.ans] + " — " + q.fact;
+        fb.className = "feedback bad show";
+      }
+
+      // Δείξε το κουμπί "Επόμενη Ερώτηση"
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    // ============================================================
+    //  ΕΜΦΆΝΙΣΗ ΠΡΌΚΛΗΣΗΣ ΧΟΡΟΎ
+    //  Μια διασκεδαστική πρόκληση εμφανίζεται όταν η Αριάνα απαντά σωστά!
+    // ============================================================
+    function showChallenge() {
+      // Διάλεξε μια πρόκληση που αντιστοιχεί στον αριθμό ερώτησης
+      const ch = CHALLENGES[currentQ % CHALLENGES.length];
+
+      document.getElementById("challengeEmoji").textContent = ch.emoji;
+      document.getElementById("challengeCount").textContent = ch.count;
+      document.getElementById("challengeText").textContent = ch.text;
+      document.getElementById("challengePlaceholder").style.display = "none";
+      document.getElementById("challengeCard").classList.add("show");
+    }
+
+    // ============================================================
+    //  ΕΠΌΜΕΝΗ ΕΡΏΤΗΣΗ
+    //  Πήγαινε στην επόμενη ερώτηση, ή δείξε αποτελέσματα αν τελείωσε!
+    // ============================================================
+    function nextQuestion() {
+      currentQ++;
+
+      if (currentQ >= QUESTIONS.length) {
+        showResults(); // Όλες οι ερωτήσεις τελείωσαν!
+      } else {
+        showQuestion(); // Δείξε την επόμενη ερώτηση
+      }
+    }
+
+    // ============================================================
+    //  ΕΜΦΆΝΙΣΗ ΑΠΟΤΕΛΕΣΜΆΤΩΝ
+    //  Το παιχνίδι τελείωσε — ας γιορτάσουμε το σκορ της Αριάνας!
+    // ============================================================
+    function showResults() {
+      document.getElementById("quizSection").style.display = "none";
+
+      const total = QUESTIONS.length * 10; // Μέγιστο δυνατό σκορ
+      const section = document.getElementById("resultsSection");
+      const emoji   = document.getElementById("resultsEmoji");
+      const title   = document.getElementById("resultsTitle");
+      const msg     = document.getElementById("resultsMsg");
+
+      // Ενημέρωσε τη μπάρα προόδου στο 100%
+      document.getElementById("progressBar").style.width = "100%";
+
+      // Διαφορετικά μηνύματα ανάλογα με το πόσο καλά τα πήγε!
+      if (score === total) {
+        emoji.textContent = "🏆";
+        title.textContent = "ΤΈΛΕΙΟ ΣΚΟΡ! ΕΊΣΑΙ ΘΡΎΛΟΣ!";
+        msg.textContent = `ΩΑΩ, Αριάνα! ${score}/${total} αστέρια! Ξέρεις ΤΑ ΠΑΝΤΑ για το K-pop! Η ${selectedMember} θα ήταν ΤΌΣΟ περήφανη για σένα! Είσαι ειδικός K-pop τώρα! 🎤✨`;
+      } else if (score >= total * 0.7) {
+        emoji.textContent = "🌟";
+        title.textContent = "Απίθανη Δουλειά, Αριάνα!";
+        msg.textContent = `Έκανες ${score}/${total} αστέρια! Ξέρεις πολύ καλά το K-pop σου! Η ${selectedMember} σίγουρα θα ήθελε να σε έχει στην KATSEYE! Συνέχισε να χορεύεις! 💃`;
+      } else if (score >= total * 0.4) {
+        emoji.textContent = "💜";
+        title.textContent = "Μεγάλη Προσπάθεια, Αστέρι Χορού!";
+        msg.textContent = `Έκανες ${score}/${total} αστέρια! Κάθε αστέρι K-pop ξεκινά κάπου — συνέχισε να μαθαίνεις και να παίζεις! Η ${selectedMember} πιστεύει σε σένα! 💪`;
+      } else {
+        emoji.textContent = "🎶";
+        title.textContent = "Συνέχισε να Εξασκείσαι, Σούπερσταρ!";
+        msg.textContent = `Έκανες ${score}/${total} αστέρια αυτή τη φορά! Παίξε ξανά και θα τα πας ακόμα καλύτερα — τα αστέρια K-pop ποτέ δεν τα παρατάνε! Η ${selectedMember} λέει: ΤΑ ΚΑΤΑΦΈΡΝΕΙΣ! 🌟`;
+      }
+
+      section.classList.add("show");
+    }
+
+    // ============================================================
+    //  ΕΠΑΝΑΦΟΡΆ ΠΑΙΧΝΙΔΙΟΎ
+    //  Ξεκίνα τα πάντα από την αρχή!
+    // ============================================================
+    function resetGame() {
+      score = 0;
+      currentQ = 0;
+      selectedMember = "";
+      answered = false;
+
+      document.getElementById("scoreDisplay").textContent = "0";
+      document.getElementById("qNumDisplay").textContent = "0";
+      document.getElementById("progressBar").style.width = "0%";
+
+      // Αφαίρεσε την ενεργή κατάσταση από τα κουμπιά μελών
+      MEMBERS.forEach((_, i) => {
+        const btn = document.getElementById("member-" + i);
+        if (btn) btn.classList.remove("active");
+      });
+
+      // Επαναφέρε όλα τα τμήματα
+      document.getElementById("startBtn").disabled = true;
+      document.getElementById("memberSection").style.display = "block";
+      document.getElementById("quizSection").style.display = "none";
+      document.getElementById("resultsSection").classList.remove("show");
+      document.getElementById("challengeCard").classList.remove("show");
+      document.getElementById("challengePlaceholder").style.display = "block";
+    }
+
+    // ============================================================
+    //  ΕΚΚΊΝΗΣΗ ΌΛΩΝ ΌΤΑΝ ΦΟΡΤΏΝΕΙ Η ΣΕΛΊΔΑ
+    // ============================================================
+    createStars();        // Ξεκίνα την κινούμενη εικόνα αιωρούμενων αστεριών
+    buildMemberButtons(); // Σχεδίασε τα κουμπιά μελών KATSEYE
+  </script>
+</body>
+</html>
