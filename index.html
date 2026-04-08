@@ -31,7 +31,6 @@
     }
 
     /* ===== ΑΙΩΡΟΎΜΕΝΑ ΑΣΤΈΡΙΑ ΦΌΝΤΟΥ ===== */
-    /* Αυτά τα αστέρια ανεβαίνουν από κάτω — σαν μαγεία! */
     .stars-container {
       position: fixed;
       inset: 0;
@@ -67,7 +66,6 @@
       margin-bottom: 8px;
     }
 
-    /* Το όνομα της Αριάνας παλλόταν με λάμψη! */
     .ariana-name {
       font-size: clamp(2.4rem, 8vw, 4rem);
       font-weight: 900;
@@ -93,16 +91,55 @@
     .score-bar {
       display: flex;
       justify-content: center;
-      gap: 30px;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
       background: var(--card-bg);
       border-radius: 50px;
-      padding: 12px 30px;
+      padding: 12px 24px;
       margin: 20px 0;
       border: 2px solid var(--purple);
       font-size: 1.1rem;
     }
     .score-item { display: flex; align-items: center; gap: 6px; }
     .score-num { font-weight: 900; color: var(--gold); font-size: 1.3rem; }
+    .best-score-num { font-weight: 900; color: var(--gold); font-size: 1.3rem; }
+
+    /* Κουμπί ήχου */
+    .sound-toggle {
+      background: none;
+      border: 2px solid var(--purple);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .sound-toggle:hover { border-color: var(--pink); transform: scale(1.1); }
+
+    /* ===== ΝΕΟ ΡΕΚΟΡ ===== */
+    .new-record-banner {
+      display: none;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      padding: 12px;
+      margin-bottom: 16px;
+      animation: recordPop 0.5s ease;
+    }
+    .new-record-banner.show { display: block; }
+    @keyframes recordPop {
+      0%   { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+      60%  { transform: scale(1.2) rotate(3deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
 
     /* ===== ΚΆΡΤΕΣ ===== */
     .card {
@@ -126,7 +163,6 @@
     }
 
     /* ===== ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ ===== */
-    /* Διάλεξε το αγαπημένο σου μέλος KATSEYE! */
     .members-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -154,6 +190,46 @@
     .member-btn .emoji { font-size: 1.8rem; }
     .member-btn:hover  { border-color: var(--pink); transform: scale(1.05); background: linear-gradient(135deg, #2d1b69, #4c1d95); }
     .member-btn.active { border-color: var(--gold); background: linear-gradient(135deg, #78350f, #92400e); box-shadow: 0 0 20px var(--gold); }
+
+    /* ===== ΚΆΡΤΑ ΠΛΗΡΟΦΟΡΙΏΝ ΜΈΛΟΥΣ ===== */
+    .member-info-card {
+      display: none;
+      background: linear-gradient(135deg, #3b0764, #831843);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-top: 16px;
+      border: 2px solid var(--pink);
+      box-shadow: 0 0 25px rgba(255, 79, 163, 0.3);
+    }
+    .member-info-card.show {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: slideInCard 0.35s ease;
+    }
+    @keyframes slideInCard {
+      from { opacity: 0; transform: translateY(-12px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .member-info-big-emoji { font-size: 3rem; flex-shrink: 0; }
+    .member-info-body { flex: 1; }
+    .member-info-name {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .member-info-meta {
+      font-size: 0.9rem;
+      color: #e9d5ff;
+      margin-bottom: 8px;
+    }
+    .member-info-fact {
+      font-size: 0.95rem;
+      color: #fce7f3;
+      font-style: italic;
+      line-height: 1.5;
+    }
 
     /* ===== ΤΜΉΜΑ ΚΟΥΊΖ ===== */
     .question-box {
@@ -268,19 +344,166 @@
       color: #6b21a8;
       font-size: 0.85rem;
     }
+    .reset-record-link {
+      color: #a855f7;
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      margin-left: 10px;
+    }
+    .reset-record-link:hover { color: var(--pink); }
+
+    /* ===== ΧΟΡΕΥΤΉΣ CSS ===== */
+    /* Ένας χαριτωμένος χορευτής σε γωνία! */
+    .dancer-wrap {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 999;
+      pointer-events: none;
+      width: 54px;
+      height: 90px;
+    }
+    .dancer {
+      position: relative;
+      width: 54px;
+      height: 90px;
+      animation: dancerSway 1.6s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    /* Κεφάλι */
+    .dancer-head {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: 2px solid #fff;
+    }
+    /* Σώμα */
+    .dancer-body {
+      position: absolute;
+      top: 24px; left: 50%;
+      transform: translateX(-50%);
+      width: 6px; height: 26px;
+      background: var(--purple);
+      border-radius: 3px;
+    }
+    /* Αριστερό χέρι */
+    .dancer-arm-l {
+      position: absolute;
+      top: 26px; left: 6px;
+      width: 16px; height: 5px;
+      background: var(--pink);
+      border-radius: 3px;
+      transform-origin: right center;
+      animation: armSwayL 1.6s ease-in-out infinite;
+    }
+    /* Δεξί χέρι */
+    .dancer-arm-r {
+      position: absolute;
+      top: 26px; right: 6px;
+      width: 16px; height: 5px;
+      background: var(--pink);
+      border-radius: 3px;
+      transform-origin: left center;
+      animation: armSwayR 1.6s ease-in-out infinite;
+    }
+    /* Αριστερό πόδι */
+    .dancer-leg-l {
+      position: absolute;
+      top: 50px; left: 14px;
+      width: 6px; height: 22px;
+      background: var(--purple);
+      border-radius: 3px;
+      transform-origin: top center;
+      animation: legSwayL 1.6s ease-in-out infinite;
+    }
+    /* Δεξί πόδι */
+    .dancer-leg-r {
+      position: absolute;
+      top: 50px; right: 14px;
+      width: 6px; height: 22px;
+      background: var(--purple);
+      border-radius: 3px;
+      transform-origin: top center;
+      animation: legSwayR 1.6s ease-in-out infinite;
+    }
+
+    /* Κανονική κίνηση χορού (ταλάντευση) */
+    @keyframes dancerSway {
+      0%, 100% { transform: rotate(-6deg) translateY(0); }
+      50%       { transform: rotate(6deg) translateY(-4px); }
+    }
+    @keyframes armSwayL {
+      0%, 100% { transform: rotate(-30deg); }
+      50%       { transform: rotate(30deg); }
+    }
+    @keyframes armSwayR {
+      0%, 100% { transform: rotate(30deg); }
+      50%       { transform: rotate(-30deg); }
+    }
+    @keyframes legSwayL {
+      0%, 100% { transform: rotate(15deg); }
+      50%       { transform: rotate(-15deg); }
+    }
+    @keyframes legSwayR {
+      0%, 100% { transform: rotate(-15deg); }
+      50%       { transform: rotate(15deg); }
+    }
+
+    /* Πανηγυρισμός (σωστή απάντηση) */
+    @keyframes dancerCelebrate {
+      0%   { transform: rotate(0deg) translateY(0) scale(1); }
+      20%  { transform: rotate(180deg) translateY(-30px) scale(1.2); }
+      40%  { transform: rotate(360deg) translateY(-50px) scale(1.3); }
+      60%  { transform: rotate(540deg) translateY(-20px) scale(1.1); }
+      80%  { transform: rotate(680deg) translateY(-10px) scale(1); }
+      100% { transform: rotate(720deg) translateY(0) scale(1); }
+    }
+
+    /* Θλίψη (λάθος απάντηση) */
+    @keyframes dancerSad {
+      0%   { transform: rotate(0deg) translateY(0); }
+      30%  { transform: rotate(20deg) translateY(8px); }
+      60%  { transform: rotate(15deg) translateY(10px); }
+      100% { transform: rotate(0deg) translateY(0); }
+    }
+
+    .dancer.celebrate {
+      animation: dancerCelebrate 2s ease forwards !important;
+    }
+    .dancer.sad {
+      animation: dancerSad 1s ease forwards !important;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Φόντο με αιωρούμενα αστέρια — η JavaScript τα δημιουργεί παρακάτω -->
+  <!-- Φόντο με αιωρούμενα αστέρια -->
   <div class="stars-container" id="starsContainer"></div>
+
+  <!-- Χορευτής στη γωνία -->
+  <div class="dancer-wrap">
+    <div class="dancer" id="dancer">
+      <div class="dancer-head"></div>
+      <div class="dancer-body"></div>
+      <div class="dancer-arm-l"></div>
+      <div class="dancer-arm-r"></div>
+      <div class="dancer-leg-l"></div>
+      <div class="dancer-leg-r"></div>
+    </div>
+  </div>
 
   <div class="page">
 
     <!-- ===== ΚΕΦΑΛΊΔΑ ===== -->
     <header>
       <div class="logo">✨ Καλώς ήρθες στο ✨</div>
-      <!-- Το όνομα της Αριάνας λάμπει στην κορυφή της σελίδας! -->
       <h1 class="ariana-name">Της Αριάνας</h1>
       <h2 style="font-size:clamp(1.4rem,5vw,2.2rem); color: var(--pink); margin: 4px 0 12px;">
         KATSEYE Στούντιο Χορού 💃
@@ -296,6 +519,8 @@
     <div class="score-bar">
       <div class="score-item">⭐ Αστέρια: <span class="score-num" id="scoreDisplay">0</span></div>
       <div class="score-item">❓ Ερ: <span class="score-num" id="qNumDisplay">0</span>/7</div>
+      <div class="score-item">🏆 Καλύτερο: <span class="best-score-num" id="bestScoreDisplay">0</span></div>
+      <button class="sound-toggle" id="soundToggle" title="Ήχος ανοιχτός/κλειστός">🔊</button>
     </div>
 
     <!-- ===== ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ ===== -->
@@ -304,6 +529,17 @@
       <div class="members-grid" id="membersGrid">
         <!-- Τα κουμπιά δημιουργούνται από τη JavaScript παρακάτω -->
       </div>
+
+      <!-- Κάρτα πληροφοριών μέλους — εμφανίζεται όταν επιλέγεις κάποιον -->
+      <div class="member-info-card" id="memberInfoCard">
+        <div class="member-info-big-emoji" id="memberInfoEmoji"></div>
+        <div class="member-info-body">
+          <div class="member-info-name" id="memberInfoName"></div>
+          <div class="member-info-meta" id="memberInfoMeta"></div>
+          <div class="member-info-fact" id="memberInfoFact"></div>
+        </div>
+      </div>
+
       <div class="btn-center" style="margin-top:20px;">
         <button class="btn btn-pink" id="startBtn" onclick="startGame()" disabled>
           Ας Χορέψουμε! 💃
@@ -315,7 +551,6 @@
     <div class="card" id="quizSection" style="display:none;">
       <div class="card-title">🎤 Ώρα για Κουίζ K-pop!</div>
 
-      <!-- Η μπάρα προόδου δείχνει πόσο έχεις προχωρήσει στο κουίζ -->
       <div class="progress-wrap">
         <div class="progress-bar" id="progressBar" style="width:0%"></div>
       </div>
@@ -334,7 +569,6 @@
     </div>
 
     <!-- ===== ΚΆΡΤΑ ΠΡΌΚΛΗΣΗΣ ΧΟΡΟΎ ===== -->
-    <!-- Μετά από κάθε σωστή απάντηση, η Αριάνα κερδίζει μια διασκεδαστική πρόκληση χορού ή αθλητισμού! -->
     <div class="card">
       <div class="card-title">🏅 Η Πρόκλησή σου!</div>
       <div class="challenge-card" id="challengeCard">
@@ -349,6 +583,8 @@
 
     <!-- ===== ΟΘΌΝΗ ΑΠΟΤΕΛΕΣΜΆΤΩΝ ===== -->
     <div class="card results" id="resultsSection">
+      <!-- Banner νέου ρεκόρ -->
+      <div class="new-record-banner" id="newRecordBanner">🎉 ΝΕΟ ΡΕΚΟΡ! 🎉</div>
       <div class="results-emoji" id="resultsEmoji"></div>
       <div class="results-title" id="resultsTitle"></div>
       <div class="results-msg"   id="resultsMsg"></div>
@@ -358,28 +594,76 @@
     </div>
 
     <!-- ===== ΥΠΟΣΈΛΙΔΟ ===== -->
-    <footer>Φτιαγμένο με 💖 για την Αριάνα · Το πρώτο της coding project!</footer>
+    <footer>
+      Φτιαγμένο με 💖 για την Αριάνα · Το πρώτο της coding project!
+      <button class="reset-record-link" onclick="clearBestScore()">Μηδενισμός ρεκόρ</button>
+    </footer>
 
   </div><!-- τέλος .page -->
 
   <script>
     // ============================================================
-    //  ΜΈΛΗ KATSEYE
-    //  Αυτά είναι τα έξι καταπληκτικά μέλη της KATSEYE!
+    //  ΜΈΛΗ KATSEYE — με πλήρη στοιχεία για τις κάρτες!
     // ============================================================
     const MEMBERS = [
-      { name: "Sophia",   emoji: "🌟", color: "#ff4fa3" },
-      { name: "Manon",    emoji: "💜", color: "#a855f7" },
-      { name: "Daniela",  emoji: "🔥", color: "#f97316" },
-      { name: "Lara",     emoji: "🌊", color: "#22d3ee" },
-      { name: "Megan",    emoji: "⚡", color: "#fbbf24" },
-      { name: "Hanning",  emoji: "🌸", color: "#f472b6" },
+      {
+        name: "Sophia",
+        emoji: "🌟",
+        color: "#ff4fa3",
+        flag: "🇺🇸",
+        country: "USA",
+        role: "Main Dancer & Vocalist",
+        fact: "Είναι η πιο εκφραστική χορεύτρια του γκρουπ!"
+      },
+      {
+        name: "Manon",
+        emoji: "💜",
+        color: "#a855f7",
+        flag: "🇫🇷",
+        country: "France",
+        role: "Vocalist",
+        fact: "Μιλάει Γαλλικά, Αγγλικά και Κορεατικά!"
+      },
+      {
+        name: "Daniela",
+        emoji: "🔥",
+        color: "#f97316",
+        flag: "🇺🇸",
+        country: "USA",
+        role: "Main Rapper & Dancer",
+        fact: "Έχει απίστευτη ενέργεια στη σκηνή!"
+      },
+      {
+        name: "Lara",
+        emoji: "🌊",
+        color: "#22d3ee",
+        flag: "🇩🇪",
+        country: "Germany",
+        role: "Vocalist",
+        fact: "Η φωνή της είναι σαν μουσική από άλλο κόσμο!"
+      },
+      {
+        name: "Megan",
+        emoji: "⚡",
+        color: "#fbbf24",
+        flag: "🇺🇸",
+        country: "USA",
+        role: "Lead Dancer",
+        fact: "Οι κινήσεις της είναι απόλυτα ακριβείς!"
+      },
+      {
+        name: "Hanning",
+        emoji: "🌸",
+        color: "#f472b6",
+        flag: "🇨🇳",
+        country: "China",
+        role: "Vocalist & Visual",
+        fact: "Είναι γνωστή για το υπέροχο χαμόγελό της!"
+      },
     ];
 
     // ============================================================
     //  ΕΡΩΤΉΣΕΙΣ ΚΟΥΊΖ
-    //  Κάθε ερώτηση έχει: το κείμενο της ερώτησης, τέσσερις επιλογές,
-    //  τη σωστή απάντηση (0-3), και ένα διασκεδαστικό γεγονός!
     // ============================================================
     const QUESTIONS = [
       {
@@ -448,8 +732,6 @@
 
     // ============================================================
     //  ΠΡΟΚΛΉΣΕΙΣ ΧΟΡΟΎ & ΑΘΛΗΤΙΣΜΟΎ
-    //  Όταν απαντάς σωστά, ξεκλειδώνεις μία από αυτές!
-    //  Τέλειο για την Αριάνα που λατρεύει γυμναστική, κολύμπι & χορό!
     // ============================================================
     const CHALLENGES = [
       { emoji:"💃", count:"8 φορές!", text:"Κάνε την καλύτερη K-pop idol πόζα σου! Κράτα τη για 3 δευτερόλεπτα κάθε φορά. Είσαι αστέρι, Αριάνα!" },
@@ -463,51 +745,175 @@
 
     // ============================================================
     //  ΚΑΤΆΣΤΑΣΗ ΠΑΙΧΝΙΔΙΟΎ
-    //  Αυτές οι μεταβλητές παρακολουθούν τι συμβαίνει στο παιχνίδι.
     // ============================================================
-    let score = 0;           // Πόσα αστέρια έχει κερδίσει η Αριάνα
-    let currentQ = 0;        // Σε ποια ερώτηση βρισκόμαστε
-    let selectedMember = ""; // Ποιο μέλος KATSEYE διάλεξε η Αριάνα
-    let answered = false;    // Έχει ήδη απαντήσει σε αυτή την ερώτηση;
+    let score = 0;
+    let currentQ = 0;
+    let selectedMember = "";
+    let answered = false;
+
+    // ============================================================
+    //  ΣΚΟΡΜΠΟΡΝΤ (localStorage)
+    // ============================================================
+    const BEST_SCORE_KEY = "ariana_best_score";
+
+    function getBestScore() {
+      return parseInt(localStorage.getItem(BEST_SCORE_KEY) || "0", 10);
+    }
+
+    function saveBestScore(s) {
+      localStorage.setItem(BEST_SCORE_KEY, String(s));
+    }
+
+    function updateBestScoreDisplay() {
+      document.getElementById("bestScoreDisplay").textContent = getBestScore();
+    }
+
+    function clearBestScore() {
+      localStorage.removeItem(BEST_SCORE_KEY);
+      updateBestScoreDisplay();
+    }
+
+    // ============================================================
+    //  WEB AUDIO API — Ήχοι χωρίς εξωτερικά αρχεία
+    // ============================================================
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    // Δημιουργούμε το AudioContext μόνο μετά από κάποια αλληλεπίδραση
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+    }
+
+    // Βοηθητική: παίζει μια νότα
+    function playNote(freq, startTime, duration, type = "sine", gainVal = 0.3) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, startTime);
+      gain.gain.setValueAtTime(gainVal, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+      osc.start(startTime);
+      osc.stop(startTime + duration + 0.05);
+    }
+
+    // ✅ Σωστή απάντηση: ανερχόμενη μελωδία C-E-G
+    function playCorrectSound() {
+      if (!soundEnabled) return;
+      ensureAudioCtx();
+      const t = audioCtx.currentTime;
+      playNote(523.25, t,        0.2, "sine", 0.3); // C5
+      playNote(659.25, t + 0.22, 0.2, "sine", 0.3); // E5
+      playNote(783.99, t + 0.44, 0.3, "sine", 0.35); // G5
+    }
+
+    // ❌ Λάθος απάντηση: κατερχόμενη θλιβερή μελωδία
+    function playWrongSound() {
+      if (!soundEnabled) return;
+      ensureAudioCtx();
+      const t = audioCtx.currentTime;
+      playNote(392.00, t,        0.25, "sawtooth", 0.2); // G4
+      playNote(261.63, t + 0.28, 0.4,  "sawtooth", 0.2); // C4
+    }
+
+    // 💜 Επιλογή μέλους: sparkle (γρήγορες ψηλές νότες)
+    function playMemberSelectSound() {
+      if (!soundEnabled) return;
+      ensureAudioCtx();
+      const t = audioCtx.currentTime;
+      const freqs = [1046.5, 1318.5, 1567.98, 2093];
+      freqs.forEach((f, i) => {
+        playNote(f, t + i * 0.07, 0.12, "sine", 0.2);
+      });
+    }
+
+    // 🎉 Έναρξη παιχνιδιού: fanfare
+    function playStartSound() {
+      if (!soundEnabled) return;
+      ensureAudioCtx();
+      const t = audioCtx.currentTime;
+      playNote(523.25, t,        0.15, "square", 0.25); // C5
+      playNote(659.25, t + 0.17, 0.15, "square", 0.25); // E5
+      playNote(783.99, t + 0.34, 0.15, "square", 0.25); // G5
+      playNote(1046.5, t + 0.51, 0.35, "square", 0.3);  // C6
+    }
+
+    // 🏆 Νέο ρεκόρ: 5 νότες πανηγυρισμού
+    function playNewRecordSound() {
+      if (!soundEnabled) return;
+      ensureAudioCtx();
+      const t = audioCtx.currentTime;
+      const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+      notes.forEach((f, i) => {
+        playNote(f, t + i * 0.18, 0.25, "sine", 0.35);
+      });
+    }
+
+    // Κουμπί εναλλαγής ήχου
+    document.getElementById("soundToggle").addEventListener("click", function () {
+      ensureAudioCtx();
+      soundEnabled = !soundEnabled;
+      this.textContent = soundEnabled ? "🔊" : "🔇";
+    });
+
+    // ============================================================
+    //  ΧΟΡΕΥΤΉΣ — animations
+    // ============================================================
+    function dancerCelebrate() {
+      const d = document.getElementById("dancer");
+      d.classList.remove("celebrate", "sad");
+      // Μικρή καθυστέρηση για να γίνει reflow
+      void d.offsetWidth;
+      d.classList.add("celebrate");
+      setTimeout(() => {
+        d.classList.remove("celebrate");
+      }, 2100);
+    }
+
+    function dancerSad() {
+      const d = document.getElementById("dancer");
+      d.classList.remove("celebrate", "sad");
+      void d.offsetWidth;
+      d.classList.add("sad");
+      setTimeout(() => {
+        d.classList.remove("sad");
+      }, 1100);
+    }
 
     // ============================================================
     //  ΚΙΝΟΎΜΕΝΗ ΕΙΚΌΝΑ ΑΙΩΡΟΎΜΕΝΩΝ ΑΣΤΕΡΙΏΝ
-    //  Αυτό δημιουργεί μικρά αστέρια που ανεβαίνουν στην οθόνη!
     // ============================================================
     function createStars() {
       const container = document.getElementById("starsContainer");
       const icons = ["⭐","💫","✨","🌟","💜","💗","🩷"];
-
-      // Φτιάξε 30 αστέρια και τοποθέτησέ τα τυχαία στην οθόνη
       for (let i = 0; i < 30; i++) {
         const star = document.createElement("div");
         star.className = "star";
         star.textContent = icons[Math.floor(Math.random() * icons.length)];
-
-        // Τυχαία θέση αριστερά-δεξιά
         star.style.left = Math.random() * 100 + "vw";
-        // Τυχαία ταχύτητα — κάποια ανεβαίνουν γρήγορα, κάποια αργά
         star.style.animationDuration = (6 + Math.random() * 12) + "s";
-        // Τυχαία καθυστέρηση ώστε να μην ξεκινούν όλα μαζί
         star.style.animationDelay = (Math.random() * 10) + "s";
         star.style.fontSize = (0.8 + Math.random() * 1.2) + "rem";
-
         container.appendChild(star);
       }
     }
 
     // ============================================================
     //  ΔΗΜΙΟΥΡΓΊΑ ΚΟΥΜΠΙΏΝ ΜΕΛΏΝ
-    //  Αυτό δημιουργεί ένα κουμπί για κάθε μέλος KATSEYE στην οθόνη.
     // ============================================================
     function buildMemberButtons() {
       const grid = document.getElementById("membersGrid");
-
       MEMBERS.forEach((member, index) => {
         const btn = document.createElement("button");
         btn.className = "member-btn";
         btn.id = "member-" + index;
-        // Κάθε κουμπί δείχνει το emoji και το όνομα του μέλους
         btn.innerHTML = `<span class="emoji">${member.emoji}</span>${member.name}`;
         btn.onclick = () => selectMember(index);
         grid.appendChild(btn);
@@ -515,28 +921,39 @@
     }
 
     // ============================================================
-    //  ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ
-    //  Όταν η Αριάνα κάνει κλικ σε ένα κουμπί μέλους, αυτή η συνάρτηση τρέχει.
+    //  ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ — εμφανίζει κάρτα πληροφοριών
     // ============================================================
     function selectMember(index) {
-      // Αφαίρεσε πρώτα το 'active' από όλα τα κουμπιά
+      ensureAudioCtx();
+      playMemberSelectSound();
+
       MEMBERS.forEach((_, i) => {
         document.getElementById("member-" + i).classList.remove("active");
       });
-
-      // Σήμανε το κουμπί που πατήθηκε ως ενεργό
       document.getElementById("member-" + index).classList.add("active");
       selectedMember = MEMBERS[index].name;
 
-      // Ενεργοποίησε το κουμπί "Ας Χορέψουμε!"
+      // Ενημέρωσε την κάρτα πληροφοριών μέλους
+      const m = MEMBERS[index];
+      document.getElementById("memberInfoEmoji").textContent = m.emoji;
+      document.getElementById("memberInfoName").textContent = m.flag + " " + m.name + " — " + m.country;
+      document.getElementById("memberInfoMeta").textContent = "🎤 " + m.role;
+      document.getElementById("memberInfoFact").textContent = "💡 " + m.fact;
+
+      const card = document.getElementById("memberInfoCard");
+      card.classList.remove("show");
+      void card.offsetWidth; // reflow για να ξαναπαίξει animation
+      card.classList.add("show");
+
       document.getElementById("startBtn").disabled = false;
     }
 
     // ============================================================
     //  ΈΝΑΡΞΗ ΠΑΙΧΝΙΔΙΟΎ
-    //  Κρύβει την επιλογή μέλους και δείχνει την πρώτη ερώτηση κουίζ!
     // ============================================================
     function startGame() {
+      ensureAudioCtx();
+      playStartSound();
       document.getElementById("memberSection").style.display = "none";
       document.getElementById("quizSection").style.display = "block";
       showQuestion();
@@ -544,27 +961,17 @@
 
     // ============================================================
     //  ΕΜΦΆΝΙΣΗ ΕΡΏΤΗΣΗΣ
-    //  Εμφανίζει την τρέχουσα ερώτηση και τις τέσσερις επιλογές απάντησης.
     // ============================================================
     function showQuestion() {
       answered = false;
-
       const q = QUESTIONS[currentQ];
-
-      // Ενημέρωσε τη μπάρα προόδου (πόσο έχουμε προχωρήσει στο κουίζ)
       const pct = (currentQ / QUESTIONS.length) * 100;
       document.getElementById("progressBar").style.width = pct + "%";
-
-      // Ενημέρωσε την εμφάνιση αριθμού ερώτησης
       document.getElementById("qNumDisplay").textContent = currentQ + 1;
-
-      // Δείξε το κείμενο της ερώτησης
       document.getElementById("questionBox").textContent = q.q;
 
-      // Δημιούργησε κουμπιά επιλογών απάντησης
       const grid = document.getElementById("optionsGrid");
-      grid.innerHTML = ""; // καθάρισε τα παλιά κουμπιά
-
+      grid.innerHTML = "";
       q.opts.forEach((opt, i) => {
         const btn = document.createElement("button");
         btn.className = "option-btn";
@@ -573,65 +980,54 @@
         grid.appendChild(btn);
       });
 
-      // Κρύψε την ανατροφοδότηση και το επόμενο κουμπί
       const fb = document.getElementById("feedback");
       fb.className = "feedback";
       fb.textContent = "";
       document.getElementById("nextBtn").style.display = "none";
-
-      // Κρύψε την κάρτα πρόκλησης μέχρι μια σωστή απάντηση
       document.getElementById("challengeCard").classList.remove("show");
     }
 
     // ============================================================
     //  ΈΛΕΓΧΟΣ ΑΠΆΝΤΗΣΗΣ
-    //  Διάλεξε η Αριάνα τη σωστή; Ας μάθουμε!
     // ============================================================
     function checkAnswer(chosen) {
-      if (answered) return; // Μην της επιτρέπεις να απαντήσει δύο φορές!
+      if (answered) return;
       answered = true;
+
+      ensureAudioCtx();
 
       const q = QUESTIONS[currentQ];
       const buttons = document.querySelectorAll(".option-btn");
-
-      // Απενεργοποίησε όλα τα κουμπιά ώστε να μην μπορεί να αλλάξει απάντηση
       buttons.forEach(b => b.disabled = true);
 
       const fb = document.getElementById("feedback");
 
       if (chosen === q.ans) {
-        // ✅ ΣΩΣΤΌ!
         buttons[chosen].classList.add("correct");
-        score += 10; // Πρόσθεσε 10 αστέρια για σωστή απάντηση
+        score += 10;
         document.getElementById("scoreDisplay").textContent = score;
-
         fb.textContent = "⭐ ΜΠΡΑΒΟ! Το έπιασες! " + q.fact;
         fb.className = "feedback good show";
-
-        // Δείξε μια τυχαία πρόκληση χορού/αθλητισμού ως αμοιβή
+        playCorrectSound();
+        dancerCelebrate();
         showChallenge();
-
       } else {
-        // ❌ Λάθος απάντηση
         buttons[chosen].classList.add("wrong");
-        buttons[q.ans].classList.add("correct"); // Δείξε τη σωστή απάντηση
-
+        buttons[q.ans].classList.add("correct");
         fb.textContent = "Όχι ακριβώς! Η απάντηση ήταν: " + q.opts[q.ans] + " — " + q.fact;
         fb.className = "feedback bad show";
+        playWrongSound();
+        dancerSad();
       }
 
-      // Δείξε το κουμπί "Επόμενη Ερώτηση"
       document.getElementById("nextBtn").style.display = "inline-block";
     }
 
     // ============================================================
     //  ΕΜΦΆΝΙΣΗ ΠΡΌΚΛΗΣΗΣ ΧΟΡΟΎ
-    //  Μια διασκεδαστική πρόκληση εμφανίζεται όταν η Αριάνα απαντά σωστά!
     // ============================================================
     function showChallenge() {
-      // Διάλεξε μια πρόκληση που αντιστοιχεί στον αριθμό ερώτησης
       const ch = CHALLENGES[currentQ % CHALLENGES.length];
-
       document.getElementById("challengeEmoji").textContent = ch.emoji;
       document.getElementById("challengeCount").textContent = ch.count;
       document.getElementById("challengeText").textContent = ch.text;
@@ -641,35 +1037,43 @@
 
     // ============================================================
     //  ΕΠΌΜΕΝΗ ΕΡΏΤΗΣΗ
-    //  Πήγαινε στην επόμενη ερώτηση, ή δείξε αποτελέσματα αν τελείωσε!
     // ============================================================
     function nextQuestion() {
       currentQ++;
-
       if (currentQ >= QUESTIONS.length) {
-        showResults(); // Όλες οι ερωτήσεις τελείωσαν!
+        showResults();
       } else {
-        showQuestion(); // Δείξε την επόμενη ερώτηση
+        showQuestion();
       }
     }
 
     // ============================================================
-    //  ΕΜΦΆΝΙΣΗ ΑΠΟΤΕΛΕΣΜΆΤΩΝ
-    //  Το παιχνίδι τελείωσε — ας γιορτάσουμε το σκορ της Αριάνας!
+    //  ΕΜΦΆΝΙΣΗ ΑΠΟΤΕΛΕΣΜΆΤΩΝ — με έλεγχο ρεκόρ
     // ============================================================
     function showResults() {
       document.getElementById("quizSection").style.display = "none";
 
-      const total = QUESTIONS.length * 10; // Μέγιστο δυνατό σκορ
+      const total = QUESTIONS.length * 10;
       const section = document.getElementById("resultsSection");
       const emoji   = document.getElementById("resultsEmoji");
       const title   = document.getElementById("resultsTitle");
       const msg     = document.getElementById("resultsMsg");
 
-      // Ενημέρωσε τη μπάρα προόδου στο 100%
       document.getElementById("progressBar").style.width = "100%";
 
-      // Διαφορετικά μηνύματα ανάλογα με το πόσο καλά τα πήγε!
+      // Έλεγχος νέου ρεκόρ
+      const prevBest = getBestScore();
+      const isNewRecord = score > prevBest;
+      if (isNewRecord) {
+        saveBestScore(score);
+        updateBestScoreDisplay();
+        document.getElementById("newRecordBanner").classList.add("show");
+        playNewRecordSound();
+        dancerCelebrate();
+      } else {
+        document.getElementById("newRecordBanner").classList.remove("show");
+      }
+
       if (score === total) {
         emoji.textContent = "🏆";
         title.textContent = "ΤΈΛΕΙΟ ΣΚΟΡ! ΕΊΣΑΙ ΘΡΎΛΟΣ!";
@@ -693,7 +1097,6 @@
 
     // ============================================================
     //  ΕΠΑΝΑΦΟΡΆ ΠΑΙΧΝΙΔΙΟΎ
-    //  Ξεκίνα τα πάντα από την αρχή!
     // ============================================================
     function resetGame() {
       score = 0;
@@ -704,14 +1107,14 @@
       document.getElementById("scoreDisplay").textContent = "0";
       document.getElementById("qNumDisplay").textContent = "0";
       document.getElementById("progressBar").style.width = "0%";
+      document.getElementById("newRecordBanner").classList.remove("show");
 
-      // Αφαίρεσε την ενεργή κατάσταση από τα κουμπιά μελών
       MEMBERS.forEach((_, i) => {
         const btn = document.getElementById("member-" + i);
         if (btn) btn.classList.remove("active");
       });
 
-      // Επαναφέρε όλα τα τμήματα
+      document.getElementById("memberInfoCard").classList.remove("show");
       document.getElementById("startBtn").disabled = true;
       document.getElementById("memberSection").style.display = "block";
       document.getElementById("quizSection").style.display = "none";
@@ -723,8 +1126,9 @@
     // ============================================================
     //  ΕΚΚΊΝΗΣΗ ΌΛΩΝ ΌΤΑΝ ΦΟΡΤΏΝΕΙ Η ΣΕΛΊΔΑ
     // ============================================================
-    createStars();        // Ξεκίνα την κινούμενη εικόνα αιωρούμενων αστεριών
-    buildMemberButtons(); // Σχεδίασε τα κουμπιά μελών KATSEYE
+    createStars();
+    buildMemberButtons();
+    updateBestScoreDisplay(); // Διάβασε και εμφάνισε το αποθηκευμένο ρεκόρ
   </script>
 </body>
 </html>
