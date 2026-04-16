@@ -10,6 +10,42 @@
     /* ===== ΓΡΑΜΜΑΤΟΣΕΙΡΈΣ & ΒΑΣΙΚΆ ΧΡΏΜΑΤΑ ===== */
     @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
+    /* ===== NAV BAR ===== */
+    .nav-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      background: #0a061a;
+      border-bottom: 2px solid rgba(168,85,247,0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      height: 52px;
+    }
+    .nav-logo {
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--pink);
+      letter-spacing: 2px;
+      margin-right: auto;
+    }
+    .nav-link {
+      display: inline-block;
+      padding: 7px 14px;
+      border-radius: 50px;
+      border: 2px solid rgba(168,85,247,0.5);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { border-color: var(--pink); color: var(--pink); transform: scale(1.05); }
+    .nav-link.active { background: linear-gradient(135deg, var(--pink), var(--purple)); border-color: var(--gold); }
+
     :root {
       --pink:    #ff4fa3;
       --purple:  #a855f7;
@@ -28,6 +64,7 @@
       color: #fff;
       min-height: 100vh;
       overflow-x: hidden;
+      padding-top: 52px;
     }
 
     /* ===== ΑΙΩΡΟΎΜΕΝΑ ΑΣΤΈΡΙΑ ΦΌΝΤΟΥ ===== */
@@ -484,6 +521,14 @@
 </head>
 <body>
 
+  <!-- Nav bar -->
+  <nav class="nav-bar">
+    <div class="nav-logo">✨ KATSEYE</div>
+    <a class="nav-link active" href="index.html">🏠 Αρχική</a>
+    <a class="nav-link" href="katseye.html">💃 Dance Game</a>
+    <a class="nav-link" href="school.html">🎓 Σχολικά Παιχνίδια</a>
+  </nav>
+
   <!-- Φόντο με αιωρούμενα αστέρια -->
   <div class="stars-container" id="starsContainer"></div>
 
@@ -597,8 +642,6 @@
     <footer>
       Φτιαγμένο με 💖 για την Αριάνα · Το πρώτο της coding project!
       <button class="reset-record-link" onclick="clearBestScore()">Μηδενισμός ρεκόρ</button>
-      &nbsp;·&nbsp;
-      <a href="school.html" style="color:#a855f7; text-decoration:underline; font-size:0.85rem;">🎓 Σχολικά Παιχνίδια</a>
     </footer>
 
   </div><!-- τέλος .page -->
@@ -612,19 +655,19 @@
         name: "Sophia",
         emoji: "🌟",
         color: "#ff4fa3",
-        flag: "🇺🇸",
-        country: "USA",
-        role: "Main Dancer & Vocalist",
-        fact: "Είναι η πιο εκφραστική χορεύτρια του γκρουπ!"
+        flag: "🇵🇭",
+        country: "Philippines/USA",
+        role: "Leader & Main Vocalist",
+        fact: "Κόρη διάσημης Φιλιππινέζας τραγουδίστριας — το τραγούδι είναι στο αίμα της!"
       },
       {
         name: "Manon",
         emoji: "💜",
         color: "#a855f7",
-        flag: "🇫🇷",
-        country: "France",
+        flag: "🇨🇭",
+        country: "Switzerland",
         role: "Vocalist",
-        fact: "Μιλάει Γαλλικά, Αγγλικά και Κορεατικά!"
+        fact: "Μιλάει Αγγλικά και Ελβετικά Γερμανικά — έγραφε τραγούδια από τα 15!"
       },
       {
         name: "Daniela",
@@ -632,17 +675,17 @@
         color: "#f97316",
         flag: "🇺🇸",
         country: "USA",
-        role: "Main Rapper & Dancer",
-        fact: "Έχει απίστευτη ενέργεια στη σκηνή!"
+        role: "Main Rapper & Main Dancer",
+        fact: "Χορεύει από τα 4 της! Η μαμά της ήταν παγκόσμια πρωταθλήτρια στο ballroom!"
       },
       {
         name: "Lara",
         emoji: "🌊",
         color: "#22d3ee",
-        flag: "🇩🇪",
-        country: "Germany",
-        role: "Vocalist",
-        fact: "Η φωνή της είναι σαν μουσική από άλλο κόσμο!"
+        flag: "🇺🇸",
+        country: "USA (Indian-American)",
+        role: "Lead Dancer & Vocalist",
+        fact: "Η πρώτη Ινδή καλλιτέχνης στην HYBE! Αγαπά τα crystals και τον καφέ!"
       },
       {
         name: "Megan",
@@ -651,16 +694,16 @@
         flag: "🇺🇸",
         country: "USA",
         role: "Lead Dancer",
-        fact: "Οι κινήσεις της είναι απόλυτα ακριβείς!"
+        fact: "Έχει παίξει σε Disney Channel και έχει περπατήσει σε Paris Fashion Week!"
       },
       {
-        name: "Hanning",
-        emoji: "🌸",
+        name: "Yoonchae",
+        emoji: "🌙",
         color: "#f472b6",
-        flag: "🇨🇳",
-        country: "China",
-        role: "Vocalist & Visual",
-        fact: "Είναι γνωστή για το υπέροχο χαμόγελό της!"
+        flag: "🇰🇷",
+        country: "South Korea",
+        role: "Vocalist & Maknae",
+        fact: "Είναι η πιο νέα — αποφοίτησε από λύκειο ενώ ετοίμαζαν το πρώτο τους EP!"
       },
     ];
 

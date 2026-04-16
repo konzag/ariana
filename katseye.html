@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💃 KATSEYE Dance Stage ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+    :root {
+      --pink:   #ff4fa3;
+      --purple: #a855f7;
+      --cyan:   #22d3ee;
+      --gold:   #fbbf24;
+      --dark:   #0f0a1e;
+      --card:   #1a1040;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--dark);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAV BAR ===== */
+    .nav-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      background: #0a061a;
+      border-bottom: 2px solid rgba(168,85,247,0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      height: 52px;
+    }
+    .nav-logo {
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--pink);
+      letter-spacing: 2px;
+      margin-right: auto;
+    }
+    .nav-link {
+      display: inline-block;
+      padding: 7px 14px;
+      border-radius: 50px;
+      border: 2px solid rgba(168,85,247,0.5);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { border-color: var(--pink); color: var(--pink); transform: scale(1.05); }
+    .nav-link.active { background: linear-gradient(135deg, var(--pink), var(--purple)); border-color: var(--gold); }
+
+    /* ===== STARS BG ===== */
+    .stars-container {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .star {
+      position: absolute; bottom: -20px; font-size: 1.2rem;
+      animation: floatUp linear infinite; opacity: 0;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.8; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ===== LAYOUT ===== */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto;
+      padding: 72px 16px 60px;
+    }
+
+    /* ===== HEADER ===== */
+    header { text-align: center; padding: 20px 0 24px; }
+    .main-title {
+      font-size: clamp(2rem, 7vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: glow 2.5s ease-in-out infinite;
+      line-height: 1.2;
+    }
+    @keyframes glow {
+      0%,100% { filter: brightness(1) drop-shadow(0 0 8px var(--pink)); }
+      50%      { filter: brightness(1.3) drop-shadow(0 0 22px var(--purple)); }
+    }
+    .sub-title { margin-top: 8px; font-size: 1.05rem; color: #c4b5fd; }
+
+    /* ===== SCREENS ===== */
+    #screen-select { display: block; }
+    #screen-game   { display: none; }
+    #screen-end    { display: none; }
+
+    /* ===== MEMBER SELECTION ===== */
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 24px 0 20px;
+    }
+    @media (max-width: 420px) { .members-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .member-card {
+      border-radius: 18px; padding: 18px 10px;
+      cursor: pointer; text-align: center;
+      border: 2px solid rgba(168,85,247,0.4);
+      background: var(--card); transition: all 0.2s;
+    }
+    .member-card:hover { transform: translateY(-4px) scale(1.04); border-color: var(--pink); }
+    .member-card.selected { border-color: var(--gold); box-shadow: 0 0 24px var(--gold); }
+    .mc-emoji { font-size: 2.4rem; }
+    .mc-name  { font-size: 1rem; font-weight: 900; margin: 6px 0 2px; }
+    .mc-role  { font-size: 0.78rem; color: #c4b5fd; }
+    .mc-flag  { font-size: 0.85rem; margin-top: 4px; }
+    .mc-move  { font-size: 0.75rem; color: #a5f3fc; margin-top: 6px; font-style: italic; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-block; padding: 14px 36px;
+      border-radius: 50px; border: none;
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.05rem;
+      cursor: pointer; transition: all 0.2s;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn-pink { background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; }
+    .btn-gold { background: linear-gradient(135deg, var(--gold), #f59e0b); color: var(--dark); }
+    .btn-cyan { background: linear-gradient(135deg, var(--cyan), #0ea5e9); color: var(--dark); }
+    .btn:hover  { transform: scale(1.06); box-shadow: 0 6px 22px rgba(255,79,163,0.45); }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+    .btn-center { text-align: center; margin-top: 16px; }
+
+    /* ===== GAME HEADER ===== */
+    .game-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .star-meter-wrap {
+      flex: 1; min-width: 140px;
+      background: #1a1040; border-radius: 50px; height: 22px;
+      border: 2px solid var(--purple); overflow: hidden; position: relative;
+    }
+    .star-meter-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--pink), var(--gold));
+      border-radius: 50px; transition: width 0.3s ease;
+    }
+    .star-meter-label {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 900; color: #fff;
+      text-shadow: 0 0 4px #000;
+    }
+    .stat-badge {
+      background: var(--card); border: 2px solid var(--purple);
+      border-radius: 50px; padding: 5px 14px;
+      font-size: 0.85rem; font-weight: 700; white-space: nowrap;
+    }
+    .sound-btn {
+      background: none; border: 2px solid var(--purple); border-radius: 50%;
+      width: 36px; height: 36px; font-size: 1.1rem; cursor: pointer;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .sound-btn:hover { border-color: var(--pink); transform: scale(1.1); }
+
+    /* ===== CANVAS ===== */
+    .canvas-wrap {
+      position: relative; border-radius: 16px; overflow: hidden;
+      border: 3px solid var(--purple);
+      box-shadow: 0 0 40px rgba(168,85,247,0.4);
+    }
+    #stage { display: block; width: 100%; height: auto; }
+
+    /* ===== CONTROLS HINT ===== */
+    .controls-hint {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+      margin-top: 12px;
+    }
+    .key-badge {
+      background: var(--card); border: 2px solid rgba(168,85,247,0.5);
+      border-radius: 10px; padding: 5px 12px;
+      font-size: 0.82rem; font-weight: 700; color: #e9d5ff;
+    }
+    .key-badge .kk { color: var(--gold); }
+
+    /* ===== MOBILE CONTROLS ===== */
+    .mobile-controls {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-top: 14px;
+    }
+    @media (max-width: 600px) { .mobile-controls { display: grid; } .controls-hint { display: none; } }
+
+    .mob-btn {
+      background: var(--card); border: 2px solid var(--purple);
+      border-radius: 14px; padding: 14px 6px;
+      font-size: 1.3rem; cursor: pointer; color: #fff;
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      transition: all 0.15s; text-align: center; user-select: none;
+    }
+    .mob-btn:active { background: #3b0764; transform: scale(0.94); }
+    .mob-btn.dance-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); font-size: 1rem; }
+    .mob-btn.pose-btn  { background: linear-gradient(135deg, var(--gold), #f59e0b); color: var(--dark); font-size: 1rem; }
+    .mob-empty { background: transparent; border: none; }
+
+    /* ===== FLOAT TEXT ===== */
+    #floatText {
+      position: absolute; top: 50px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem; font-weight: 900;
+      pointer-events: none; opacity: 0; transition: opacity 0.3s;
+    }
+
+    /* ===== END SCREEN ===== */
+    .end-card {
+      background: var(--card); border-radius: 20px;
+      padding: 32px 24px; text-align: center;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 40px rgba(251,191,36,0.3);
+      animation: popIn 0.5s ease;
+    }
+    @keyframes popIn {
+      0%  { transform: scale(0.7); opacity: 0; }
+      70% { transform: scale(1.05); }
+      100%{ transform: scale(1);   opacity: 1; }
+    }
+    .end-emoji { font-size: 4rem; margin-bottom: 12px; }
+    .end-title {
+      font-size: 2rem; font-weight: 900; color: var(--gold); margin-bottom: 12px;
+      text-shadow: 0 0 20px rgba(251,191,36,0.6);
+    }
+    .end-stats {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    .end-stat {
+      background: #2d1b69; border-radius: 14px; padding: 12px 20px;
+      font-size: 1rem; font-weight: 700;
+    }
+    .end-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--gold); display: block; }
+    .end-msg { font-size: 1.05rem; color: #c4b5fd; line-height: 1.6; margin-bottom: 24px; }
+
+    /* ===== CONFETTI OVERLAY ===== */
+    #confettiCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 500; }
+
+    footer {
+      text-align: center; padding: 24px 0 8px;
+      color: #6b21a8; font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV BAR -->
+  <nav class="nav-bar">
+    <div class="nav-logo">✨ KATSEYE</div>
+    <a class="nav-link active" href="katseye.html">💃 Dance Game</a>
+    <a class="nav-link" href="index.html">🏠 Αρχική</a>
+    <a class="nav-link" href="school.html">🎓 Σχολικά Παιχνίδια</a>
+  </nav>
+
+  <div class="stars-container" id="starsContainer"></div>
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="page">
+
+    <!-- SCREEN 1: ΕΠΙΛΟΓΗ ΜΕΛΟΥΣ -->
+    <div id="screen-select">
+      <header>
+        <h1 class="main-title">💃 KATSEYE Dance Stage ✨</h1>
+        <p class="sub-title">Διάλεξε το μέλος σου και ανέβα στη σκηνή! 🌟</p>
+      </header>
+      <div class="members-grid" id="membersGrid"></div>
+      <div class="btn-center">
+        <button class="btn btn-pink" id="startBtn" onclick="startGame()" disabled>
+          ▶ Ανέβα στη Σκηνή!
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: ΠΑΙΧΝΙΔΙ -->
+    <div id="screen-game">
+      <div class="game-header">
+        <div class="star-meter-wrap">
+          <div class="star-meter-fill" id="starMeterFill"></div>
+          <div class="star-meter-label" id="starMeterLabel">⭐ 0%</div>
+        </div>
+        <div class="stat-badge" id="comboBadge">🔥 Combo x1</div>
+        <div class="stat-badge" id="timeBadge">⏱ 00:00</div>
+        <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="stage" width="600" height="380"></canvas>
+        <div id="floatText"></div>
+      </div>
+
+      <div class="controls-hint">
+        <div class="key-badge"><span class="kk">↑↓←→</span> ή <span class="kk">WASD</span> Μετακίνηση</div>
+        <div class="key-badge"><span class="kk">SPACE</span> Χορός 💃</div>
+        <div class="key-badge"><span class="kk">CTRL</span> Πόζα ✨</div>
+      </div>
+
+      <!-- Mobile controls -->
+      <div class="mobile-controls">
+        <div class="mob-empty"></div>
+        <button class="mob-btn" id="mobUp">▲</button>
+        <div class="mob-empty"></div>
+        <button class="mob-btn" id="mobLeft">◀</button>
+        <button class="mob-btn" id="mobDown">▼</button>
+        <button class="mob-btn" id="mobRight">▶</button>
+        <button class="mob-btn dance-btn" id="mobDance">💃 ΧΟΡΟΣ</button>
+        <div class="mob-empty"></div>
+        <button class="mob-btn pose-btn" id="mobPose">✨ ΠΟΖΑ</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: ΤΕΛΟΣ -->
+    <div id="screen-end">
+      <div class="end-card">
+        <div class="end-emoji" id="endEmoji">🌟</div>
+        <div class="end-title" id="endTitle">ΕΚΠΛΗΚΤΙΚΗ ΠΑΡΑΣΤΑΣΗ!</div>
+        <div class="end-stats">
+          <div class="end-stat"><span class="end-stat-num" id="endStars">0</span>⭐ Αστέρια</div>
+          <div class="end-stat"><span class="end-stat-num" id="endCombos">0</span>🔥 Combos</div>
+          <div class="end-stat"><span class="end-stat-num" id="endTime">0s</span>⏱ Χρόνος</div>
+        </div>
+        <p class="end-msg" id="endMsg"></p>
+        <button class="btn btn-pink" onclick="resetGame()" style="margin-right:12px">🔄 Παίξε Ξανά!</button>
+        <button class="btn btn-cyan" onclick="goSelect()">👤 Άλλο Μέλος</button>
+      </div>
+    </div>
+
+    <footer>Φτιαγμένο με 💖 για την Αριάνα · KATSEYE Dance Stage</footer>
+  </div>
+
+  <script>
+  // ============================================================
+  //  ΔΕΔΟΜΕΝΑ ΜΕΛΩΝ
+  // ============================================================
+  const MEMBERS = [
+    {
+      name: "Sophia", emoji: "🌟", flag: "🇵🇭",
+      role: "Leader & Main Vocalist",
+      theme: "#fbbf24",
+      move: "Χαριτωμένες στροφές ✨",
+      idleAnim: "spin",
+      victoryMsg: "Η Sophia λέει: ΚΑΤΑΠΛΗΚΤΙΚΗ ΠΑΡΑΣΤΑΣΗ! Ήσουν η αληθινή αρχηγός της σκηνής! 🌟"
+    },
+    {
+      name: "Manon", emoji: "💜", flag: "🇨🇭",
+      role: "Vocalist",
+      theme: "#a855f7",
+      move: "Απαλές ολισθήσεις 🎶",
+      idleAnim: "sway",
+      victoryMsg: "Η Manon λέει: ΙΔΑΝΙΚΗ ΧΟΡΟΓΡΑΦΙΑ! Ήσουν τόσο κομψή και μελωδική! 💜"
+    },
+    {
+      name: "Daniela", emoji: "🔥", flag: "🇺🇸",
+      role: "Main Rapper & Main Dancer",
+      theme: "#f97316",
+      move: "Δυνατά hip-hop βήματα 🔥",
+      idleAnim: "bounce",
+      victoryMsg: "Η Daniela λέει: ΤΑ ΕΔΩΣΕΣ ΟΛΑ! Απίστευτη ενέργεια — ακριβώς σαν εμένα! 🔥"
+    },
+    {
+      name: "Lara", emoji: "🌊", flag: "🇺🇸",
+      role: "Lead Dancer & Vocalist",
+      theme: "#22d3ee",
+      move: "Ρέοντα κύματα 🌊",
+      idleAnim: "wave",
+      victoryMsg: "Η Lara λέει: ΤΟΣΟ ΟΜΟΡΦΗ ΚΙΝΗΣΗ! Χόρεψες σαν κύμα — pure crystal energy! 🌊"
+    },
+    {
+      name: "Megan", emoji: "⚡", flag: "🇺🇸",
+      role: "Lead Dancer",
+      theme: "#fde047",
+      move: "Γρήγορα, ακριβή βήματα ⚡",
+      idleAnim: "pulse",
+      victoryMsg: "Η Megan λέει: PRECISION QUEEN! Τέλειες κινήσεις — Disney Channel level! ⚡"
+    },
+    {
+      name: "Yoonchae", emoji: "🌙", flag: "🇰🇷",
+      role: "Vocalist & Maknae",
+      theme: "#f472b6",
+      move: "Χαριτωμένα bouncy βήματα 🌙",
+      idleAnim: "bounce",
+      victoryMsg: "Η Yoonchae λέει: 막내 파워! (Maknae power!) Τόσο χαριτωμένη και δυνατή! 🌙"
+    }
+  ];
+
+  // ============================================================
+  //  ΚΑΤΑΣΤΑΣΗ
+  // ============================================================
+  let selectedIdx  = -1;
+  let soundEnabled = true;
+  let gameRunning  = false;
+  let animFrameId  = null;
+
+  const player = { x: 300, y: 190, vx: 0, vy: 0, r: 20 };
+  let stars        = 0;
+  let combo        = 1;
+  let maxCombo     = 1;
+  let totalCombos  = 0;
+  let lastMoveTime = 0;
+  let comboTimer   = 0;
+  let gameStartTS  = 0;
+  let particles    = [];
+  let confettiPieces = [];
+  let confettiActive = false;
+  let milestone25 = false, milestone50 = false, milestone75 = false;
+  let floatTextTimer = 0;
+  let tick = 0;
+
+  const keys = {};
+
+  // ============================================================
+  //  SPOTLIGHT ZONES
+  // ============================================================
+  const SPOTS = [
+    { x: 100, y:  80, r: 50, color: "rgba(255,79,163,0.35)"  },
+    { x: 500, y:  80, r: 50, color: "rgba(168,85,247,0.35)"  },
+    { x: 300, y: 190, r: 55, color: "rgba(34,211,238,0.35)"  },
+    { x: 100, y: 300, r: 50, color: "rgba(251,191,36,0.35)"  },
+    { x: 500, y: 300, r: 50, color: "rgba(244,114,182,0.35)" },
+  ];
+
+  // ============================================================
+  //  WEB AUDIO API
+  // ============================================================
+  let audioCtx = null;
+
+  function ensureAudio() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume();
+  }
+
+  function playNote(freq, start, dur, type, vol) {
+    if (!audioCtx) return;
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = type || "sine";
+    osc.frequency.setValueAtTime(freq, start);
+    gain.gain.setValueAtTime(vol || 0.25, start);
+    gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+    osc.start(start);
+    osc.stop(start + dur + 0.05);
+  }
+
+  function startBeat() {
+    if (!soundEnabled || !audioCtx) return;
+    const bpd = 60 / 120;
+    const barDur = bpd * 4;
+    let t = audioCtx.currentTime;
+    for (let i = 0; i < 80; i++) {
+      const bt = t + i * barDur;
+      // Kick on every beat
+      [0, bpd, bpd*2, bpd*3].forEach(o => playNote(60, bt + o, 0.12, "sine", 0.35));
+      // Snare on 2 & 4
+      [bpd, bpd*3].forEach(o => playNote(220, bt + o, 0.08, "sawtooth", 0.1));
+    }
+  }
+
+  function playMoveSound() {
+    if (!soundEnabled) return;
+    ensureAudio();
+    const t = audioCtx.currentTime;
+    [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) =>
+      playNote(f, t + i * 0.06, 0.1, "sine", 0.18));
+  }
+
+  function playSpotSound() {
+    if (!soundEnabled) return;
+    ensureAudio();
+    const t = audioCtx.currentTime;
+    [1046.5, 1318.5, 1567.98].forEach((f, i) =>
+      playNote(f, t + i * 0.08, 0.12, "triangle", 0.2));
+  }
+
+  function playComboSound(c) {
+    if (!soundEnabled) return;
+    ensureAudio();
+    const t = audioCtx.currentTime;
+    const base = [523.25, 659.25, 783.99, 1046.5][Math.min(c - 2, 3)];
+    [base, base * 1.25, base * 1.5].forEach((f, i) =>
+      playNote(f, t + i * 0.1, 0.15, "square", 0.2));
+  }
+
+  function playFanfare() {
+    if (!soundEnabled) return;
+    ensureAudio();
+    const t = audioCtx.currentTime;
+    [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98].forEach((f, i) =>
+      playNote(f, t + i * 0.18, 0.25, "sine", 0.3));
+  }
+
+  function playCrowdCheer() {
+    if (!soundEnabled) return;
+    ensureAudio();
+    const t = audioCtx.currentTime;
+    for (let i = 0; i < 8; i++) {
+      playNote(200 + i * 80, t + i * 0.05, 0.1, "sawtooth", 0.06);
+    }
+  }
+
+  function toggleSound() {
+    ensureAudio();
+    soundEnabled = !soundEnabled;
+    document.getElementById("soundBtn").textContent = soundEnabled ? "🔊" : "🔇";
+    if (soundEnabled && gameRunning) startBeat();
+  }
+
+  // ============================================================
+  //  BUILD MEMBER CARDS — uses DOM methods, no innerHTML
+  // ============================================================
+  function buildCards() {
+    const grid = document.getElementById("membersGrid");
+    grid.textContent = "";
+    MEMBERS.forEach(function(m, i) {
+      const card = document.createElement("div");
+      card.className = "member-card";
+
+      const emojiEl = document.createElement("div");
+      emojiEl.className = "mc-emoji";
+      emojiEl.textContent = m.emoji;
+
+      const nameEl = document.createElement("div");
+      nameEl.className = "mc-name";
+      nameEl.textContent = m.name;
+
+      const roleEl = document.createElement("div");
+      roleEl.className = "mc-role";
+      roleEl.textContent = m.role;
+
+      const flagEl = document.createElement("div");
+      flagEl.className = "mc-flag";
+      flagEl.textContent = m.flag;
+
+      const moveEl = document.createElement("div");
+      moveEl.className = "mc-move";
+      moveEl.textContent = m.move;
+
+      card.appendChild(emojiEl);
+      card.appendChild(nameEl);
+      card.appendChild(roleEl);
+      card.appendChild(flagEl);
+      card.appendChild(moveEl);
+
+      card.addEventListener("click", function() { selectMember(i); });
+      grid.appendChild(card);
+    });
+  }
+
+  function selectMember(i) {
+    ensureAudio();
+    selectedIdx = i;
+    document.querySelectorAll(".member-card").forEach(function(c, idx) {
+      c.classList.toggle("selected", idx === i);
+    });
+    document.getElementById("startBtn").disabled = false;
+    playMoveSound();
+  }
+
+  // ============================================================
+  //  START / RESET
+  // ============================================================
+  function startGame() {
+    if (selectedIdx < 0) return;
+    ensureAudio();
+
+    stars = 0; combo = 1; maxCombo = 1; totalCombos = 0;
+    lastMoveTime = 0; comboTimer = 0; tick = 0;
+    gameStartTS = Date.now();
+    milestone25 = milestone50 = milestone75 = false;
+    particles = []; confettiPieces = []; confettiActive = false;
+    player.x = 300; player.y = 190; player.vx = 0; player.vy = 0;
+
+    document.getElementById("screen-select").style.display = "none";
+    document.getElementById("screen-game").style.display   = "block";
+    document.getElementById("screen-end").style.display    = "none";
+
+    updateUI();
+    gameRunning = true;
+    startBeat();
+    loop();
+  }
+
+  function resetGame() {
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+    gameRunning = false;
+    confettiActive = false;
+    document.getElementById("screen-end").style.display  = "none";
+    document.getElementById("screen-game").style.display = "block";
+    startGame();
+  }
+
+  function goSelect() {
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+    gameRunning = false;
+    confettiActive = false;
+    document.getElementById("screen-end").style.display    = "none";
+    document.getElementById("screen-game").style.display   = "none";
+    document.getElementById("screen-select").style.display = "block";
+  }
+
+  // ============================================================
+  //  DANCE ACTIONS
+  // ============================================================
+  function doMove() {
+    if (!gameRunning) return;
+    ensureAudio();
+    const now = Date.now();
+    const gap = now - lastMoveTime;
+
+    if (lastMoveTime > 0 && gap < 1800) {
+      combo = Math.min(combo + 1, 4);
+      if (combo > maxCombo) maxCombo = combo;
+      if (combo > 1) { totalCombos++; playComboSound(combo); }
+      showFloat("🔥 Combo x" + combo + "!", MEMBERS[selectedIdx].theme);
+    } else {
+      combo = 1;
+      showFloat("💃", "#fff");
+    }
+    lastMoveTime = now;
+    comboTimer   = 0;
+
+    addStars(3 * combo);
+    playMoveSound();
+    spawnBurst(player.x, player.y, MEMBERS[selectedIdx].theme, 12);
+    document.getElementById("comboBadge").textContent = "🔥 Combo x" + combo;
+  }
+
+  function doPose() {
+    if (!gameRunning) return;
+    ensureAudio();
+    addStars(6 * combo);
+    spawnBurst(player.x, player.y, "#fbbf24", 20);
+    showFloat("✨ ΠΟΖΑ! +" + (6 * combo), "#fbbf24");
+    const t = audioCtx.currentTime;
+    playNote(1046.5, t,     0.5, "sine", 0.3);
+    playNote(1318.5, t+0.2, 0.4, "sine", 0.3);
+  }
+
+  function addStars(n) {
+    stars = Math.min(100, stars + n);
+    updateUI();
+    checkMilestones();
+    if (stars >= 100) triggerFinalPerformance();
+  }
+
+  function checkMilestones() {
+    if (stars >= 25 && !milestone25) {
+      milestone25 = true;
+      playCrowdCheer();
+      showFloat("🎉 +25% ΥΠΕΡΟΧΟ!", "#22d3ee");
+    }
+    if (stars >= 50 && !milestone50) {
+      milestone50 = true;
+      playCrowdCheer();
+      showFloat("🌟 +50% ΕΚΠΛΗΚΤΙΚΟ!", "#a855f7");
+    }
+    if (stars >= 75 && !milestone75) {
+      milestone75 = true;
+      playCrowdCheer();
+      startConfetti();
+      showFloat("💫 +75% ΦΑΝΤΑΣΤΙΚΟ!", "#fbbf24");
+    }
+  }
+
+  // ============================================================
+  //  UI
+  // ============================================================
+  function updateUI() {
+    const pct = Math.round(stars);
+    document.getElementById("starMeterFill").style.width = pct + "%";
+    document.getElementById("starMeterLabel").textContent = "⭐ " + pct + "%";
+    const elapsed = Math.floor((Date.now() - gameStartTS) / 1000);
+    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+    const ss = String(elapsed % 60).padStart(2, "0");
+    document.getElementById("timeBadge").textContent = "⏱ " + mm + ":" + ss;
+  }
+
+  // ============================================================
+  //  FLOAT TEXT
+  // ============================================================
+  function showFloat(text, color) {
+    const el = document.getElementById("floatText");
+    el.textContent = text;
+    el.style.color = color;
+    el.style.opacity = "1";
+    clearTimeout(floatTextTimer);
+    floatTextTimer = setTimeout(function() { el.style.opacity = "0"; }, 1200);
+  }
+
+  // ============================================================
+  //  PARTICLES
+  // ============================================================
+  function spawnBurst(x, y, color, count) {
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 5;
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1.0, color,
+        r: 3 + Math.random() * 5
+      });
+    }
+  }
+
+  // ============================================================
+  //  CONFETTI
+  // ============================================================
+  function startConfetti() {
+    confettiActive = true;
+    const cCanvas = document.getElementById("confettiCanvas");
+    cCanvas.width  = window.innerWidth;
+    cCanvas.height = window.innerHeight;
+    confettiPieces = [];
+    const colors = ["#ff4fa3","#a855f7","#22d3ee","#fbbf24","#f472b6","#4ade80"];
+    for (let i = 0; i < 120; i++) {
+      confettiPieces.push({
+        x:    Math.random() * cCanvas.width,
+        y:   -10 - Math.random() * cCanvas.height * 0.5,
+        vx:   (Math.random() - 0.5) * 3,
+        vy:   2 + Math.random() * 4,
+        w:    8 + Math.random() * 10,
+        h:    5 + Math.random() * 6,
+        rot:  Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+    setTimeout(function() { confettiActive = false; }, 5000);
+  }
+
+  function drawConfetti() {
+    const cCanvas = document.getElementById("confettiCanvas");
+    const cCtx = cCanvas.getContext("2d");
+    cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+    if (!confettiActive) return;
+    confettiPieces.forEach(function(p) {
+      p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
+      cCtx.save();
+      cCtx.translate(p.x, p.y);
+      cCtx.rotate(p.rot);
+      cCtx.fillStyle = p.color;
+      cCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      cCtx.restore();
+    });
+  }
+
+  // ============================================================
+  //  FINAL PERFORMANCE
+  // ============================================================
+  function triggerFinalPerformance() {
+    gameRunning = false;
+    playFanfare();
+    startConfetti();
+    setTimeout(function() {
+      cancelAnimationFrame(animFrameId);
+      showEndScreen();
+    }, 3000);
+  }
+
+  function showEndScreen() {
+    const m = MEMBERS[selectedIdx];
+    const elapsed = Math.floor((Date.now() - gameStartTS) / 1000);
+    document.getElementById("screen-game").style.display = "none";
+    document.getElementById("screen-end").style.display  = "block";
+    document.getElementById("endEmoji").textContent  = m.emoji;
+    document.getElementById("endTitle").textContent  = "🌟 ΕΚΠΛΗΚΤΙΚΗ ΠΑΡΑΣΤΑΣΗ!";
+    document.getElementById("endStars").textContent  = Math.round(stars);
+    document.getElementById("endCombos").textContent = totalCombos;
+    document.getElementById("endTime").textContent   = elapsed + "s";
+    document.getElementById("endMsg").textContent    = m.victoryMsg;
+  }
+
+  // ============================================================
+  //  CANVAS & MAIN LOOP
+  // ============================================================
+  const canvas = document.getElementById("stage");
+  const ctx    = canvas.getContext("2d");
+  const W = 600, H = 380;
+
+  function loop() {
+    animFrameId = requestAnimationFrame(loop);
+    tick++;
+
+    updateUI();
+
+    // Combo timer decay
+    if (lastMoveTime > 0) {
+      comboTimer += 1 / 60;
+      if (comboTimer > 2.2) {
+        combo = 1;
+        comboTimer = 0;
+        document.getElementById("comboBadge").textContent = "🔥 Combo x1";
+      }
+    }
+
+    // Player movement
+    const spd = 3.5;
+    player.vx = 0; player.vy = 0;
+    if (keys["ArrowUp"]    || keys["w"] || keys["W"]) player.vy = -spd;
+    if (keys["ArrowDown"]  || keys["s"] || keys["S"]) player.vy =  spd;
+    if (keys["ArrowLeft"]  || keys["a"] || keys["A"]) player.vx = -spd;
+    if (keys["ArrowRight"] || keys["d"] || keys["D"]) player.vx =  spd;
+
+    player.x = Math.max(player.r, Math.min(W - player.r, player.x + player.vx));
+    player.y = Math.max(player.r, Math.min(H - 62, player.y + player.vy));
+
+    // Spotlight passive stars
+    if (gameRunning) {
+      SPOTS.forEach(function(sp) {
+        const dx = player.x - sp.x, dy = player.y - sp.y;
+        if (Math.sqrt(dx * dx + dy * dy) < sp.r + player.r) {
+          if (tick % 40 === 0) {
+            addStars(0.8 * combo);
+            if (tick % 200 === 0) playSpotSound();
+          }
+        }
+      });
+    }
+
+    // Particles
+    particles = particles.filter(function(p) { return p.life > 0; });
+    particles.forEach(function(p) {
+      p.x += p.vx; p.y += p.vy;
+      p.vy += 0.2;
+      p.life -= 0.04;
+    });
+
+    drawStage();
+    drawConfetti();
+  }
+
+  // ============================================================
+  //  DRAW
+  // ============================================================
+  function drawStage() {
+    // Background
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, "#120826");
+    bg.addColorStop(1, "#0a0618");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Floor
+    const floor = ctx.createLinearGradient(0, H - 60, 0, H);
+    floor.addColorStop(0, "#1e0a3c");
+    floor.addColorStop(1, "#0f0520");
+    ctx.fillStyle = floor;
+    ctx.fillRect(0, H - 60, W, 60);
+    ctx.fillStyle = "rgba(168,85,247,0.4)";
+    ctx.fillRect(0, H - 62, W, 3);
+
+    // Spotlight zones
+    SPOTS.forEach(function(sp) {
+      const pf = 0.8 + 0.2 * Math.sin(tick * 0.05);
+      const grd = ctx.createRadialGradient(sp.x, sp.y, 0, sp.x, sp.y, sp.r * pf);
+      grd.addColorStop(0, sp.color);
+      grd.addColorStop(1, "transparent");
+      ctx.beginPath();
+      ctx.arc(sp.x, sp.y, sp.r * pf, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    });
+
+    // Crowd
+    drawCrowd();
+
+    // Particles
+    particles.forEach(function(p) {
+      ctx.globalAlpha = p.life;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    // Extra spotlight at 50%
+    if (milestone50) {
+      const grd = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, 180);
+      grd.addColorStop(0, "rgba(251,191,36,0.2)");
+      grd.addColorStop(1, "transparent");
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    // Player
+    drawPlayer();
+  }
+
+  function drawCrowd() {
+    ctx.fillStyle = "rgba(0,0,0,0.85)";
+    const crowdY = H - 60;
+    for (let i = 0; i < 14; i++) {
+      const cx = 20 + i * 42 + (i % 2 === 0 ? 0 : 10);
+      const ch = 28 + (i % 3) * 8;
+      ctx.beginPath();
+      ctx.arc(cx, crowdY - ch + 8, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillRect(cx - 5, crowdY - ch + 8, 10, ch);
+
+      // waving arm
+      const wv = Math.sin(tick * 0.08 + i * 0.8) * 12;
+      ctx.beginPath();
+      ctx.moveTo(cx, crowdY - ch + 14);
+      ctx.lineTo(cx - 14, crowdY - ch + 14 + wv);
+      ctx.moveTo(cx, crowdY - ch + 14);
+      ctx.lineTo(cx + 14, crowdY - ch + 14 - wv);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "rgba(0,0,0,0.85)";
+      ctx.stroke();
+    }
+  }
+
+  function drawPlayer() {
+    if (selectedIdx < 0) return;
+    const m = MEMBERS[selectedIdx];
+    const x = player.x, y = player.y;
+
+    let dy = 0, scale = 1;
+    if (m.idleAnim === "bounce") dy = Math.sin(tick * 0.12) * 5;
+    if (m.idleAnim === "sway")   dy = Math.sin(tick * 0.08) * 3;
+    if (m.idleAnim === "spin")   scale = 0.95 + 0.05 * Math.sin(tick * 0.1);
+    if (m.idleAnim === "wave")   dy = Math.sin(tick * 0.09) * 6;
+    if (m.idleAnim === "pulse")  scale = 0.92 + 0.08 * Math.abs(Math.sin(tick * 0.15));
+
+    ctx.save();
+    ctx.translate(x, y + dy);
+    ctx.scale(scale, scale);
+
+    // Shadow
+    ctx.beginPath();
+    ctx.ellipse(0, player.r + 2, player.r * 0.8, 5, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(0,0,0,0.4)";
+    ctx.fill();
+
+    // Glow
+    const glow = ctx.createRadialGradient(0, 0, player.r * 0.5, 0, 0, player.r * 1.8);
+    glow.addColorStop(0, m.theme + "55");
+    glow.addColorStop(1, "transparent");
+    ctx.beginPath();
+    ctx.arc(0, 0, player.r * 1.8, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+
+    // Body
+    ctx.beginPath();
+    ctx.arc(0, 0, player.r, 0, Math.PI * 2);
+    ctx.fillStyle = m.theme;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#fff";
+    ctx.stroke();
+
+    // Emoji
+    ctx.font = "20px serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(m.emoji, 0, 0);
+
+    ctx.restore();
+
+    // Trail when moving
+    if ((player.vx !== 0 || player.vy !== 0) && tick % 4 === 0) {
+      spawnBurst(x, y + dy, m.theme, 2);
+    }
+  }
+
+  // ============================================================
+  //  KEYBOARD
+  // ============================================================
+  document.addEventListener("keydown", function(e) {
+    keys[e.key] = true;
+    if (e.key === " ")       { e.preventDefault(); doMove(); }
+    if (e.key === "Control") { e.preventDefault(); doPose(); }
+  });
+  document.addEventListener("keyup", function(e) {
+    keys[e.key] = false;
+  });
+
+  // ============================================================
+  //  MOBILE BUTTONS
+  // ============================================================
+  function bindMob(id, keyName) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("touchstart", function(e) { e.preventDefault(); keys[keyName] = true; });
+    el.addEventListener("touchend",   function(e) { e.preventDefault(); keys[keyName] = false; });
+  }
+  bindMob("mobUp",    "ArrowUp");
+  bindMob("mobDown",  "ArrowDown");
+  bindMob("mobLeft",  "ArrowLeft");
+  bindMob("mobRight", "ArrowRight");
+
+  document.getElementById("mobDance").addEventListener("touchstart", function(e) {
+    e.preventDefault(); doMove();
+  });
+  document.getElementById("mobPose").addEventListener("touchstart", function(e) {
+    e.preventDefault(); doPose();
+  });
+
+  // ============================================================
+  //  FLOATING STARS BACKGROUND
+  // ============================================================
+  (function createStars() {
+    const container = document.getElementById("starsContainer");
+    const icons = ["⭐","💫","✨","🌟","💜","💗","🩷","🎵"];
+    for (let i = 0; i < 28; i++) {
+      const el = document.createElement("div");
+      el.className = "star";
+      el.textContent = icons[Math.floor(Math.random() * icons.length)];
+      el.style.left             = Math.random() * 100 + "vw";
+      el.style.animationDuration = (6 + Math.random() * 12) + "s";
+      el.style.animationDelay   = (Math.random() * 10) + "s";
+      el.style.fontSize          = (0.8 + Math.random() * 1.2) + "rem";
+      container.appendChild(el);
+    }
+  })();
+
+  // ============================================================
+  //  INIT
+  // ============================================================
+  buildCards();
+  </script>
+</body>
+</html>
