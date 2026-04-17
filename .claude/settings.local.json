@@ -1,11 +1,12 @@
 {
-  "enabledPlugins": {
-    "playground@claude-plugins-official": true
-  },
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(git commit -m ':*)"
+      "Bash(git commit -m ':*)",
+      "Bash(git commit *)"
     ]
+  },
+  "enabledPlugins": {
+    "playground@claude-plugins-official": true
   }
 }
