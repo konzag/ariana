@@ -1,5 +1,12 @@
 # 🌟 Τα Πρώτα Projects Προγραμματισμού της Αριάνας! 🌟
 
+**Άνοιγμα online:** [https://konzag.github.io/ariana/](https://konzag.github.io/ariana/)
+
+**Python setup:**
+```bash
+python -m pip install -r requirements.txt
+```
+
 > Καλώς ήρθες στη **δική της** γωνιά προγραμματισμού!
 > Αυτά είναι τα **πρώτα της προγράμματα** — φτιαγμένα με αγάπη και πολλή K-pop ενέργεια! 💜
 
