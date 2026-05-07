@@ -1,36 +1,20 @@
-# ariana
+# Ariana — Claude Context
 
-## What is this
-A K-pop / KATSEYE dance quiz app built for Ariana (age 8), her first coding project.
-Two standalone programs with heavy comments so Ariana can read the code someday.
+## Project
+Interactive K-pop dance and school learning games for Ariana (8 years old).
+HTML + CSS + JS (browser) + Python (terminal). Public GitHub Pages site.
 
-## Files
-- `index.html` — Browser quiz (KATSEYE members, 7 quiz questions, scoreboard with localStorage, member cards, CSS dancer animation, Web Audio API)
-- `ariana.py` — Terminal KATSEYE Fan Club (member selection, fun facts, challenges, fan club card printout)
+## Live Site
+https://konzag.github.io/ariana/
 
 ## Stack
-- HTML + CSS + JavaScript (vanilla, no frameworks, no build step)
-- Python 3 (colorama optional, winsound built-in Windows)
+- index.html: KATSEYE K-pop quiz web game (single-file, localStorage for high score)
+- ariana.py: Python terminal program (Windows, colorama)
+- No backend, no deploy pipeline, no database
 
-## How to run
-```bash
-# Browser app — just double-click index.html
-# Terminal app
-pip install colorama   # optional
-python ariana.py
-```
-
-## Key facts
-- Target user: Ariana, age 8 (loves K-pop, gymnastics, swimming, dancing)
-- Language: Greek UI throughout
-- No backend, no database, no deployment
-- Repo: konzag/ariana (GitHub Pages: konzag.github.io/ariana)
-- `.claude/` folder exists at repo root with Claude Code settings
-
-## Notes for Claude Code
-- Keep all UI text in Greek
-- KATSEYE members: Sophia, Manon, Daniela, Lara, Megan, Hanning
-- Scoreboard uses localStorage — preserve this feature
-- CSS dancer animation in corner — do not remove
-- Audio via Web Audio API only — no external files
-- colorama import must have graceful fallback
+## Rules
+- No auto-deploy needed (GitHub Pages serves static files automatically)
+- All content in Greek
+- Code must have extensive comments so Ariana can read it someday
+- Keep age-appropriate: 8 years old, loves K-pop (KATSEYE), gymnastics, swimming, dance
+- Never add server-side code or dependencies requiring installation
