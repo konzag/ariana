@@ -1,624 +1,671 @@
-const MENU_URL = "../index.html";
-const STORAGE_KEY = "ariana_geography_passport_v1";
+'use strict';
 
-const CONTINENTS = ["Ευρώπη", "Ασία", "Αφρική", "Βόρεια Αμερική", "Νότια Αμερική", "Ωκεανία"];
+const STORAGE_KEY = 'ariana_geography_v2';
 
-// Starter dataset built to be easy to expand. Add more country objects with the same shape.
-// Future upgrade point: this can move to JSON/API without changing the rendering functions.
+const CONTINENT_COLORS = {
+  'Ευρώπη': '#4a90e2',
+  'Ασία': '#e8a000',
+  'Αφρική': '#e05c00',
+  'Αμερική': '#27ae60',
+  'Ωκεανία': '#9b59b6',
+  'Αρκτική': '#00bcd4'
+};
+
 const COUNTRIES = [
-  { id: "greece", greekName: "Ελλάδα", englishName: "Greece", continent: "Ευρώπη", capital: "Αθήνα", flagEmoji: "🇬🇷", language: "Ελληνικά", landmark: "Ακρόπολη", landmarkIcon: "🏛️", food: "Μουσακάς", foodIcon: "🍆", animal: "Δελφίνι", animalIcon: "🐬", funFact: "Η Ελλάδα έχει χιλιάδες νησιά και πολλούς αρχαίους μύθους.", coordinates: [38, 24] },
-  { id: "italy", greekName: "Ιταλία", englishName: "Italy", continent: "Ευρώπη", capital: "Ρώμη", flagEmoji: "🇮🇹", language: "Ιταλικά", landmark: "Κολοσσαίο", landmarkIcon: "🏟️", food: "Πίτσα", foodIcon: "🍕", animal: "Λύκος των Απεννίνων", animalIcon: "🐺", funFact: "Η Ιταλία μοιάζει στον χάρτη με μπότα.", coordinates: [42, 12] },
-  { id: "france", greekName: "Γαλλία", englishName: "France", continent: "Ευρώπη", capital: "Παρίσι", flagEmoji: "🇫🇷", language: "Γαλλικά", landmark: "Πύργος του Άιφελ", landmarkIcon: "🗼", food: "Κρουασάν", foodIcon: "🥐", animal: "Κόκορας", animalIcon: "🐓", funFact: "Ο Πύργος του Άιφελ ήταν κάποτε το ψηλότερο κτίριο στον κόσμο.", coordinates: [47, 2] },
-  { id: "spain", greekName: "Ισπανία", englishName: "Spain", continent: "Ευρώπη", capital: "Μαδρίτη", flagEmoji: "🇪🇸", language: "Ισπανικά", landmark: "Σαγράδα Φαμίλια", landmarkIcon: "⛪", food: "Παέγια", foodIcon: "🥘", animal: "Ιβηρικός λύγκας", animalIcon: "🐈", funFact: "Η Ισπανία έχει πολύχρωμες γιορτές και δυνατή παράδοση στη μουσική.", coordinates: [40, -4] },
-  { id: "germany", greekName: "Γερμανία", englishName: "Germany", continent: "Ευρώπη", capital: "Βερολίνο", flagEmoji: "🇩🇪", language: "Γερμανικά", landmark: "Πύλη του Βρανδεμβούργου", landmarkIcon: "🏛️", food: "Πρέτσελ", foodIcon: "🥨", animal: "Αετός", animalIcon: "🦅", funFact: "Η Γερμανία έχει πολλά κάστρα και δάση.", coordinates: [51, 10] },
-  { id: "uk", greekName: "Ηνωμένο Βασίλειο", englishName: "United Kingdom", continent: "Ευρώπη", capital: "Λονδίνο", flagEmoji: "🇬🇧", language: "Αγγλικά", landmark: "Μπιγκ Μπεν", landmarkIcon: "🕰️", food: "Fish and chips", foodIcon: "🍟", animal: "Κόκκινος σκίουρος", animalIcon: "🐿️", funFact: "Το Λονδίνο έχει μετρό από το 1863.", coordinates: [54, -2] },
-  { id: "norway", greekName: "Νορβηγία", englishName: "Norway", continent: "Ευρώπη", capital: "Όσλο", flagEmoji: "🇳🇴", language: "Νορβηγικά", landmark: "Φιόρδ", landmarkIcon: "🏔️", food: "Σολομός", foodIcon: "🐟", animal: "Τάρανδος", animalIcon: "🦌", funFact: "Στη Νορβηγία μπορείς να δεις το βόρειο σέλας.", coordinates: [61, 8] },
-  { id: "sweden", greekName: "Σουηδία", englishName: "Sweden", continent: "Ευρώπη", capital: "Στοκχόλμη", flagEmoji: "🇸🇪", language: "Σουηδικά", landmark: "Παλιά Πόλη της Στοκχόλμης", landmarkIcon: "🏘️", food: "Κεφτεδάκια", foodIcon: "🧆", animal: "Άλκη", animalIcon: "🫎", funFact: "Η Στοκχόλμη είναι χτισμένη πάνω σε πολλά νησιά.", coordinates: [60, 18] },
-  { id: "japan", greekName: "Ιαπωνία", englishName: "Japan", continent: "Ασία", capital: "Τόκιο", flagEmoji: "🇯🇵", language: "Ιαπωνικά", landmark: "Όρος Φούτζι", landmarkIcon: "🗻", food: "Σούσι", foodIcon: "🍣", animal: "Κόκκινο πάντα", animalIcon: "🐼", funFact: "Η Ιαπωνία έχει τρένα που μοιάζουν να πετούν πάνω στις ράγες.", coordinates: [36, 138] },
-  { id: "china", greekName: "Κίνα", englishName: "China", continent: "Ασία", capital: "Πεκίνο", flagEmoji: "🇨🇳", language: "Κινέζικα", landmark: "Σινικό Τείχος", landmarkIcon: "🧱", food: "Νουντλς", foodIcon: "🍜", animal: "Γιγάντιο πάντα", animalIcon: "🐼", funFact: "Το Σινικό Τείχος είναι τεράστιο και περνά από βουνά και κοιλάδες.", coordinates: [35, 104] },
-  { id: "india", greekName: "Ινδία", englishName: "India", continent: "Ασία", capital: "Νέο Δελχί", flagEmoji: "🇮🇳", language: "Χίντι και Αγγλικά", landmark: "Ταζ Μαχάλ", landmarkIcon: "🕌", food: "Κάρι", foodIcon: "🍛", animal: "Τίγρη της Βεγγάλης", animalIcon: "🐅", funFact: "Η Ινδία έχει πολλές γλώσσες, χρώματα και γιορτές.", coordinates: [22, 79] },
-  { id: "south-korea", greekName: "Νότια Κορέα", englishName: "South Korea", continent: "Ασία", capital: "Σεούλ", flagEmoji: "🇰🇷", language: "Κορεατικά", landmark: "Παλάτι Γκιόνγκμποκ", landmarkIcon: "🏯", food: "Κίμτσι", foodIcon: "🥬", animal: "Κορεατική κίσσα", animalIcon: "🐦", funFact: "Η Σεούλ συνδυάζει παλάτια, τεχνολογία και K-pop ενέργεια.", coordinates: [36, 128] },
-  { id: "thailand", greekName: "Ταϊλάνδη", englishName: "Thailand", continent: "Ασία", capital: "Μπανγκόκ", flagEmoji: "🇹🇭", language: "Ταϊλανδικά", landmark: "Μεγάλο Παλάτι", landmarkIcon: "🏯", food: "Pad Thai", foodIcon: "🍜", animal: "Ελέφαντας", animalIcon: "🐘", funFact: "Η Ταϊλάνδη είναι γνωστή για ναούς, αγορές και τροπικά νησιά.", coordinates: [15, 101] },
-  { id: "indonesia", greekName: "Ινδονησία", englishName: "Indonesia", continent: "Ασία", capital: "Τζακάρτα", flagEmoji: "🇮🇩", language: "Ινδονησιακά", landmark: "Μπορομπουντούρ", landmarkIcon: "🛕", food: "Νάσι γκορένγκ", foodIcon: "🍚", animal: "Ουρακοτάγκος", animalIcon: "🦧", funFact: "Η Ινδονησία έχει χιλιάδες νησιά.", coordinates: [-2, 118] },
-  { id: "egypt", greekName: "Αίγυπτος", englishName: "Egypt", continent: "Αφρική", capital: "Κάιρο", flagEmoji: "🇪🇬", language: "Αραβικά", landmark: "Πυραμίδες της Γκίζας", landmarkIcon: "🔺", food: "Κοσάρι", foodIcon: "🍲", animal: "Καμήλα", animalIcon: "🐪", funFact: "Ο Νείλος βοήθησε έναν από τους αρχαιότερους πολιτισμούς να μεγαλώσει.", coordinates: [27, 30] },
-  { id: "morocco", greekName: "Μαρόκο", englishName: "Morocco", continent: "Αφρική", capital: "Ραμπάτ", flagEmoji: "🇲🇦", language: "Αραβικά και Βερβερικά", landmark: "Μεντίνα του Μαρακές", landmarkIcon: "🕌", food: "Ταζίν", foodIcon: "🍲", animal: "Αλεπού της ερήμου", animalIcon: "🦊", funFact: "Στο Μαρόκο συναντάς έρημο, βουνά και πολύχρωμες αγορές.", coordinates: [32, -6] },
-  { id: "kenya", greekName: "Κένυα", englishName: "Kenya", continent: "Αφρική", capital: "Ναϊρόμπι", flagEmoji: "🇰🇪", language: "Σουαχίλι και Αγγλικά", landmark: "Μασάι Μάρα", landmarkIcon: "🌾", food: "Ουγκάλι", foodIcon: "🍚", animal: "Λιοντάρι", animalIcon: "🦁", funFact: "Στην Κένυα μπορείς να δεις μεγάλα κοπάδια ζώων στη σαβάνα.", coordinates: [0, 38] },
-  { id: "south-africa", greekName: "Νότια Αφρική", englishName: "South Africa", continent: "Αφρική", capital: "Πρετόρια", flagEmoji: "🇿🇦", language: "Πολλές επίσημες γλώσσες", landmark: "Table Mountain", landmarkIcon: "⛰️", food: "Bobotie", foodIcon: "🥘", animal: "Πιγκουίνος Αφρικής", animalIcon: "🐧", funFact: "Η χώρα έχει ακτές, σαβάνες και μεγάλες πόλεις.", coordinates: [-30, 25] },
-  { id: "madagascar", greekName: "Μαδαγασκάρη", englishName: "Madagascar", continent: "Αφρική", capital: "Ανταναναρίβο", flagEmoji: "🇲🇬", language: "Μαλαγασικά και Γαλλικά", landmark: "Λεωφόρος των Μπαομπάμπ", landmarkIcon: "🌳", food: "Ρομάζαβα", foodIcon: "🥣", animal: "Λεμούριος", animalIcon: "🐒", funFact: "Πολλά ζώα της Μαδαγασκάρης δεν ζουν πουθενά αλλού.", coordinates: [-19, 47] },
-  { id: "nigeria", greekName: "Νιγηρία", englishName: "Nigeria", continent: "Αφρική", capital: "Αμπούτζα", flagEmoji: "🇳🇬", language: "Αγγλικά", landmark: "Βράχος Zuma", landmarkIcon: "🪨", food: "Jollof rice", foodIcon: "🍚", animal: "Γκρι παπαγάλος", animalIcon: "🦜", funFact: "Η Νιγηρία έχει πολύ δυνατή μουσική και κινηματογραφική σκηνή.", coordinates: [9, 8] },
-  { id: "usa", greekName: "Ηνωμένες Πολιτείες", englishName: "United States", continent: "Βόρεια Αμερική", capital: "Ουάσινγκτον", flagEmoji: "🇺🇸", language: "Αγγλικά", landmark: "Άγαλμα της Ελευθερίας", landmarkIcon: "🗽", food: "Burger", foodIcon: "🍔", animal: "Φαλακρός αετός", animalIcon: "🦅", funFact: "Οι ΗΠΑ έχουν ερήμους, δάση, φαράγγια και τεράστιες πόλεις.", coordinates: [39, -98] },
-  { id: "canada", greekName: "Καναδάς", englishName: "Canada", continent: "Βόρεια Αμερική", capital: "Οτάβα", flagEmoji: "🇨🇦", language: "Αγγλικά και Γαλλικά", landmark: "Καταρράκτες Νιαγάρα", landmarkIcon: "🌊", food: "Poutine", foodIcon: "🍟", animal: "Κάστορας", animalIcon: "🦫", funFact: "Ο Καναδάς έχει πολλές λίμνες και μεγάλα δάση.", coordinates: [57, -106] },
-  { id: "mexico", greekName: "Μεξικό", englishName: "Mexico", continent: "Βόρεια Αμερική", capital: "Πόλη του Μεξικού", flagEmoji: "🇲🇽", language: "Ισπανικά", landmark: "Τσιτσέν Ιτσά", landmarkIcon: "🛕", food: "Τάκος", foodIcon: "🌮", animal: "Μονάρχης πεταλούδα", animalIcon: "🦋", funFact: "Στο Μεξικό υπάρχουν αρχαίες πόλεις των Μάγια.", coordinates: [23, -102] },
-  { id: "costa-rica", greekName: "Κόστα Ρίκα", englishName: "Costa Rica", continent: "Βόρεια Αμερική", capital: "Σαν Χοσέ", flagEmoji: "🇨🇷", language: "Ισπανικά", landmark: "Ηφαίστειο Αρενάλ", landmarkIcon: "🌋", food: "Gallo pinto", foodIcon: "🍛", animal: "Βραδύποδας", animalIcon: "🦥", funFact: "Η Κόστα Ρίκα έχει τροπικά δάση γεμάτα ζωή.", coordinates: [10, -84] },
-  { id: "cuba", greekName: "Κούβα", englishName: "Cuba", continent: "Βόρεια Αμερική", capital: "Αβάνα", flagEmoji: "🇨🇺", language: "Ισπανικά", landmark: "Παλιά Αβάνα", landmarkIcon: "🏘️", food: "Ρύζι με φασόλια", foodIcon: "🍛", animal: "Κολιμπρί μέλισσα", animalIcon: "🐦", funFact: "Η Κούβα είναι νησί με μουσική, χρώματα και παλιά αυτοκίνητα.", coordinates: [21, -79] },
-  { id: "brazil", greekName: "Βραζιλία", englishName: "Brazil", continent: "Νότια Αμερική", capital: "Μπραζίλια", flagEmoji: "🇧🇷", language: "Πορτογαλικά", landmark: "Χριστός Λυτρωτής", landmarkIcon: "🗿", food: "Feijoada", foodIcon: "🍲", animal: "Τουκάν", animalIcon: "🦜", funFact: "Ο Αμαζόνιος είναι το μεγαλύτερο τροπικό δάσος του κόσμου.", coordinates: [-10, -55] },
-  { id: "argentina", greekName: "Αργεντινή", englishName: "Argentina", continent: "Νότια Αμερική", capital: "Μπουένος Άιρες", flagEmoji: "🇦🇷", language: "Ισπανικά", landmark: "Παταγονία", landmarkIcon: "🏔️", food: "Εμπανάδας", foodIcon: "🥟", animal: "Πιγκουίνος Μαγγελάνου", animalIcon: "🐧", funFact: "Στην Αργεντινή βρίσκεις πάγο, βουνά και τάνγκο.", coordinates: [-34, -64] },
-  { id: "peru", greekName: "Περού", englishName: "Peru", continent: "Νότια Αμερική", capital: "Λίμα", flagEmoji: "🇵🇪", language: "Ισπανικά και Κέτσουα", landmark: "Μάτσου Πίτσου", landmarkIcon: "⛰️", food: "Σεβίτσε", foodIcon: "🐟", animal: "Λάμα", animalIcon: "🦙", funFact: "Το Μάτσου Πίτσου βρίσκεται ψηλά στις Άνδεις.", coordinates: [-9, -75] },
-  { id: "chile", greekName: "Χιλή", englishName: "Chile", continent: "Νότια Αμερική", capital: "Σαντιάγο", flagEmoji: "🇨🇱", language: "Ισπανικά", landmark: "Έρημος Ατακάμα", landmarkIcon: "🏜️", food: "Pastel de choclo", foodIcon: "🥧", animal: "Κόνδορας", animalIcon: "🦅", funFact: "Η Χιλή είναι πολύ μακριά και λεπτή χώρα στον χάρτη.", coordinates: [-30, -71] },
-  { id: "colombia", greekName: "Κολομβία", englishName: "Colombia", continent: "Νότια Αμερική", capital: "Μπογκοτά", flagEmoji: "🇨🇴", language: "Ισπανικά", landmark: "Καθεδρικός του Αλατιού", landmarkIcon: "⛪", food: "Αρέπα", foodIcon: "🫓", animal: "Ιαγουάρος", animalIcon: "🐆", funFact: "Η Κολομβία έχει βουνά, ζούγκλες και καφέ.", coordinates: [4, -74] },
-  { id: "australia", greekName: "Αυστραλία", englishName: "Australia", continent: "Ωκεανία", capital: "Καμπέρα", flagEmoji: "🇦🇺", language: "Αγγλικά", landmark: "Όπερα του Σίδνεϊ", landmarkIcon: "🎭", food: "Meat pie", foodIcon: "🥧", animal: "Καγκουρό", animalIcon: "🦘", funFact: "Η Αυστραλία είναι και χώρα και ήπειρος για πολλούς χάρτες.", coordinates: [-25, 134] },
-  { id: "new-zealand", greekName: "Νέα Ζηλανδία", englishName: "New Zealand", continent: "Ωκεανία", capital: "Ουέλλινγκτον", flagEmoji: "🇳🇿", language: "Αγγλικά και Μαορί", landmark: "Μίλφορντ Σάουντ", landmarkIcon: "🏞️", food: "Pavlova", foodIcon: "🍰", animal: "Κίουι", animalIcon: "🥝", funFact: "Το κίουι είναι πουλί που δεν πετά και σύμβολο της χώρας.", coordinates: [-41, 174] },
-  { id: "fiji", greekName: "Φίτζι", englishName: "Fiji", continent: "Ωκεανία", capital: "Σούβα", flagEmoji: "🇫🇯", language: "Αγγλικά και Φιτζιανά", landmark: "Νησιά Μανουκά", landmarkIcon: "🏝️", food: "Kokoda", foodIcon: "🐟", animal: "Ιγκουάνα Φίτζι", animalIcon: "🦎", funFact: "Τα Φίτζι έχουν καθαρά νερά και κοραλλιογενείς υφάλους.", coordinates: [-17, 179] },
-  { id: "samoa", greekName: "Σαμόα", englishName: "Samoa", continent: "Ωκεανία", capital: "Απία", flagEmoji: "🇼🇸", language: "Σαμοανικά και Αγγλικά", landmark: "To Sua Ocean Trench", landmarkIcon: "🌊", food: "Palusami", foodIcon: "🥬", animal: "Θαλάσσια χελώνα", animalIcon: "🐢", funFact: "Η Σαμόα έχει δυνατές παραδόσεις τραγουδιού και χορού.", coordinates: [-14, -172] }
+  { id: 'greece', name: 'Ελλάδα', flag: '🇬🇷', continent: 'Ευρώπη',
+    capital: 'Αθήνα', language: 'Ελληνικά', landmark: '🏛️ Παρθενώνας',
+    food: '🫒 Μουσακάς', animal: '🦉 Κουκουβάγια',
+    fact: 'Η Ελλάδα έχει πάνω από 6.000 νησιά!',
+    story: 'Η Ελλάδα είναι η γενέτειρα της δημοκρατίας και των Ολυμπιακών Αγώνων. Οι αρχαίοι Έλληνες έδωσαν στον κόσμο φιλοσοφία, μαθηματικά και θέατρο.',
+    pinX: 530, pinY: 195 },
+  { id: 'france', name: 'Γαλλία', flag: '🇫🇷', continent: 'Ευρώπη',
+    capital: 'Παρίσι', language: 'Γαλλικά', landmark: '🗼 Πύργος Άιφελ',
+    food: '🥐 Κρουασάν', animal: '🐓 Κόκορας',
+    fact: 'Το Παρίσι έχει πάνω από 1.800 αρτοποιεία!',
+    story: 'Η Γαλλία είναι η πιο επισκεπτόμενη χώρα στον κόσμο. Ο Πύργος Άιφελ χτίστηκε το 1889 και αρχικά ήταν προσωρινός!',
+    pinX: 460, pinY: 175 },
+  { id: 'germany', name: 'Γερμανία', flag: '🇩🇪', continent: 'Ευρώπη',
+    capital: 'Βερολίνο', language: 'Γερμανικά', landmark: '🏰 Κάστρο Νόιγκσβανσταϊν',
+    food: '🥨 Πρέτζελ', animal: '🦅 Αετός',
+    fact: 'Η Γερμανία έχει πάνω από 1.500 είδη μπύρας!',
+    story: 'Η Γερμανία είναι γνωστή για τα παραμυθένια κάστρα και τα μεγάλα δάση της. Εδώ γεννήθηκε η τέχνη της τυπογραφίας!',
+    pinX: 480, pinY: 160 },
+  { id: 'italy', name: 'Ιταλία', flag: '🇮🇹', continent: 'Ευρώπη',
+    capital: 'Ρώμη', language: 'Ιταλικά', landmark: '🏛️ Κολοσσαίο',
+    food: '🍕 Πίτσα', animal: '🐺 Λύκος',
+    fact: 'Η Ιταλία έχει τα περισσότερα μνημεία UNESCO στον κόσμο!',
+    story: 'Η Ιταλία μάς έδωσε πίτσα, πάστα, gelato και την Αναγέννηση. Η Ρώμη χτίστηκε σε 7 λόφους!',
+    pinX: 490, pinY: 190 },
+  { id: 'spain', name: 'Ισπανία', flag: '🇪🇸', continent: 'Ευρώπη',
+    capital: 'Μαδρίτη', language: 'Ισπανικά', landmark: '🏟️ Sagrada Familia',
+    food: '🥘 Paella', animal: '🐂 Ταύρος',
+    fact: 'Η Ισπανία έχει το δεύτερο παλαιότερο εστιατόριο στον κόσμο!',
+    story: 'Η Ισπανία είναι γνωστή για τον φλαμένκο χορό, τα ζωηρά φεστιβάλ και την παγκοσμίου φήμης κουζίνα της.',
+    pinX: 440, pinY: 190 },
+  { id: 'uk', name: 'Βρετανία', flag: '🇬🇧', continent: 'Ευρώπη',
+    capital: 'Λονδίνο', language: 'Αγγλικά', landmark: '🎡 Μεγάλο Βεν',
+    food: '🫖 Τσάι με μπισκότα', animal: '🦁 Λιοντάρι',
+    fact: 'Το Λονδίνο έχει πάνω από 170 μουσεία!',
+    story: 'Η Βρετανία έδωσε στον κόσμο τον Σέξπιρ, τους Beatles και τον Χάρι Πότερ. Η βασιλική οικογένεια ζει εδώ εδώ και αιώνες!',
+    pinX: 450, pinY: 155 },
+  { id: 'russia', name: 'Ρωσία', flag: '🇷🇺', continent: 'Ευρώπη',
+    capital: 'Μόσχα', language: 'Ρωσικά', landmark: '⛪ Εκκλησία Αγίου Βασιλείου',
+    food: '🥗 Borscht', animal: '🐻 Αρκούδα',
+    fact: 'Η Ρωσία είναι τόσο μεγάλη που έχει 11 ζώνες ώρας!',
+    story: 'Η Ρωσία είναι η μεγαλύτερη χώρα στον κόσμο. Το Trans-Siberian Railway είναι το μεγαλύτερο σιδηρόδρομο στη Γη!',
+    pinX: 680, pinY: 150 },
+  { id: 'japan', name: 'Ιαπωνία', flag: '🇯🇵', continent: 'Ασία',
+    capital: 'Τόκιο', language: 'Ιαπωνικά', landmark: '⛩️ Όρος Φούτζι',
+    food: '🍣 Σούσι', animal: '🦌 Ελάφι',
+    fact: 'Η Ιαπωνία αποτελείται από 6.852 νησιά!',
+    story: 'Η Ιαπωνία είναι μια χώρα όπου το παλιό και το νέο συνυπάρχουν. Τα άνθη κερασιάς (sakura) είναι σύμβολο ομορφιάς και ανανέωσης.',
+    pinX: 790, pinY: 190 },
+  { id: 'china', name: 'Κίνα', flag: '🇨🇳', continent: 'Ασία',
+    capital: 'Πεκίνο', language: 'Κινεζικά (Μανδαρίνικα)', landmark: '🏯 Σινικό Τείχος',
+    food: '🥟 Dumplings', animal: '🐼 Πάντα',
+    fact: 'Το Σινικό Τείχος είναι τόσο μεγάλο που δεν χωράει σε μια φωτογραφία!',
+    story: 'Η Κίνα έχει τον μεγαλύτερο πληθυσμό στον κόσμο και εφηύρε το χαρτί, την πυρίτιδα και την πυξίδα.',
+    pinX: 740, pinY: 200 },
+  { id: 'india', name: 'Ινδία', flag: '🇮🇳', continent: 'Ασία',
+    capital: 'Νέο Δελχί', language: 'Χίντι', landmark: '🕌 Ταζ Μαχάλ',
+    food: '🍛 Κάρι', animal: '🐯 Τίγρης',
+    fact: 'Η Ινδία παράγει τον περισσότερο κινηματογράφο στον κόσμο — Bollywood!',
+    story: 'Η Ινδία είναι γεμάτη χρώματα, φεστιβάλ και μοναδική μαγειρική. Το Ταζ Μαχάλ χτίστηκε σαν δώρο αγάπης!',
+    pinX: 680, pinY: 230 },
+  { id: 'egypt', name: 'Αίγυπτος', flag: '🇪🇬', continent: 'Αφρική',
+    capital: 'Κάιρο', language: 'Αραβικά', landmark: '🔺 Πυραμίδες της Γκίζας',
+    food: '🧆 Φαλάφελ', animal: '🐪 Καμήλα',
+    fact: 'Οι Πυραμίδες χτίστηκαν πριν από 4.500 χρόνια χωρίς μηχανήματα!',
+    story: 'Η Αίγυπτος είναι μία από τις παλαιότερες πολιτισμένες χώρες. Ο ποταμός Νείλος ήταν η πηγή ζωής για τους αρχαίους Αιγυπτίους.',
+    pinX: 560, pinY: 240 },
+  { id: 'kenya', name: 'Κένυα', flag: '🇰🇪', continent: 'Αφρική',
+    capital: 'Ναϊρόμπι', language: 'Σουαχίλι', landmark: '🦁 Σαβάνα Masai Mara',
+    food: '🌽 Ugali', animal: '🦒 Καμηλοπάρδαλη',
+    fact: 'Η Κένυα έχει τους πιο γρήγορους δρομείς στον κόσμο!',
+    story: 'Η Κένυα είναι το σπίτι των Big Five — λέοντας, ελέφαντας, βουβάλι, ρινόκερος και λεοπάρδαλη.',
+    pinX: 590, pinY: 290 },
+  { id: 'south_africa', name: 'Νότια Αφρική', flag: '🇿🇦', continent: 'Αφρική',
+    capital: 'Πρετόρια', language: '11 επίσημες γλώσσες!', landmark: '⛰️ Επίπεδο Βουνό',
+    food: '🍢 Braai', animal: '🐧 Πιγκουΐνος',
+    fact: 'Η Νότια Αφρική έχει 3 πρωτεύουσες!',
+    story: 'Η Νότια Αφρική είναι γνωστή ως "Το Ουράνιο Έθνος" λόγω των 11 επίσημων γλωσσών της. Εδώ ζουν πιγκουΐνοι στην αφρικανική παραλία!',
+    pinX: 560, pinY: 360 },
+  { id: 'brazil', name: 'Βραζιλία', flag: '🇧🇷', continent: 'Αμερική',
+    capital: 'Μπραζίλια', language: 'Πορτογαλικά', landmark: '🗿 Χριστός Λυτρωτής',
+    food: '🥩 Churrasco', animal: '🦜 Παπαγάλος',
+    fact: 'Ο Αμαζόνιος ποταμός της Βραζιλίας είναι ο μεγαλύτερος στον κόσμο!',
+    story: 'Η Βραζιλία έχει τη μεγαλύτερη τροπική ζούγκλα στη Γη. Κάθε χρόνο διοργανώνει το πιο διάσημο καρναβάλι στον κόσμο στο Ρίο!',
+    pinX: 310, pinY: 310 },
+  { id: 'usa', name: 'ΗΠΑ', flag: '🇺🇸', continent: 'Αμερική',
+    capital: 'Ουάσινγκτον', language: 'Αγγλικά', landmark: '🗽 Άγαλμα Ελευθερίας',
+    food: '🍔 Χάμπουργκερ', animal: '🦅 Φαλκόνι',
+    fact: 'Οι ΗΠΑ έχουν 50 πολιτείες και η σημαία έχει 50 αστέρια!',
+    story: 'Οι ΗΠΑ είναι μια χώρα φτιαγμένη από ανθρώπους από όλο τον κόσμο. Το Χόλυγουντ κάνει τις πιο διάσημες ταινίες στη Γη!',
+    pinX: 180, pinY: 210 },
+  { id: 'mexico', name: 'Μεξικό', flag: '🇲🇽', continent: 'Αμερική',
+    capital: 'Πόλη του Μεξικού', language: 'Ισπανικά', landmark: '🏛️ Χίτσεν Ίτζα',
+    food: '🌮 Τάκος', animal: '🦅 Αετός',
+    fact: 'Το σοκολάτα και το ποπ-κορν εφευρέθηκαν στο Μεξικό!',
+    story: 'Το Μεξικό είναι γεμάτο αρχαίες πυραμίδες Μάγιας και Αζτέκων. Εδώ γεννήθηκε η σοκολάτα!',
+    pinX: 170, pinY: 255 },
+  { id: 'canada', name: 'Καναδάς', flag: '🇨🇦', continent: 'Αμερική',
+    capital: 'Οτάβα', language: 'Αγγλικά & Γαλλικά', landmark: '🍁 Καταρράκτες Νιαγάρα',
+    food: '🥞 Poutine', animal: '🦫 Κάστορας',
+    fact: 'Ο Καναδάς έχει περισσότερες λίμνες από όλον τον υπόλοιπο κόσμο μαζί!',
+    story: 'Ο Καναδάς είναι η δεύτερη μεγαλύτερη χώρα στον κόσμο. Οι φθινοπωρινές φυλλωσιές του είναι από τις πιο όμορφες στη Γη!',
+    pinX: 200, pinY: 170 },
+  { id: 'argentina', name: 'Αργεντινή', flag: '🇦🇷', continent: 'Αμερική',
+    capital: 'Μπουένος Άιρες', language: 'Ισπανικά', landmark: '💃 Tango',
+    food: '🥩 Asado', animal: '🦆 Φλαμίνγκο',
+    fact: 'Το Tango γεννήθηκε στους δρόμους του Μπουένος Άιρες!',
+    story: 'Η Αργεντινή έχει από τα πιο εντυπωσιακά τοπία — από τον παγετώνα Perito Moreno ως τις καταρράκτες Iguazu!',
+    pinX: 290, pinY: 370 },
+  { id: 'australia', name: 'Αυστραλία', flag: '🇦🇺', continent: 'Ωκεανία',
+    capital: 'Καμπέρα', language: 'Αγγλικά', landmark: '🎭 Όπερα Σύδνεϊ',
+    food: '🥧 Meat Pie', animal: '🦘 Καγκουρό',
+    fact: 'Η Αυστραλία είναι η μόνη χώρα που καλύπτει ολόκληρη ήπειρο!',
+    story: 'Η Αυστραλία έχει τα πιο μοναδικά ζώα στον κόσμο, όπως το καγκουρό και το κοάλα. Η Great Barrier Reef είναι ορατή από το διάστημα!',
+    pinX: 800, pinY: 360 },
+  { id: 'new_zealand', name: 'Νέα Ζηλανδία', flag: '🇳🇿', continent: 'Ωκεανία',
+    capital: 'Ουέλιγκτον', language: 'Αγγλικά & Μαορί', landmark: '🏔️ Milford Sound',
+    food: '🥝 Ακτινίδιο', animal: '🥝 Kiwi',
+    fact: 'Η Νέα Ζηλανδία ήταν η πρώτη χώρα που έδωσε δικαίωμα ψήφου στις γυναίκες (1893)!',
+    story: 'Η Νέα Ζηλανδία είναι γνωστή ως το σπίτι του Άρχοντα των Δαχτυλιδιών. Εδώ ζει το kiwi, πουλί που δεν πετά!',
+    pinX: 870, pinY: 390 }
 ];
 
 const MISSIONS = [
-  { id: "europe3", icon: "🧭", title: "Βρες 3 χώρες της Ευρώπης", test: state => countVisitedByContinent(state, "Ευρώπη") >= 3 },
-  { id: "flags5", icon: "🏳️", title: "Γέμισε το διαβατήριό σου με 5 σημαίες", test: state => state.visited.length >= 5 },
-  { id: "jungle", icon: "🌿", title: "Ανακάλυψε μια χώρα με ζώο που ζει στη ζούγκλα", test: state => visitedCountries(state).some(c => ["Ιαγουάρος", "Τουκάν", "Ουρακοτάγκος", "Λεμούριος"].includes(c.animal)) },
-  { id: "tower", icon: "🗼", title: "Βρες μια χώρα που έχει διάσημο πύργο", test: state => visitedCountries(state).some(c => c.landmark.includes("Πύργος")) },
-  { id: "oceania", icon: "🏝️", title: "Κάνε ένα ταξίδι στην Ωκεανία", test: state => countVisitedByContinent(state, "Ωκεανία") >= 1 },
-  { id: "foods4", icon: "🍽️", title: "Μάζεψε 4 γεύσεις από τον κόσμο", test: state => state.visited.length >= 4 }
+  { id: 'europe3', icon: '🏰', title: 'Βρες 3 χώρες της Ευρώπης',
+    progress: s => ({ cur: allVisited(s).filter(id => byId(id)?.continent === 'Ευρώπη').length, max: 3 }) },
+  { id: 'flags5', icon: '🏳️', title: 'Μάζεψε 5 σημαίες',
+    progress: s => ({ cur: allVisited(s).length, max: 5 }) },
+  { id: 'allcontinents', icon: '🌍', title: 'Ανακάλυψε μια χώρα από κάθε ήπειρο',
+    progress: s => {
+      const continents = ['Ευρώπη','Ασία','Αφρική','Αμερική','Ωκεανία'];
+      const found = continents.filter(c => allVisited(s).some(id => byId(id)?.continent === c)).length;
+      return { cur: found, max: 5 };
+    } },
+  { id: 'tower', icon: '🗼', title: 'Βρες χώρα με διάσημο πύργο',
+    progress: s => ({ cur: allVisited(s).some(id => byId(id)?.landmark?.includes('Πύργος')) ? 1 : 0, max: 1 }) },
+  { id: 'passport10', icon: '📘', title: 'Γέμισε 10 σελίδες διαβατηρίου',
+    progress: s => ({ cur: allVisited(s).length, max: 10 }) }
 ];
 
 const DEFAULT_STATE = {
-  profileName: "Αριάνα",
-  mode: "single",
-  players: ["Αριάνα", "Φίλος/Φίλη"],
+  mode: 'single',
+  players: ['Αριάνα', 'Φίλος'],
   currentPlayer: 0,
-  visited: [],
+  playerVisited: [[], []],
   completedMissions: [],
-  settings: {
-    sound: true,
-    narration: true
-  },
+  settings: { sound: true },
   timeline: []
 };
 
 let state = loadState();
-let selectedCountryId = COUNTRIES[0].id;
-let currentMatchCountryId = "greece";
-let selectedSticker = null;
-let albumType = "flags";
+let selectedCountryId = null;
+let flagsCountryId = null;
+let albumTab = 'flags';
 let audioCtx = null;
+let storyVisible = false;
 
-const $ = selector => document.querySelector(selector);
-const $$ = selector => Array.from(document.querySelectorAll(selector));
+const $ = id => document.getElementById(id);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
 
 function loadState() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return saved ? mergeState(saved) : structuredClone(DEFAULT_STATE);
-  } catch {
-    return structuredClone(DEFAULT_STATE);
-  }
-}
-
-function mergeState(saved) {
-  return {
-    ...structuredClone(DEFAULT_STATE),
-    ...saved,
-    settings: { ...DEFAULT_STATE.settings, ...(saved.settings || {}) },
-    players: saved.players || DEFAULT_STATE.players,
-    timeline: saved.timeline || []
-  };
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!raw) return structuredClone(DEFAULT_STATE);
+    return {
+      ...structuredClone(DEFAULT_STATE),
+      ...raw,
+      playerVisited: raw.playerVisited || [[], []],
+      settings: { ...DEFAULT_STATE.settings, ...(raw.settings || {}) }
+    };
+  } catch { return structuredClone(DEFAULT_STATE); }
 }
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-function countryById(id) {
-  return COUNTRIES.find(country => country.id === id);
+function byId(id) { return COUNTRIES.find(c => c.id === id); }
+
+function allVisited(s = state) {
+  const p = s.playerVisited || [[], []];
+  return [...new Set([...(p[0] || []), ...(p[1] || [])])];
 }
 
-function visitedCountries(customState = state) {
-  return customState.visited.map(countryById).filter(Boolean);
+function currentVisited() {
+  return state.playerVisited[state.currentPlayer] || [];
 }
 
-function countVisitedByContinent(customState, continent) {
-  return visitedCountries(customState).filter(country => country.continent === continent).length;
-}
+function isVisited(id) { return allVisited().includes(id); }
 
-function coordinatesToPoint([lat, lon]) {
-  return {
-    x: ((lon + 180) / 360) * 880 + 40,
-    y: ((90 - lat) / 180) * 420 + 50
-  };
+function continentColor(continent) {
+  return CONTINENT_COLORS[continent] || '#888';
 }
 
 function init() {
-  $("#returnMenuLink").href = MENU_URL;
   bindNavigation();
-  bindControls();
+  bindProfile();
+  bindMap();
+  bindFlags();
+  bindPassport();
+  bindCollections();
+  bindSettings();
   renderAll();
-  showSection(location.hash.replace("#", "") || "profile");
+  const startSection = location.hash.replace('#', '') || 'profile';
+  showSection(startSection);
 }
 
 function bindNavigation() {
-  $$("[data-section-link]").forEach(link => {
-    link.addEventListener("click", event => {
-      event.preventDefault();
-      const section = link.dataset.sectionLink;
-      showSection(section);
-      history.replaceState(null, "", `#${section}`);
-      $("#sideNav").classList.remove("open");
-      $(".sidebar-toggle").setAttribute("aria-expanded", "false");
+  $$('[data-section-link]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      showSection(el.dataset.sectionLink);
     });
   });
-
-  $(".sidebar-toggle").addEventListener("click", () => {
-    const nav = $("#sideNav");
-    const open = !nav.classList.contains("open");
-    nav.classList.toggle("open", open);
-    $(".sidebar-toggle").setAttribute("aria-expanded", String(open));
+  $('sidebarToggle').addEventListener('click', () => {
+    const nav = $('sideNav');
+    const open = !nav.classList.contains('open');
+    nav.classList.toggle('open', open);
+    $('sidebarToggle').setAttribute('aria-expanded', String(open));
   });
-
-  window.addEventListener("hashchange", () => {
-    showSection(location.hash.replace("#", "") || "profile");
-  });
-}
-
-function bindControls() {
-  $("#countrySearch").addEventListener("input", event => renderCountryList(event.target.value));
-  $("#playerMode").addEventListener("change", event => {
-    state.mode = event.target.value;
-    saveState();
-    renderProfile();
-  });
-  $("#nextTurnButton").addEventListener("click", () => {
-    state.currentPlayer = (state.currentPlayer + 1) % 2;
-    saveState();
-    renderProfile();
-    toast(`Σειρά παίζει τώρα: ${state.players[state.currentPlayer]}`);
-  });
-  $("#storyButton").addEventListener("click", () => {
-    const country = countryById(selectedCountryId) || COUNTRIES[0];
-    narrate(country);
-    showSection("map");
-  });
-  $("#newMatchButton").addEventListener("click", () => {
-    currentMatchCountryId = randomCountry().id;
-    renderMatching();
-  });
-  $("#soundToggle").addEventListener("change", event => {
-    state.settings.sound = event.target.checked;
-    saveState();
-    gentleSound(720);
-  });
-  $("#narrationToggle").addEventListener("change", event => {
-    state.settings.narration = event.target.checked;
-    saveState();
-  });
-  $("#resetProgressButton").addEventListener("click", () => {
-    const keepSettings = state.settings;
-    state = { ...structuredClone(DEFAULT_STATE), settings: keepSettings };
-    saveState();
-    renderAll();
-    toast("Το διαβατήριο ξεκίνησε από την αρχή.");
-  });
-  $$(".album-tabs button").forEach(button => {
-    button.addEventListener("click", () => {
-      albumType = button.dataset.album;
-      $$(".album-tabs button").forEach(btn => btn.classList.toggle("active", btn === button));
-      renderAlbum();
-    });
+  window.addEventListener('hashchange', () => {
+    showSection(location.hash.replace('#', '') || 'profile');
   });
 }
 
 function showSection(section) {
-  if (!document.querySelector(`[data-section="${section}"]`)) section = "profile";
-  $$("[data-section]").forEach(panel => panel.classList.toggle("active", panel.dataset.section === section));
-  $$("[data-section-link]").forEach(link => link.classList.toggle("active", link.dataset.sectionLink === section));
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (!document.querySelector(`[data-section="${section}"]`)) section = 'profile';
+  $$('[data-section]').forEach(p => p.classList.toggle('active', p.dataset.section === section));
+  $$('[data-section-link]').forEach(a => a.classList.toggle('active', a.dataset.sectionLink === section));
+  history.replaceState(null, '', `#${section}`);
+  $('sideNav').classList.remove('open');
+  $('sidebarToggle').setAttribute('aria-expanded', 'false');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderAll() {
-  renderMap();
-  renderCountryCard(selectedCountryId);
   renderProfile();
-  renderContinents();
-  renderCountryList();
-  renderInfoGrids();
-  renderMatching();
+  renderMap();
+  if (!flagsCountryId) newFlagsRound();
   renderPassport();
-  renderAlbum();
-  renderProgress();
-  renderSettings();
+  renderCollections();
+}
+
+// ── Profile ────────────────────────────────────────
+function bindProfile() {
+  $('playerMode').addEventListener('change', e => {
+    state.mode = e.target.value;
+    saveState();
+    renderProfile();
+  });
+  $('nextTurnBtn').addEventListener('click', () => {
+    state.currentPlayer = (state.currentPlayer + 1) % 2;
+    saveState();
+    renderProfile();
+    toast(`Σειρά παίζει: ${state.players[state.currentPlayer]} ✈️`);
+  });
+  $('p1Name').addEventListener('change', e => {
+    state.players[0] = e.target.value || 'Αριάνα';
+    saveState();
+    renderProfile();
+  });
+  $('p2Name').addEventListener('change', e => {
+    state.players[1] = e.target.value || 'Φίλος';
+    saveState();
+    renderProfile();
+  });
+  $('startJourneyBtn').addEventListener('click', () => showSection('map'));
 }
 
 function renderProfile() {
-  $("#profileVisited").textContent = state.visited.length;
-  $("#profileFlags").textContent = state.visited.length;
-  $("#profileMissions").textContent = state.completedMissions.length;
-  $("#playerMode").value = state.mode;
-  $("#turnPanel").hidden = state.mode !== "two";
-  $("#currentPlayerName").textContent = state.players[state.currentPlayer];
-  updateMissions();
+  const visited = currentVisited();
+  $('profileVisited').textContent = visited.length;
+  $('profileFlags').textContent = visited.length;
+  $('profileMissions').textContent = state.completedMissions.length;
+  $('playerMode').value = state.mode;
+  $('currentPlayerBadge').textContent = state.players[state.currentPlayer];
+  $('p1Name').value = state.players[0];
+  $('p2Name').value = state.players[1];
+  const twoMode = state.mode === 'two';
+  $('turnPanel').hidden = !twoMode;
+  $('playerNamesPanel').hidden = !twoMode;
+}
+
+// ── Map ────────────────────────────────────────────
+function bindMap() {
+  $('countrySearch').addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    $$('.map-pin').forEach(pin => {
+      const c = byId(pin.dataset.id);
+      const match = !q || c.name.toLowerCase().includes(q) || c.continent.toLowerCase().includes(q);
+      pin.style.opacity = match ? '1' : '0.2';
+    });
+  });
 }
 
 function renderMap() {
-  const pins = $("#mapPins");
-  pins.innerHTML = COUNTRIES.map(country => {
-    const { x, y } = coordinatesToPoint(country.coordinates);
-    const discovered = state.visited.includes(country.id);
-    return `
-      <g class="map-pin" role="button" tabindex="0" data-country-id="${country.id}" aria-label="${country.greekName}">
-        <circle cx="${x}" cy="${y}" r="16" fill="${discovered ? "#16a34a" : "#ff4fa3"}" stroke="white" stroke-width="4"></circle>
-        <text x="${x}" y="${y + 8}" text-anchor="middle">${country.flagEmoji}</text>
-      </g>
-    `;
-  }).join("");
+  const g = $('mapPins');
+  g.innerHTML = COUNTRIES.map(c => {
+    const visited = isVisited(c.id);
+    const color = visited ? continentColor(c.continent) : '#fff';
+    const stroke = continentColor(c.continent);
+    return `<g class="map-pin" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.name}">
+      <circle cx="${c.pinX}" cy="${c.pinY}" r="14" fill="${color}" stroke="${stroke}" stroke-width="4"/>
+      <text x="${c.pinX}" y="${c.pinY + 8}" text-anchor="middle" font-size="16">${visited ? '✓' : c.flag}</text>
+    </g>`;
+  }).join('');
 
-  $$(".map-pin").forEach(pin => {
-    pin.addEventListener("click", () => openCountry(pin.dataset.countryId));
-    pin.addEventListener("keydown", event => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openCountry(pin.dataset.countryId);
-      }
+  $$('.map-pin').forEach(pin => {
+    pin.addEventListener('click', () => openCountry(pin.dataset.id));
+    pin.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCountry(pin.dataset.id); }
     });
   });
 }
 
-function openCountry(countryId) {
-  selectedCountryId = countryId;
-  renderCountryCard(countryId);
-  gentleSound(540);
+function openCountry(id) {
+  selectedCountryId = id;
+  storyVisible = false;
+  renderDiscoveryCard(id);
+  sound(540);
 }
 
-function renderCountryCard(countryId) {
-  const country = countryById(countryId);
-  if (!country) return;
-  const visited = state.visited.includes(country.id);
-  $("#countryCard").innerHTML = `
-    <div class="country-card-inner">
-      <div class="card-top">
+function renderDiscoveryCard(id) {
+  const c = byId(id);
+  if (!c) return;
+  const visited = isVisited(c.id);
+  const col = continentColor(c.continent);
+  $('countryCard').innerHTML = `
+    <div class="card-inner" style="--continent-color:${col}">
+      <div class="card-header">
+        <span class="card-flag">${c.flag}</span>
         <div>
-          <h3>${country.greekName}</h3>
-          <div class="continent-label">${country.continent} · ${country.englishName}</div>
+          <h2 class="card-name">${c.name}</h2>
+          <span class="continent-badge" style="background:${col}">${c.continent}</span>
         </div>
-        <div class="flag-big" aria-label="Σημαία ${country.greekName}">${country.flagEmoji}</div>
       </div>
-      <div class="fact-list">
-        ${factRow("🏛️", "Πρωτεύουσα", country.capital)}
-        ${factRow("🗣️", "Γλώσσα", country.language)}
-        ${factRow(country.landmarkIcon, "Ορόσημο", country.landmark)}
-        ${factRow(country.foodIcon, "Γεύση", country.food)}
-        ${factRow(country.animalIcon, "Ζώο ή φύση", country.animal)}
-        ${factRow("✨", "Μικρό μυστικό", country.funFact)}
-      </div>
-      <div class="narration-box" id="narrationBox">
-        ${storyText(country)}
-      </div>
+      <dl class="card-facts">
+        <div class="fact-row"><dt>🏙️ Πρωτεύουσα</dt><dd>${c.capital}</dd></div>
+        <div class="fact-row"><dt>🗣️ Γλώσσα</dt><dd>${c.language}</dd></div>
+        <div class="fact-row"><dt>${c.landmark.split(' ')[0]} Ορόσημο</dt><dd>${c.landmark.slice(c.landmark.indexOf(' ')+1)}</dd></div>
+        <div class="fact-row"><dt>${c.food.split(' ')[0]} Φαγητό</dt><dd>${c.food.slice(c.food.indexOf(' ')+1)}</dd></div>
+        <div class="fact-row"><dt>${c.animal.split(' ')[0]} Ζώο</dt><dd>${c.animal.slice(c.animal.indexOf(' ')+1)}</dd></div>
+        <div class="fact-row fact-highlight"><dt>✨ Γνώριζες;</dt><dd>${c.fact}</dd></div>
+      </dl>
+      <div class="story-box" id="storyBox" ${storyVisible ? '' : 'hidden'}>${c.story}</div>
       <div class="card-actions">
-        <button class="primary-action" type="button" id="addPassportButton">${visited ? "Σφραγίδα στο διαβατήριο ✓" : "Προσθήκη στο Διαβατήριο"}</button>
-        <button class="soft-action" type="button" id="readStoryButton">Άκου/Διάβασε την ιστορία</button>
+        <button class="btn-stamp ${visited ? 'btn-stamped' : ''}" id="addStampBtn">
+          ${visited ? '✅ Στο διαβατήριο!' : '📮 Πρόσθεσε στο Διαβατήριο!'}
+        </button>
+        <button class="btn-story" id="readStoryBtn">📖 ${storyVisible ? 'Κλείσε ιστορία' : 'Διάβασε την ιστορία'}</button>
       </div>
-    </div>
-  `;
+    </div>`;
 
-  $("#addPassportButton").addEventListener("click", () => visitCountry(country.id));
-  $("#readStoryButton").addEventListener("click", () => narrate(country));
+  $('addStampBtn').addEventListener('click', () => visitCountry(id));
+  $('readStoryBtn').addEventListener('click', () => {
+    storyVisible = !storyVisible;
+    renderDiscoveryCard(id);
+    sound(600);
+  });
 }
 
-function factRow(icon, label, value) {
-  return `<div class="fact-row"><span>${icon}</span><span><strong>${label}</strong>${value}</span></div>`;
-}
-
-function storyText(country) {
-  return `Η Αριάνα ανοίγει τον χάρτη και ταξιδεύει στη ${country.greekName}. Εκεί βλέπει το ${country.landmark}, ακούει ${country.language}, δοκιμάζει ${country.food} και ανακαλύπτει: ${country.funFact}`;
-}
-
-function visitCountry(countryId) {
-  const country = countryById(countryId);
-  if (!country) return;
-  if (!state.visited.includes(countryId)) {
-    state.visited.push(countryId);
+function visitCountry(id) {
+  const c = byId(id);
+  if (!c) return;
+  const playerArr = state.playerVisited[state.currentPlayer];
+  if (!playerArr.includes(id)) {
+    playerArr.push(id);
     state.timeline.unshift({
-      id: `${countryId}-${Date.now()}`,
-      text: `${activePlayer()} ανακάλυψε τη χώρα ${country.greekName} και πήρε σφραγίδα ${country.flagEmoji}.`,
-      time: new Date().toLocaleDateString("el-GR")
+      text: `${state.players[state.currentPlayer]} ανακάλυψε: ${c.name} ${c.flag}`,
+      time: new Date().toLocaleDateString('el-GR')
     });
-    state.timeline = state.timeline.slice(0, 12);
-    toast(`Νέα σφραγίδα: ${country.greekName} ${country.flagEmoji}`);
+    state.timeline = state.timeline.slice(0, 20);
+    toast(`Νέα σφραγίδα: ${c.name} ${c.flag}`);
+    sound(760);
+    showStampAnimation();
+    updateMissions();
   } else {
-    toast(`Η ${country.greekName} είναι ήδη στο διαβατήριο.`);
+    toast(`${c.name} είναι ήδη στο διαβατήριο!`);
   }
   saveState();
-  renderAll();
-  renderCountryCard(countryId);
+  renderMap();
+  renderPassport();
+  renderCollections();
+  renderProfile();
+  renderDiscoveryCard(id);
 }
 
-function activePlayer() {
-  return state.mode === "two" ? state.players[state.currentPlayer] : "Η Αριάνα";
+function showStampAnimation() {
+  const el = $('stampAnim');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 900);
 }
 
-function narrate(country) {
-  $("#narrationBox")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  toast(state.settings.narration ? storyText(country) : "Η αφήγηση κειμένου είναι απενεργοποιημένη.");
-  gentleSound(660);
+// ── Flags game ─────────────────────────────────────
+function bindFlags() {
+  $('newFlagRound').addEventListener('click', newFlagsRound);
 }
 
-function renderContinents() {
-  $("#continentGrid").innerHTML = CONTINENTS.map(continent => {
-    const total = COUNTRIES.filter(country => country.continent === continent).length;
-    const discovered = countVisitedByContinent(state, continent);
-    const pct = total ? Math.round((discovered / total) * 100) : 0;
-    return `
-      <article class="continent-card">
-        <h3>${continent}</h3>
-        <p>${discovered} από ${total} χώρες ανακαλύφθηκαν.</p>
-        <div class="mini-meter" aria-label="Πρόοδος ${continent} ${pct}%"><i style="width:${pct}%"></i></div>
-      </article>
-    `;
-  }).join("");
+function newFlagsRound() {
+  const pool = [...COUNTRIES];
+  pool.sort(() => Math.random() - 0.5);
+  flagsCountryId = pool[0].id;
+  renderFlagsGame();
 }
 
-function renderCountryList(filter = "") {
-  const normalized = filter.trim().toLocaleLowerCase("el-GR");
-  const rows = COUNTRIES
-    .filter(country => !normalized || `${country.greekName} ${country.englishName} ${country.continent}`.toLocaleLowerCase("el-GR").includes(normalized))
-    .map(country => `
-      <article class="country-row">
-        <span class="tiny-flag">${country.flagEmoji}</span>
-        <div>
-          <h3>${country.greekName}</h3>
-          <p>${country.continent} · ${country.capital} · ${country.language}</p>
-        </div>
-        <button type="button" data-open-country="${country.id}">Άνοιγμα</button>
-      </article>
-    `).join("");
-  $("#countryList").innerHTML = rows || `<p class="feedback">Δεν βρέθηκε χώρα με αυτή την αναζήτηση. Δοκίμασε άλλο όνομα.</p>`;
-  $$("[data-open-country]").forEach(button => {
-    button.addEventListener("click", () => {
-      openCountry(button.dataset.openCountry);
-      showSection("map");
+function renderFlagsGame() {
+  if (!flagsCountryId) {
+    const idx = Math.floor(Math.random() * COUNTRIES.length);
+    flagsCountryId = COUNTRIES[idx].id;
+  }
+  const correct = byId(flagsCountryId);
+  const others = COUNTRIES.filter(c => c.id !== flagsCountryId)
+    .sort(() => Math.random() - 0.5).slice(0, 3);
+  const options = [correct, ...others].sort(() => Math.random() - 0.5);
+  const col = continentColor(correct.continent);
+
+  $('flagsCountryCard').innerHTML = `
+    <div class="flags-card" style="--continent-color:${col}">
+      <div class="flags-card-inner">
+        <span class="flags-continent-badge" style="background:${col}">${correct.continent}</span>
+        <h2 class="flags-country-name">${correct.name}</h2>
+        <p class="flags-capital">🏙️ ${correct.capital}</p>
+        <p class="flags-prompt">Ποια είναι η σημαία αυτής της χώρας;</p>
+      </div>
+      <div class="flags-drop-zone" id="flagsDropZone" aria-label="Σέρε εδώ τη σωστή σημαία">
+        <span>⬇ Σέρε ή πάτησε τη σωστή σημαία εδώ</span>
+      </div>
+    </div>`;
+
+  $('flagsOptions').innerHTML = options.map(c => `
+    <button class="flag-option" draggable="true"
+      data-flag-id="${c.id}" aria-label="Σημαία ${c.name}">
+      <span class="flag-emoji">${c.flag}</span>
+      <span class="flag-name">${c.name}</span>
+    </button>`).join('');
+
+  $('flagsFeedback').textContent = 'Πάτησε ή σέρε τη σωστή σημαία!';
+  $('flagsFeedback').className = 'flags-feedback';
+
+  bindFlagOptions();
+}
+
+function bindFlagOptions() {
+  const dropZone = $('flagsDropZone');
+
+  $$('.flag-option').forEach(btn => {
+    btn.addEventListener('click', () => checkFlag(btn.dataset.flagId));
+    btn.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', btn.dataset.flagId);
+      btn.classList.add('dragging');
     });
-  });
-}
+    btn.addEventListener('dragend', () => btn.classList.remove('dragging'));
 
-function renderInfoGrids() {
-  $("#capitalGrid").innerHTML = COUNTRIES.map(country => infoCard(country.flagEmoji, `${country.capital}`, `${country.greekName} · ${country.continent}`)).join("");
-  $("#landmarkGrid").innerHTML = COUNTRIES.map(country => infoCard(country.landmarkIcon, country.landmark, country.greekName)).join("");
-  $("#natureGrid").innerHTML = COUNTRIES.map(country => infoCard(country.animalIcon, country.animal, `${country.greekName}: ${country.funFact}`)).join("");
-  $("#foodGrid").innerHTML = COUNTRIES.map(country => infoCard(country.foodIcon, country.food, `Μια γεύση από ${country.greekName}`)).join("");
-}
-
-function infoCard(icon, title, text) {
-  return `<article class="info-card"><h3><span>${icon}</span> ${title}</h3><p>${text}</p></article>`;
-}
-
-function renderMatching() {
-  const country = countryById(currentMatchCountryId) || randomCountry();
-  currentMatchCountryId = country.id;
-  selectedSticker = null;
-  $("#matchCountry").innerHTML = `
-    <h3>${country.greekName}</h3>
-    <p>${country.continent} · ${country.capital}</p>
-    ${dropSlot("flag", "Σημαία")}
-    ${dropSlot("landmark", "Ορόσημο")}
-    ${dropSlot("food", "Φαγητό")}
-    ${dropSlot("animal", "Ζώο ή φύση")}
-  `;
-
-  const distractors = pickDistractors(country, 8);
-  const stickers = [
-    sticker(country.id, "flag", country.flagEmoji, `Σημαία ${country.greekName}`),
-    sticker(country.id, "landmark", country.landmarkIcon, country.landmark),
-    sticker(country.id, "food", country.foodIcon, country.food),
-    sticker(country.id, "animal", country.animalIcon, country.animal),
-    ...distractors
-  ].sort(() => Math.random() - 0.5);
-
-  $("#stickerTray").innerHTML = stickers.join("");
-  $("#matchFeedback").textContent = "Σύρε ή πάτησε ένα αυτοκόλλητο και σύνδεσέ το με τη χώρα.";
-  bindMatchingEvents();
-}
-
-function dropSlot(type, label) {
-  return `<div class="drop-slot" data-drop-type="${type}"><span>${label}</span><strong>Άδειο</strong></div>`;
-}
-
-function sticker(countryId, type, icon, label) {
-  return `
-    <button class="sticker" type="button" draggable="true" data-sticker-country="${countryId}" data-sticker-type="${type}">
-      <span class="sticker-icon">${icon}</span>
-      <strong>${label}</strong>
-      <small>${typeLabel(type)}</small>
-    </button>
-  `;
-}
-
-function typeLabel(type) {
-  return { flag: "σημαία", landmark: "ορόσημο", food: "φαγητό", animal: "ζώο" }[type];
-}
-
-function pickDistractors(targetCountry, count) {
-  return COUNTRIES
-    .filter(country => country.id !== targetCountry.id)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, count)
-    .map((country, index) => {
-      const types = ["flag", "landmark", "food", "animal"];
-      const type = types[index % types.length];
-      const icon = type === "flag" ? country.flagEmoji : country[`${type}Icon`];
-      const label = type === "flag" ? `Σημαία ${country.greekName}` : country[type];
-      return sticker(country.id, type, icon, label);
-    });
-}
-
-function bindMatchingEvents() {
-  $$(".sticker").forEach(item => {
-    item.addEventListener("dragstart", event => {
-      event.dataTransfer.setData("text/plain", JSON.stringify({
-        country: item.dataset.stickerCountry,
-        type: item.dataset.stickerType,
-        label: item.querySelector("strong").textContent
-      }));
-    });
-    item.addEventListener("click", () => {
-      selectedSticker = item;
-      $$(".sticker").forEach(stickerEl => stickerEl.classList.toggle("selected", stickerEl === item));
-      $("#matchFeedback").textContent = `Διάλεξες: ${item.querySelector("strong").textContent}. Τώρα πάτησε τη σωστή θέση στη γωνιά.`;
-    });
+    btn.addEventListener('touchstart', e => {
+      btn.classList.add('touch-active');
+      btn._touchId = e.changedTouches[0].identifier;
+    }, { passive: true });
+    btn.addEventListener('touchend', e => {
+      btn.classList.remove('touch-active');
+      const t = Array.from(e.changedTouches).find(t => t.identifier === btn._touchId);
+      if (!t) return;
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      if (el && (el === dropZone || dropZone.contains(el))) {
+        checkFlag(btn.dataset.flagId);
+      }
+    }, { passive: true });
   });
 
-  $$(".drop-slot").forEach(slot => {
-    slot.addEventListener("dragover", event => event.preventDefault());
-    slot.addEventListener("drop", event => {
-      event.preventDefault();
-      const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-      handleDrop(slot, data);
+  if (dropZone) {
+    dropZone.addEventListener('dragover', e => e.preventDefault());
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      checkFlag(e.dataTransfer.getData('text/plain'));
     });
-    slot.addEventListener("click", () => {
-      if (!selectedSticker) return;
-      handleDrop(slot, {
-        country: selectedSticker.dataset.stickerCountry,
-        type: selectedSticker.dataset.stickerType,
-        label: selectedSticker.querySelector("strong").textContent
-      });
-    });
-  });
-}
-
-function handleDrop(slot, data) {
-  const correct = data.country === currentMatchCountryId && data.type === slot.dataset.dropType;
-  if (correct) {
-    slot.classList.add("ready");
-    slot.querySelector("strong").textContent = data.label;
-    $("#matchFeedback").textContent = "Τέλεια σύνδεση!";
-    gentleSound(760);
-    if ($$(".drop-slot.ready").length === 4) {
-      visitCountry(currentMatchCountryId);
-      $("#matchFeedback").textContent = "Η γωνιά της χώρας είναι έτοιμη και μπήκε σφραγίδα στο διαβατήριο!";
-    }
-  } else {
-    $("#matchFeedback").textContent = gentleHint(data.type);
-    gentleSound(320);
   }
 }
 
-function gentleHint(type) {
-  const hints = {
-    flag: "Δοκίμασε ξανά, αυτή η σημαία ταξίδεψε σε άλλη χώρα!",
-    landmark: "Ωραία προσπάθεια, αυτό το ορόσημο ανήκει σε άλλο ταξίδι.",
-    food: "Αυτή η γεύση μυρίζει άλλη χώρα. Ψάξε λίγο ακόμα!",
-    animal: "Αυτό το ζώο μάλλον πήγε βόλτα σε άλλη φύση."
-  };
-  return hints[type] || "Δοκίμασε ξανά με περιέργεια.";
+function checkFlag(flagId) {
+  const fb = $('flagsFeedback');
+  if (flagId === flagsCountryId) {
+    const c = byId(flagsCountryId);
+    fb.textContent = `Τέλεια σύνδεση! ${c.flag} — ${c.name}! 🎉`;
+    fb.className = 'flags-feedback correct';
+    sound(760);
+    $('flagsDropZone').innerHTML = `<span style="font-size:3rem">${c.flag}</span>`;
+    $$('.flag-option').forEach(b => { b.disabled = true; });
+    visitCountry(flagsCountryId);
+    setTimeout(newFlagsRound, 1800);
+  } else {
+    fb.textContent = 'Δοκίμασε ξανά, αυτή η σημαία ταξίδεψε αλλού! ✈️';
+    fb.className = 'flags-feedback wrong';
+    const wrongBtn = document.querySelector(`.flag-option[data-flag-id="${flagId}"]`);
+    if (wrongBtn) {
+      wrongBtn.classList.add('shake');
+      setTimeout(() => wrongBtn.classList.remove('shake'), 600);
+    }
+    sound(320);
+  }
 }
 
+// ── Passport ───────────────────────────────────────
+function bindPassport() {}
+
 function renderPassport() {
-  const visibleCountries = [...visitedCountries(), ...COUNTRIES.filter(country => !state.visited.includes(country.id)).slice(0, 8)];
-  $("#stampGrid").innerHTML = visibleCountries.map(country => {
-    const discovered = state.visited.includes(country.id);
-    return `
-      <div class="stamp ${discovered ? "" : "locked"}">
-        <span>${discovered ? country.flagEmoji : "?"}</span>
-        <strong>${discovered ? country.greekName : "Νέα χώρα"}</strong>
-      </div>
-    `;
-  }).join("");
+  renderStamps();
+  renderContinentProgress();
   renderMissions();
 }
 
+function renderStamps() {
+  const visited = allVisited();
+  const locked = COUNTRIES.filter(c => !visited.includes(c.id));
+  const stampHTML = visited.map(id => {
+    const c = byId(id);
+    if (!c) return '';
+    const col = continentColor(c.continent);
+    const rot = (Math.random() * 10 - 5).toFixed(1);
+    return `<div class="stamp discovered" style="--rot:${rot}deg;--col:${col}">
+      <span class="stamp-flag">${c.flag}</span>
+      <span class="stamp-name">${c.name}</span>
+    </div>`;
+  }).join('');
+  const lockedHTML = locked.slice(0, Math.max(0, 12 - visited.length)).map(() =>
+    `<div class="stamp locked"><span>?</span></div>`).join('');
+
+  $('stampGrid').innerHTML = stampHTML + lockedHTML;
+  $('stampCount').textContent = `${visited.length} / ${COUNTRIES.length} σφραγίδες`;
+}
+
+function renderContinentProgress() {
+  const visited = allVisited();
+  const continents = ['Ευρώπη','Ασία','Αφρική','Αμερική','Ωκεανία'];
+  $('continentProgress').innerHTML = continents.map(cont => {
+    const total = COUNTRIES.filter(c => c.continent === cont).length;
+    const done = visited.filter(id => byId(id)?.continent === cont).length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    const col = continentColor(cont);
+    return `<div class="cont-bar">
+      <div class="cont-bar-label">
+        <span style="color:${col}">${cont}</span>
+        <span>${done}/${total}</span>
+      </div>
+      <div class="mini-meter"><div class="mini-fill" style="width:${pct}%;background:${col}"></div></div>
+    </div>`;
+  }).join('');
+}
+
 function updateMissions() {
-  MISSIONS.forEach(mission => {
-    if (mission.test(state) && !state.completedMissions.includes(mission.id)) {
-      state.completedMissions.push(mission.id);
-      state.timeline.unshift({
-        id: `${mission.id}-${Date.now()}`,
-        text: `Ολοκληρώθηκε αποστολή: ${mission.title}.`,
-        time: new Date().toLocaleDateString("el-GR")
-      });
-      saveState();
-      toast(`Αποστολή ολοκληρώθηκε: ${mission.title}`);
+  MISSIONS.forEach(m => {
+    if (!state.completedMissions.includes(m.id)) {
+      const { cur, max } = m.progress(state);
+      if (cur >= max) {
+        state.completedMissions.push(m.id);
+        toast(`🏆 Αποστολή: ${m.title}`);
+        sound(880);
+      }
     }
   });
+  saveState();
 }
 
 function renderMissions() {
-  updateMissions();
-  $("#missionList").innerHTML = MISSIONS.map(mission => {
-    const done = state.completedMissions.includes(mission.id);
-    return `
-      <article class="mission-card ${done ? "completed" : ""}">
-        <span class="mission-icon">${mission.icon}</span>
-        <div>
-          <h3>${mission.title}</h3>
-          <p>${done ? "Μπήκε στο ταξιδιωτικό ημερολόγιο." : "Συνέχισε την εξερεύνηση για να τη συμπληρώσεις."}</p>
+  $('missionList').innerHTML = MISSIONS.map(m => {
+    const done = state.completedMissions.includes(m.id);
+    const { cur, max } = m.progress(state);
+    const pct = Math.min(100, Math.round((cur / max) * 100));
+    return `<article class="mission-card ${done ? 'done' : ''}">
+      <span class="mission-icon">${m.icon}</span>
+      <div class="mission-body">
+        <h3>${m.title}</h3>
+        <div class="mini-meter">
+          <div class="mini-fill" style="width:${pct}%;background:${done ? '#27ae60' : '#4a90e2'}"></div>
         </div>
-        <button type="button" data-section-link="map">${done ? "Προβολή" : "Ταξίδι"}</button>
-      </article>
-    `;
-  }).join("");
-  $$("[data-section-link='map']").forEach(button => {
-    if (button.tagName === "BUTTON") button.addEventListener("click", () => showSection("map"));
+        <small>${cur} / ${max} ${done ? '✅ Ολοκληρώθηκε!' : ''}</small>
+      </div>
+      ${done ? '<span class="mission-badge">🏅</span>' : ''}
+    </article>`;
+  }).join('');
+}
+
+// ── Collections ────────────────────────────────────
+function bindCollections() {
+  $$('.album-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      albumTab = btn.dataset.album;
+      $$('.album-tab').forEach(b => b.classList.toggle('active', b === btn));
+      renderCollections();
+    });
   });
 }
 
-function renderAlbum() {
-  const data = COUNTRIES.map(country => {
-    const discovered = state.visited.includes(country.id);
-    const iconMap = {
-      flags: country.flagEmoji,
-      landmarks: country.landmarkIcon,
-      foods: country.foodIcon,
-      animals: country.animalIcon
-    };
-    const labelMap = {
-      flags: country.greekName,
-      landmarks: country.landmark,
-      foods: country.food,
-      animals: country.animal
-    };
-    return `
-      <article class="album-item ${discovered ? "" : "locked"}">
-        <div>
-          <span>${discovered ? iconMap[albumType] : "🔒"}</span>
-          <h3>${discovered ? labelMap[albumType] : "Κρυμμένο αυτοκόλλητο"}</h3>
-          <p>${discovered ? country.greekName : "Ανακάλυψε τη χώρα για να ανοίξει."}</p>
-        </div>
-      </article>
-    `;
-  }).join("");
-  $("#albumGrid").innerHTML = data;
+function renderCollections() {
+  const visited = allVisited();
+  const propMap = { flags: 'flag', landmarks: 'landmark', foods: 'food', animals: 'animal' };
+  const prop = propMap[albumTab];
+
+  $('albumGrid').innerHTML = COUNTRIES.map(c => {
+    const isFound = visited.includes(c.id);
+    const col = continentColor(c.continent);
+    if (isFound) {
+      return `<article class="album-item found" style="--continent-color:${col}">
+        <span class="album-icon">${c[prop]}</span>
+        <strong>${prop === 'flag' ? c.name : c[prop].replace(/^[\S]+\s/, '')}</strong>
+        ${prop !== 'flag' ? `<small>${c.name}</small>` : ''}
+      </article>`;
+    }
+    return `<article class="album-item locked">
+      <span class="album-icon">❓</span>
+      <strong>???</strong>
+      <small>Ανακάλυψε τη χώρα</small>
+    </article>`;
+  }).join('');
 }
 
-function renderProgress() {
-  const pct = Math.round((state.visited.length / COUNTRIES.length) * 100);
-  $("#overallPercent").textContent = `${pct}%`;
-  $("#overallMeter").style.width = `${pct}%`;
-  $("#timeline").innerHTML = state.timeline.length
-    ? state.timeline.map(item => `<div class="timeline-item"><strong>${item.time}</strong><br>${item.text}</div>`).join("")
-    : `<div class="timeline-item">Το ημερολόγιο περιμένει την πρώτη ανακάλυψη.</div>`;
+// ── Settings ───────────────────────────────────────
+function bindSettings() {
+  $('soundToggle').addEventListener('change', e => {
+    state.settings.sound = e.target.checked;
+    saveState();
+    sound(660);
+  });
+  $('resetBtn').addEventListener('click', () => {
+    if (!confirm('Μηδενισμός όλης της προόδου; Αυτό δεν αναιρείται!')) return;
+    const kept = state.settings;
+    state = { ...structuredClone(DEFAULT_STATE), settings: kept };
+    saveState();
+    renderAll();
+    toast('Το διαβατήριο ξεκίνησε από την αρχή. ✈️');
+  });
+  $('soundToggle').checked = state.settings.sound;
 }
 
-function renderSettings() {
-  $("#soundToggle").checked = state.settings.sound;
-  $("#narrationToggle").checked = state.settings.narration;
+// ── Utilities ──────────────────────────────────────
+function toast(msg) {
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 
-function randomCountry() {
-  return COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
-}
-
-function toast(message) {
-  const toastEl = $("#toast");
-  toastEl.textContent = message;
-  toastEl.classList.add("show");
-  window.clearTimeout(toastEl.hideTimer);
-  toastEl.hideTimer = window.setTimeout(() => toastEl.classList.remove("show"), 2600);
-}
-
-function gentleSound(freq) {
+function sound(freq) {
   if (!state.settings.sound) return;
   try {
     audioCtx ||= new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioCtx.createOscillator();
+    const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    oscillator.frequency.value = freq;
-    oscillator.type = "sine";
+    osc.frequency.value = freq;
+    osc.type = 'sine';
     gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.18);
-    oscillator.connect(gain).connect(audioCtx.destination);
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 0.2);
-  } catch {
-    // Future audio narration can replace this tiny optional sound hook.
-  }
+    gain.gain.exponentialRampToValueAtTime(0.07, audioCtx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.22);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+  } catch {}
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener('DOMContentLoaded', init);

@@ -3,288 +3,325 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Παγκόσμιο Διαβατήριο της Αριάνας - παιχνίδι γεωγραφικής ανακάλυψης." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='%2322d3ee'/%3E%3Cpath d='M18 47c14-9 23 9 36 1s21-5 28 3c-3 18-17 34-36 34-18 0-32-12-38-28 3-3 6-6 10-10Z' fill='%2334d399'/%3E%3Cpath d='M31 18c8 8 1 16 10 21 8 5 15-2 21 3 7 6 0 16 12 22' fill='none' stroke='white' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M58 16v32l24-9-24-8' fill='%23f43f5e'/%3E%3Cpath d='M58 16v36' stroke='%23111827' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <meta name="description" content="Passport Explorer — Παγκόσμιο Ταξίδι της Αριάνας" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%238b6914'/%3E%3Ctext y='.9em' font-size='68' x='12'%3E🌍%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="css/geography.css" />
-  <title>Παγκόσμιο Διαβατήριο της Αριάνας</title>
+  <title>🌍 Passport Explorer — Αριάνα</title>
 </head>
 <body>
+
+  <!-- Airplane decoration -->
+  <div class="airplane-trail" aria-hidden="true">✈️</div>
+
+  <!-- Top navigation -->
+  <nav class="top-nav" aria-label="Κύρια πλοήγηση">
+    <span class="nav-logo">✈️ Passport Explorer</span>
+    <a class="nav-link" href="../index.html">🏠 Αρχική</a>
+    <a class="nav-link" href="../katseye.html">💃 Dance</a>
+    <a class="nav-link" href="../school.html">🎓 Σχολείο</a>
+    <a class="nav-link active" href="geography.html">🌍 Γεωγραφία</a>
+  </nav>
+
   <div class="app-shell">
+
+    <!-- Sidebar -->
     <aside class="sidebar" aria-label="Πλοήγηση παιχνιδιού">
-      <a class="brand" href="#profile" data-section-link="profile" aria-label="Προφίλ Αριάνας">
-        <span class="brand-mark">🌍</span>
-        <span>
-          <strong>Διαβατήριο</strong>
+      <a class="brand" href="#profile" data-section-link="profile" aria-label="Passport Explorer αρχική">
+        <span class="brand-icon">🌍</span>
+        <div>
+          <strong>Passport Explorer</strong>
           <small>της Αριάνας</small>
-        </span>
+        </div>
       </a>
 
-      <button class="sidebar-toggle" type="button" aria-expanded="false" aria-controls="sideNav">☰ Μενού</button>
+      <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-expanded="false" aria-controls="sideNav">
+        ☰ Μενού
+      </button>
 
-      <nav id="sideNav" class="side-nav">
-        <a href="#profile" class="active" data-section-link="profile">👧 Προφίλ Αριάνας</a>
-        <a href="#map" data-section-link="map">🗺️ Παγκόσμιος Χάρτης</a>
-        <a href="#continents" data-section-link="continents">🌐 Ήπειροι</a>
-        <a href="#flags" data-section-link="flags">🏳️ Σημαίες</a>
-        <a href="#countries" data-section-link="countries">📍 Χώρες</a>
-        <a href="#capitals" data-section-link="capitals">🏛️ Πρωτεύουσες</a>
-        <a href="#landmarks" data-section-link="landmarks">🗽 Ορόσημα</a>
-        <a href="#nature" data-section-link="nature">🦜 Ζώα & Φύση</a>
-        <a href="#foods" data-section-link="foods">🍜 Φαγητά του κόσμου</a>
-        <a href="#passport" data-section-link="passport">🛂 Διαβατήριο</a>
-        <a href="#collections" data-section-link="collections">🎒 Συλλογές</a>
-        <a href="#progress" data-section-link="progress">📈 Πρόοδος</a>
-        <a href="#settings" data-section-link="settings">⚙️ Ρυθμίσεις</a>
-        <a id="returnMenuLink" href="../index.html">↩ Επιστροφή στο Μενού</a>
-        <hr />
-        <a href="../index.html">🏠 Αρχική</a>
-        <a href="../katseye.html">💃 Dance Game</a>
-        <a href="../school.html">🎓 Σχολικά Παιχνίδια</a>
+      <nav id="sideNav" class="side-nav" aria-label="Ενότητες">
+        <a href="#profile"     class="active" data-section-link="profile">👧 Προφίλ</a>
+        <a href="#map"                        data-section-link="map">🗺️ Χάρτης</a>
+        <a href="#flags"                      data-section-link="flags">🏳️ Σημαίες</a>
+        <a href="#passport"                   data-section-link="passport">📘 Διαβατήριο</a>
+        <a href="#collections"                data-section-link="collections">🎒 Συλλογές</a>
+        <a href="#settings"                   data-section-link="settings">⚙️ Ρυθμίσεις</a>
+        <a href="../index.html">↩ Μενού</a>
       </nav>
+
+      <div class="sidebar-mascot" aria-hidden="true">
+        <span class="mascot-icon">🧭</span>
+        <strong>Οδηγός Χάρτης</strong>
+        <p>Ανακάλυψε τον κόσμο!</p>
+      </div>
     </aside>
 
+    <!-- Main workspace -->
     <main class="workspace">
-      <header class="hero section-panel active" id="profile" data-section="profile">
-        <div class="hero-copy">
-          <p class="eyeline">Παγκόσμιο Διαβατήριο της Αριάνας</p>
-          <h1>Ταξίδεψε, ανακάλυψε και γέμισε το διαβατήριό σου.</h1>
-          <p>
-            Μια περιπέτεια γεωγραφίας για Γ’ Δημοτικού προς Δ’ Δημοτικού:
-            σημαίες, χώρες, πρωτεύουσες, ζώα, φαγητά, ορόσημα και μικρές ιστορίες από όλο τον κόσμο.
-          </p>
-          <div class="hero-actions">
-            <button class="primary-action" type="button" data-section-link="map">Ξεκίνα ταξίδι</button>
-            <button class="soft-action" type="button" id="storyButton">Άκου την ιστορία</button>
-          </div>
+
+      <!-- ══════════════════════════════════════
+           PROFILE
+      ══════════════════════════════════════ -->
+      <section class="section-panel active" id="profile" data-section="profile" aria-labelledby="profileTitle">
+        <div class="section-header">
+          <p class="section-eyeline">Καλώς ήρθες</p>
+          <h1 class="section-title" id="profileTitle">Ταξίδεψε, ανακάλυψε, σφραγίζε! 🌍</h1>
         </div>
 
-        <section class="passport-card" aria-label="Προφίλ παίκτη">
+        <div class="profile-grid">
+          <!-- Passport cover card -->
           <div class="passport-cover">
-            <span>🛂</span>
-            <strong>Αριάνα</strong>
-            <small>Εξερευνήτρια Γεωγραφίας</small>
-          </div>
-          <dl class="passport-stats">
-            <div><dt>Χώρες</dt><dd id="profileVisited">0</dd></div>
-            <div><dt>Σημαίες</dt><dd id="profileFlags">0</dd></div>
-            <div><dt>Αποστολές</dt><dd id="profileMissions">0</dd></div>
-          </dl>
-          <div class="player-mode">
-            <label for="playerMode">Τρόπος παιχνιδιού</label>
-            <select id="playerMode">
-              <option value="single">Μόνη μου: Αριάνα</option>
-              <option value="two">Δύο παιδιά με σειρά</option>
-            </select>
-          </div>
-          <div class="turn-panel" id="turnPanel" hidden>
-            <span>Σειρά παίζει:</span>
-            <strong id="currentPlayerName">Αριάνα</strong>
-            <button type="button" id="nextTurnButton">Άλλαξε σειρά</button>
-          </div>
-        </section>
-      </header>
-
-      <section class="section-panel map-panel" id="map" data-section="map" aria-labelledby="mapTitle">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Παγκόσμιος Χάρτης</p>
-            <h2 id="mapTitle">Πάτησε μια χώρα και άνοιξε την κάρτα ανακάλυψης.</h2>
-          </div>
-          <div class="search-box">
-            <label for="countrySearch">Αναζήτηση</label>
-            <input id="countrySearch" type="search" placeholder="π.χ. Ελλάδα, Ιαπωνία, Βραζιλία" autocomplete="off" />
-          </div>
-        </div>
-
-        <div class="map-layout">
-          <div class="world-map" aria-label="Διαδραστικός χάρτης χωρών">
-            <svg viewBox="0 0 960 520" role="img" aria-labelledby="worldMapLabel">
-              <title id="worldMapLabel">Χρωματιστός παγκόσμιος χάρτης με καρφίτσες χωρών</title>
-              <defs>
-                <linearGradient id="ocean" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0" stop-color="#bff7ff" />
-                  <stop offset="1" stop-color="#d8ecff" />
-                </linearGradient>
-              </defs>
-              <rect width="960" height="520" rx="34" fill="url(#ocean)" />
-              <path class="continent c1" d="M98 178c22-62 89-92 153-77 56 13 85 58 71 103-13 44-68 46-104 78-35 31-27 81-72 93-56 15-100-50-92-101 5-33 30-58 44-96Z" />
-              <path class="continent c2" d="M238 330c42-16 85 9 96 53 13 51-15 98-45 126-30-24-61-67-55-112 3-24-9-43 4-67Z" />
-              <path class="continent c3" d="M420 117c88-31 190-11 252 40 44 36 87 33 125 72 44 45 22 107-39 119-74 14-103-62-174-62-56 0-77 42-126 18-58-29-87-157-38-187Z" />
-              <path class="continent c4" d="M480 267c56-12 111 17 130 64 17 41 3 86-28 113-39 33-82 13-101-27-18-39-48-79-28-118 6-12 15-24 27-32Z" />
-              <path class="continent c5" d="M732 311c61-20 125 7 147 56 22 48-4 92-54 96-58 5-111-41-118-92-3-25 5-48 25-60Z" />
-              <path class="continent c6" d="M358 446c78 18 173 18 244 0 33-8 50 10 39 28-22 35-231 34-282 4-20-12-20-37-1-32Z" />
-              <g id="mapPins"></g>
-            </svg>
-            <div class="map-legend">
-              <span><i class="pin-dot discovered"></i> ανακαλυμμένη χώρα</span>
-              <span><i class="pin-dot"></i> νέα ανακάλυψη</span>
+            <span class="passport-emblem">🌍</span>
+            <div class="passport-title">Διαβατήριο</div>
+            <div class="passport-sub">Αριάνα — Εξερευνήτρια Κόσμου</div>
+            <dl class="passport-stats">
+              <div class="stat-box">
+                <dt>Χώρες</dt>
+                <dd id="profileVisited">0</dd>
+              </div>
+              <div class="stat-box">
+                <dt>Σφραγίδες</dt>
+                <dd id="profileFlags">0</dd>
+              </div>
+              <div class="stat-box">
+                <dt>Αποστολές</dt>
+                <dd id="profileMissions">0</dd>
+              </div>
+            </dl>
+            <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" id="startJourneyBtn" type="button">🗺️ Ξεκίνα ταξίδι!</button>
             </div>
           </div>
 
-          <article class="discovery-card" id="countryCard" aria-live="polite">
-            <div class="empty-card">
-              <span>🧭</span>
-              <h3>Διάλεξε μια χώρα</h3>
-              <p>Κάθε χώρα ανοίγει μια μικρή ιστορία και μια σφραγίδα για το διαβατήριο.</p>
+          <!-- Settings card -->
+          <div class="profile-card">
+            <div>
+              <label for="playerMode">Τρόπος παιχνιδιού</label>
+              <select id="playerMode">
+                <option value="single">Μόνη μου 👧</option>
+                <option value="two">Δύο παίκτες 👧👦</option>
+              </select>
+            </div>
+
+            <!-- 2-player turn panel -->
+            <div id="turnPanel" hidden>
+              <span class="turn-label">Σειρά παίζει:</span>
+              <span id="currentPlayerBadge">Αριάνα</span>
+              <button class="btn btn-turn" id="nextTurnBtn" type="button">Αλλαγή ✈️</button>
+            </div>
+
+            <!-- 2-player names panel -->
+            <div id="playerNamesPanel" hidden>
+              <div class="player-names-grid">
+                <div>
+                  <label for="p1Name">Παίκτης 1</label>
+                  <input id="p1Name" type="text" value="Αριάνα" maxlength="20" />
+                </div>
+                <div>
+                  <label for="p2Name">Παίκτης 2</label>
+                  <input id="p2Name" type="text" value="Φίλος" maxlength="20" />
+                </div>
+              </div>
+            </div>
+
+            <p style="font-size:0.82rem;font-weight:700;color:var(--muted);line-height:1.5">
+              Πάτα <strong>Χάρτης</strong> για να ανακαλύψεις χώρες, ή <strong>Σημαίες</strong>
+              για το παιχνίδι αντιστοίχισης. Κάθε ανακάλυψη μπαίνει στο Διαβατήριό σου!
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════
+           MAP
+      ══════════════════════════════════════ -->
+      <section class="section-panel" id="map" data-section="map" aria-labelledby="mapTitle">
+        <div class="section-header">
+          <p class="section-eyeline">Παγκόσμιος Χάρτης</p>
+          <h2 class="section-title" id="mapTitle">Πάτησε μια καρφίτσα και ανακάλυψε τη χώρα 📍</h2>
+        </div>
+
+        <div class="map-search-row">
+          <label for="countrySearch" style="font-weight:800;font-size:0.85rem;color:var(--muted);white-space:nowrap">🔍 Αναζήτηση:</label>
+          <input id="countrySearch" type="search" placeholder="π.χ. Ελλάδα, Ιαπωνία, Βραζιλία…" autocomplete="off" />
+        </div>
+
+        <div class="map-layout">
+          <!-- World map SVG -->
+          <div class="world-map-wrap">
+            <svg viewBox="0 0 960 520" role="img" aria-label="Διαδραστικός παγκόσμιος χάρτης με καρφίτσες χωρών">
+              <defs>
+                <linearGradient id="ocean" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0"   stop-color="#bff7ff" />
+                  <stop offset="1"   stop-color="#d8ecff" />
+                </linearGradient>
+              </defs>
+              <!-- Ocean background -->
+              <rect width="960" height="520" rx="18" fill="url(#ocean)" />
+              <!-- Continent shapes (abstract/decorative) -->
+              <!-- North America -->
+              <path class="continent c-americas"  d="M98 178c22-62 89-92 153-77 56 13 85 58 71 103-13 44-68 46-104 78-35 31-27 81-72 93-56 15-100-50-92-101 5-33 30-58 44-96Z" />
+              <!-- South America -->
+              <path class="continent c-americas2" d="M238 330c42-16 85 9 96 53 13 51-15 98-45 126-30-24-61-67-55-112 3-24-9-43 4-67Z" />
+              <!-- Europe / Middle East -->
+              <path class="continent c-europe"    d="M420 117c88-31 190-11 252 40 44 36 87 33 125 72 44 45 22 107-39 119-74 14-103-62-174-62-56 0-77 42-126 18-58-29-87-157-38-187Z" />
+              <!-- Africa -->
+              <path class="continent c-africa"    d="M480 267c56-12 111 17 130 64 17 41 3 86-28 113-39 33-82 13-101-27-18-39-48-79-28-118 6-12 15-24 27-32Z" />
+              <!-- Asia / Pacific -->
+              <path class="continent c-asia"      d="M732 311c61-20 125 7 147 56 22 48-4 92-54 96-58 5-111-41-118-92-3-25 5-48 25-60Z" />
+              <!-- Oceania -->
+              <path class="continent c-oceania"   d="M358 446c78 18 173 18 244 0 33-8 50 10 39 28-22 35-231 34-282 4-20-12-20-37-1-32Z" />
+              <!-- Country pins rendered by JS -->
+              <g id="mapPins"></g>
+            </svg>
+            <div class="map-legend">
+              <span><i class="legend-dot" style="background:#27ae60"></i> ανακαλυμμένη</span>
+              <span><i class="legend-dot" style="background:#d4a843;border:2px solid #8b6914"></i> νέα χώρα</span>
+            </div>
+          </div>
+
+          <!-- Discovery card -->
+          <article class="discovery-card" id="countryCard" aria-live="polite" aria-label="Κάρτα ανακάλυψης χώρας">
+            <div class="card-empty">
+              <span class="empty-icon">🧭</span>
+              <h3>Διάλεξε μια χώρα!</h3>
+              <p>Κάθε καρφίτσα ανοίγει μια κάρτα με πρωτεύουσα, γλώσσα, ορόσημο, φαγητό, ζώο και μια μικρή ιστορία.</p>
             </div>
           </article>
         </div>
       </section>
 
-      <section class="section-panel" id="continents" data-section="continents">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Ήπειροι</p>
-            <h2>Παρακολούθησε πόσο γεμίζει κάθε ήπειρος.</h2>
+
+      <!-- ══════════════════════════════════════
+           FLAGS GAME
+      ══════════════════════════════════════ -->
+      <section class="section-panel" id="flags" data-section="flags" aria-labelledby="flagsTitle">
+        <div class="section-header">
+          <p class="section-eyeline">Παιχνίδι Σημαιών</p>
+          <h2 class="section-title" id="flagsTitle">Βρες τη σωστή σημαία! 🏳️</h2>
+        </div>
+
+        <div class="flags-header">
+          <p>Σύρε ή πάτησε τη σωστή σημαία πάνω στην κάρτα χώρας.</p>
+          <button class="btn btn-soft" id="newFlagRound" type="button">✈️ Νέα γωνιά</button>
+        </div>
+
+        <div class="flags-layout">
+          <!-- Country card (rendered by JS) -->
+          <div id="flagsCountryCard">
+            <div class="flags-card" style="--continent-color:#d4a843">
+              <div class="flags-card-inner">
+                <p style="color:var(--muted);font-weight:800">Πάτα «Νέα γωνιά» για να αρχίσεις!</p>
+              </div>
+              <div class="flags-drop-zone" id="flagsDropZone">⬇ Σέρε ή πάτησε τη σημαία εδώ</div>
+            </div>
+          </div>
+
+          <!-- Flag options (rendered by JS) -->
+          <div class="flags-options-panel">
+            <p class="flags-options-title">Διάλεξε τη σωστή σημαία:</p>
+            <div id="flagsOptions" class="flags-options"></div>
           </div>
         </div>
-        <div class="continent-grid" id="continentGrid"></div>
+
+        <p id="flagsFeedback" class="flags-feedback" aria-live="polite">
+          Πάτα «Νέα γωνιά» για να αρχίσεις το παιχνίδι!
+        </p>
       </section>
 
-      <section class="section-panel" id="flags" data-section="flags">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Σημαίες</p>
-            <h2>Στήσε τη Γωνιά της Χώρας χωρίς πίεση χρόνου.</h2>
-          </div>
-          <button class="soft-action" type="button" id="newMatchButton">Νέα γωνιά</button>
-        </div>
-        <div class="matching-zone">
-          <article class="match-country" id="matchCountry"></article>
-          <div class="sticker-tray" id="stickerTray" aria-label="Αυτοκόλλητα για σύρσιμο"></div>
-        </div>
-        <p class="feedback" id="matchFeedback" aria-live="polite">Σύρε ή πάτησε ένα αυτοκόλλητο και σύνδεσέ το με τη χώρα.</p>
-      </section>
 
-      <section class="section-panel" id="countries" data-section="countries">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Χώρες</p>
-            <h2>Όλες οι χώρες του αρχικού ταξιδιού.</h2>
-          </div>
+      <!-- ══════════════════════════════════════
+           PASSPORT
+      ══════════════════════════════════════ -->
+      <section class="section-panel" id="passport" data-section="passport" aria-labelledby="passportTitle">
+        <div class="section-header">
+          <p class="section-eyeline">Διαβατήριο</p>
+          <h2 class="section-title" id="passportTitle">Οι σφραγίδες σου από όλο τον κόσμο 📘</h2>
         </div>
-        <div class="country-list" id="countryList"></div>
-      </section>
 
-      <section class="section-panel" id="capitals" data-section="capitals">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Πρωτεύουσες</p>
-            <h2>Άνοιξε μικρές κάρτες πόλεων και κράτησε σημειώσεις στο μυαλό.</h2>
+        <div class="passport-layout">
+          <!-- Passport book page with stamps -->
+          <div class="passport-book-page">
+            <h3 class="passport-page-heading">
+              Σφραγίδες χωρών
+              <span id="stampCount">0 / 20 σφραγίδες</span>
+            </h3>
+            <div class="stamp-grid" id="stampGrid" aria-label="Σφραγίδες διαβατηρίου"></div>
           </div>
-        </div>
-        <div class="info-grid" id="capitalGrid"></div>
-      </section>
 
-      <section class="section-panel" id="landmarks" data-section="landmarks">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Ορόσημα</p>
-            <h2>Διάσημα μέρη που μπαίνουν στο άλμπουμ σου.</h2>
-          </div>
-        </div>
-        <div class="info-grid" id="landmarkGrid"></div>
-      </section>
-
-      <section class="section-panel" id="nature" data-section="nature">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Ζώα & Φύση</p>
-            <h2>Ζώα, τοπία και φυσικές εκπλήξεις από κάθε γωνιά.</h2>
-          </div>
-        </div>
-        <div class="info-grid" id="natureGrid"></div>
-      </section>
-
-      <section class="section-panel" id="foods" data-section="foods">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Φαγητά του κόσμου</p>
-            <h2>Κόλλησε στη μνήμη σου γεύσεις από διαφορετικές χώρες.</h2>
-          </div>
-        </div>
-        <div class="info-grid" id="foodGrid"></div>
-      </section>
-
-      <section class="section-panel" id="passport" data-section="passport">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Διαβατήριο</p>
-            <h2>Οι σφραγίδες της Αριάνας αποθηκεύονται στον browser.</h2>
-          </div>
-        </div>
-        <div class="passport-book">
-          <div class="passport-page">
-            <h3>Σφραγίδες χωρών</h3>
-            <div class="stamp-grid" id="stampGrid"></div>
-          </div>
-          <div class="passport-page">
-            <h3>Ταξιδιωτικές αποστολές</h3>
-            <div class="mission-list" id="missionList"></div>
+          <!-- Sidebar: continent progress + missions -->
+          <div class="passport-sidebar">
+            <div class="passport-side-card">
+              <h3>🌐 Ήπειροι</h3>
+              <div id="continentProgress" aria-label="Πρόοδος ανά ήπειρο"></div>
+            </div>
+            <div class="passport-side-card">
+              <h3>🎯 Αποστολές</h3>
+              <div id="missionList" aria-label="Ταξιδιωτικές αποστολές"></div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="section-panel" id="collections" data-section="collections">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Συλλογές</p>
-            <h2>Άλμπουμ με σημαίες, ορόσημα, φαγητά και ζώα.</h2>
-          </div>
+
+      <!-- ══════════════════════════════════════
+           COLLECTIONS
+      ══════════════════════════════════════ -->
+      <section class="section-panel" id="collections" data-section="collections" aria-labelledby="collectionsTitle">
+        <div class="section-header">
+          <p class="section-eyeline">Συλλογές</p>
+          <h2 class="section-title" id="collectionsTitle">Άλμπουμ ανακαλύψεων 🎒</h2>
         </div>
-        <div class="album-tabs" role="tablist" aria-label="Συλλογές">
-          <button class="active" type="button" data-album="flags">Σημαίες</button>
-          <button type="button" data-album="landmarks">Ορόσημα</button>
-          <button type="button" data-album="foods">Φαγητά</button>
-          <button type="button" data-album="animals">Ζώα</button>
+
+        <div class="album-tabs" role="tablist" aria-label="Κατηγορίες συλλογής">
+          <button class="album-tab active" type="button" data-album="flags"     role="tab" aria-selected="true">🏳️ Σημαίες</button>
+          <button class="album-tab"        type="button" data-album="landmarks" role="tab" aria-selected="false">🏛️ Ορόσημα</button>
+          <button class="album-tab"        type="button" data-album="foods"     role="tab" aria-selected="false">🍜 Φαγητά</button>
+          <button class="album-tab"        type="button" data-album="animals"   role="tab" aria-selected="false">🦁 Ζώα</button>
         </div>
-        <div class="album-grid" id="albumGrid"></div>
+
+        <div class="album-grid" id="albumGrid" aria-live="polite"></div>
       </section>
 
-      <section class="section-panel" id="progress" data-section="progress">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Πρόοδος</p>
-            <h2>Ένα ήρεμο ημερολόγιο ανακάλυψης, χωρίς βαθμολογία.</h2>
-          </div>
-        </div>
-        <div class="progress-board">
-          <div class="big-progress">
-            <span id="overallPercent">0%</span>
-            <strong>του αρχικού ταξιδιού</strong>
-            <div class="meter"><i id="overallMeter"></i></div>
-          </div>
-          <div class="timeline" id="timeline"></div>
-        </div>
-      </section>
 
-      <section class="section-panel" id="settings" data-section="settings">
-        <div class="section-heading">
-          <div>
-            <p class="eyeline">Ρυθμίσεις</p>
-            <h2>Ήρεμες επιλογές για αποθήκευση και μελλοντικές αναβαθμίσεις.</h2>
-          </div>
+      <!-- ══════════════════════════════════════
+           SETTINGS
+      ══════════════════════════════════════ -->
+      <section class="section-panel" id="settings" data-section="settings" aria-labelledby="settingsTitle">
+        <div class="section-header">
+          <p class="section-eyeline">Ρυθμίσεις</p>
+          <h2 class="section-title" id="settingsTitle">Ρυθμίσεις παιχνιδιού ⚙️</h2>
         </div>
-        <div class="settings-grid">
+
+        <div class="settings-card">
           <label class="setting-row">
-            <span>Ήχοι διεπαφής</span>
+            <span>🔊 Ήχοι παιχνιδιού</span>
             <input id="soundToggle" type="checkbox" checked />
           </label>
-          <label class="setting-row">
-            <span>Αφήγηση κειμένου</span>
-            <input id="narrationToggle" type="checkbox" checked />
-          </label>
-          <button class="danger-action" type="button" id="resetProgressButton">Μηδενισμός προόδου</button>
-          <p class="upgrade-note">
-            Μελλοντικά εδώ μπορούν να μπουν Google Maps API, αποθήκευση σε backend,
-            περισσότερα προφίλ παιδιών και κοινή πλοήγηση για όλα τα παιχνίδια.
+
+          <button class="btn btn-danger" id="resetBtn" type="button">
+            🗑️ Μηδενισμός προόδου
+          </button>
+
+          <p class="settings-note">
+            Η πρόοδός σου αποθηκεύεται αυτόματα στον browser. Μπορείς να παίξεις ξανά
+            οποτεδήποτε — οι σφραγίδες σε περιμένουν!
           </p>
         </div>
       </section>
+
     </main>
   </div>
 
+  <!-- Toast notification -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Stamp animation overlay -->
+  <div id="stampAnim" aria-hidden="true">📮</div>
+
   <script src="js/geography.js"></script>
 </body>
 </html>
