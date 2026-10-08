@@ -157,8 +157,7 @@ const DEFAULT_STATE = {
   currentPlayer: 0,
   playerVisited: [[], []],
   completedMissions: [],
-  settings: { sound: true },
-  timeline: []
+  settings: { sound: true }
 };
 
 let state = loadState();
@@ -175,6 +174,7 @@ function loadState() {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (!raw) return structuredClone(DEFAULT_STATE);
+    delete raw.timeline; // legacy field, never rendered
     return {
       ...structuredClone(DEFAULT_STATE),
       ...raw,
@@ -185,7 +185,7 @@ function loadState() {
 }
 
 function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* storage unavailable */ }
 }
 
 function byId(id) { return COUNTRIES.find(c => c.id === id); }
@@ -378,11 +378,6 @@ function visitCountry(id) {
   const playerArr = state.playerVisited[state.currentPlayer];
   if (!playerArr.includes(id)) {
     playerArr.push(id);
-    state.timeline.unshift({
-      text: `${state.players[state.currentPlayer]} ανακάλυψε: ${c.name} ${c.flag}`,
-      time: new Date().toLocaleDateString('el-GR')
-    });
-    state.timeline = state.timeline.slice(0, 20);
     toast(`Νέα σφραγίδα: ${c.name} ${c.flag}`);
     sound(760);
     showStampAnimation();

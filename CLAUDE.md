@@ -9,7 +9,7 @@ https://konzag.github.io/ariana/
 
 ## Stack
 - index.html: KATSEYE K-pop quiz web game (single-file, localStorage for high score)
-- ariana.py: Python terminal program (Windows, colorama)
+- katseye-game/katseye.py: Python terminal program (Windows, colorama)
 - No backend, no deploy pipeline, no database
 
 ## Rules

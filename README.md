@@ -17,7 +17,7 @@ python -m pip install -r requirements.txt
 | Αρχείο | Τι Είναι |
 |--------|----------|
 | `index.html` | 🌐 Ένα κουίζ K-pop χορού στον web browser |
-| `ariana.py` | 🐍 Ένα διασκεδαστικό Python πρόγραμμα στο terminal |
+| `katseye-game/katseye.py` | 🐍 Ένα διασκεδαστικό Python πρόγραμμα στο terminal |
 
 ---
 
@@ -68,7 +68,7 @@ python -m pip install -r requirements.txt
 
 ---
 
-## 🐍 Project 2 — KATSEYE Fan Club Terminal (`ariana.py`)
+## 🐍 Project 2 — KATSEYE Fan Club Terminal (`katseye-game/katseye.py`)
 
 Ένα **πολύχρωμο terminal πρόγραμμα** που τρέχει στη γραμμή εντολών (η μαύρη οθόνη με κείμενο)!
 
@@ -86,13 +86,13 @@ python -m pip install -r requirements.txt
 Βεβαιώσου ότι έχεις εγκατεστημένη Python, και μετά:
 
 ```bash
-python ariana.py
+python katseye-game/katseye.py
 ```
 
 **Θες χρώματα;** Εγκατάστησε πρώτα το colorama:
 ```bash
 pip install colorama
-python ariana.py
+python katseye-game/katseye.py
 ```
 
 ---
@@ -114,7 +114,7 @@ python ariana.py
 | Πρόγραμμα | Γλώσσα | Πώς Λειτουργεί |
 |-----------|--------|----------------|
 | `index.html` | HTML + CSS + JavaScript | Ανοίγει σε οποιοδήποτε web browser — δεν χρειάζονται εγκαταστάσεις |
-| `ariana.py` | Python 3 | Τρέχει στο terminal· χρησιμοποιεί `colorama` για χρώματα (προαιρετικό) |
+| `katseye-game/katseye.py` | Python 3 | Τρέχει στο terminal· χρησιμοποιεί `colorama` για χρώματα (προαιρετικό) |
 
 ---
 
