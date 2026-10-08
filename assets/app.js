@@ -152,12 +152,18 @@
     // ============================================================
     const BEST_SCORE_KEY = "ariana_best_score";
 
+    // Το try/catch προστατεύει το παιχνίδι αν ο browser δεν επιτρέπει
+    // αποθήκευση (π.χ. ιδιωτική περιήγηση) — τότε απλώς δεν θυμόμαστε το ρεκόρ.
     function getBestScore() {
-      return parseInt(localStorage.getItem(BEST_SCORE_KEY) || "0", 10);
+      try {
+        return parseInt(localStorage.getItem(BEST_SCORE_KEY) || "0", 10) || 0;
+      } catch (e) {
+        return 0;
+      }
     }
 
     function saveBestScore(s) {
-      localStorage.setItem(BEST_SCORE_KEY, String(s));
+      try { localStorage.setItem(BEST_SCORE_KEY, String(s)); } catch (e) { /* χωρίς αποθήκευση */ }
     }
 
     function updateBestScoreDisplay() {
@@ -165,7 +171,7 @@
     }
 
     function clearBestScore() {
-      localStorage.removeItem(BEST_SCORE_KEY);
+      try { localStorage.removeItem(BEST_SCORE_KEY); } catch (e) { /* χωρίς αποθήκευση */ }
       updateBestScoreDisplay();
     }
 
