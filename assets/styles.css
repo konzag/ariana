@@ -13,6 +13,9 @@
       gap: 8px;
       padding: 0 16px;
       height: 52px;
+      /* Σε μικρές οθόνες (κινητά) τα κουμπιά δεν χωράνε — τα κάνουμε να κυλάνε στο πλάι */
+      overflow-x: auto;
+      scrollbar-width: thin;
     }
     .nav-logo {
       font-size: 0.85rem;
@@ -20,10 +23,11 @@
       color: var(--pink);
       letter-spacing: 2px;
       margin-right: auto;
+      white-space: nowrap; /* το λογότυπο μένει σε μία γραμμή */
     }
     .nav-link {
       display: inline-block;
-      padding: 7px 14px;
+      padding: 9px 14px; /* αρκετά μεγάλο για να το πατάνε εύκολα τα δάχτυλα */
       border-radius: 50px;
       border: 2px solid rgba(168,85,247,0.5);
       color: #fff;
@@ -35,7 +39,8 @@
       white-space: nowrap;
     }
     .nav-link:hover { border-color: var(--pink); color: var(--pink); transform: scale(1.05); }
-    .nav-link.active { background: linear-gradient(135deg, var(--pink), var(--purple)); border-color: var(--gold); }
+    /* Σκούρα γράμματα πάνω στο ροζ/μοβ, για να διαβάζονται καλά */
+    .nav-link.active { background: linear-gradient(135deg, var(--pink), var(--purple)); border-color: var(--gold); color: var(--dark); }
 
     :root {
       --pink:    #ff4fa3;
@@ -138,8 +143,8 @@
       background: none;
       border: 2px solid var(--purple);
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
       font-size: 1.1rem;
       cursor: pointer;
       color: #fff;
@@ -329,7 +334,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .btn-pink   { background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; }
+    .btn-pink   { background: linear-gradient(135deg, var(--pink), var(--purple)); color: var(--dark); }
     .btn-cyan   { background: linear-gradient(135deg, var(--cyan), #0ea5e9);        color: var(--dark); }
     .btn-gold   { background: linear-gradient(135deg, var(--gold), #f59e0b);        color: var(--dark); }
     .btn:hover  { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255,79,163,0.4); }
@@ -369,7 +374,7 @@
     footer {
       text-align: center;
       padding: 20px;
-      color: #6b21a8;
+      color: #a78bfa; /* πιο ανοιχτό μοβ, για να διαβάζεται στο σκούρο φόντο */
       font-size: 0.85rem;
     }
     .reset-record-link {
@@ -381,6 +386,8 @@
       font-family: 'Nunito', sans-serif;
       font-size: 0.85rem;
       margin-left: 10px;
+      min-height: 40px; /* μεγαλύτερος στόχος για το δάχτυλο */
+      padding: 0 6px;
     }
     .reset-record-link:hover { color: var(--pink); }
 
@@ -507,4 +514,18 @@
     }
     .dancer.sad {
       animation: dancerSad 1s ease forwards !important;
+    }
+
+    /* ===== ΠΡΟΣΒΑΣΙΜΟΤΗΤΑ ===== */
+    /* Καθαρό περίγραμμα όταν κάποιος κινείται με το πληκτρολόγιο (Tab) */
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+    /* Αν ο υπολογιστής ζητάει "λιγότερη κίνηση", σταματάμε τα πολλά animations */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .stars-container { display: none; }
     }

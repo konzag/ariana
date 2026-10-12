@@ -11,6 +11,17 @@ const CONTINENT_COLORS = {
   'Αρκτική': '#00bcd4'
 };
 
+// Πιο σκούρες εκδοχές των χρωμάτων, για ΚΕΙΜΕΝΟ (ή άσπρα γράμματα πάνω τους),
+// ώστε τα γράμματα να διαβάζονται καλά (αντίθεση τουλάχιστον 4.5:1).
+const CONTINENT_TEXT_COLORS = {
+  'Ευρώπη': '#2a6cb8',
+  'Ασία': '#946200',
+  'Αφρική': '#b84a00',
+  'Αμερική': '#1e7e45',
+  'Ωκεανία': '#8e44ad',
+  'Αρκτική': '#00727d'
+};
+
 const COUNTRIES = [
   { id: 'greece', name: 'Ελλάδα', flag: '🇬🇷', continent: 'Ευρώπη',
     capital: 'Αθήνα', language: 'Ελληνικά', landmark: '🏛️ Παρθενώνας',
@@ -166,6 +177,7 @@ let flagsCountryId = null;
 let albumTab = 'flags';
 let audioCtx = null;
 let storyVisible = false;
+let flagsSolved = false; // true μόλις βρεθεί η σωστή σημαία (μέχρι τον επόμενο γύρο)
 
 const $ = id => document.getElementById(id);
 const $$ = sel => Array.from(document.querySelectorAll(sel));
@@ -203,6 +215,11 @@ function isVisited(id) { return allVisited().includes(id); }
 
 function continentColor(continent) {
   return CONTINENT_COLORS[continent] || '#888';
+}
+
+// Χρώμα για γράμματα (πιο σκούρο, για να διαβάζεται)
+function continentTextColor(continent) {
+  return CONTINENT_TEXT_COLORS[continent] || '#5f5f5f';
 }
 
 function init() {
@@ -258,6 +275,8 @@ function renderAll() {
 function bindProfile() {
   $('playerMode').addEventListener('change', e => {
     state.mode = e.target.value;
+    // Στο "Μόνη μου" παίζει πάντα ο παίκτης 1 (αλλιώς οι σφραγίδες πήγαιναν στον φίλο)
+    if (state.mode === 'single') state.currentPlayer = 0;
     saveState();
     renderProfile();
   });
@@ -344,7 +363,7 @@ function renderDiscoveryCard(id) {
         <span class="card-flag">${c.flag}</span>
         <div>
           <h2 class="card-name">${c.name}</h2>
-          <span class="continent-badge" style="background:${col}">${c.continent}</span>
+          <span class="continent-badge" style="background:${continentTextColor(c.continent)}">${c.continent}</span>
         </div>
       </div>
       <dl class="card-facts">
@@ -364,10 +383,14 @@ function renderDiscoveryCard(id) {
       </div>
     </div>`;
 
-  $('addStampBtn').addEventListener('click', () => visitCountry(id));
+  $('addStampBtn').addEventListener('click', () => {
+    visitCountry(id);
+    $('addStampBtn').focus(); // η κάρτα ξαναζωγραφίστηκε — κρατάμε το focus στο κουμπί
+  });
   $('readStoryBtn').addEventListener('click', () => {
     storyVisible = !storyVisible;
     renderDiscoveryCard(id);
+    $('readStoryBtn').focus();
     sound(600);
   });
 }
@@ -405,6 +428,7 @@ function bindFlags() {
 }
 
 function newFlagsRound() {
+  flagsSolved = false;
   const pool = [...COUNTRIES];
   pool.sort(() => Math.random() - 0.5);
   flagsCountryId = pool[0].id;
@@ -425,13 +449,13 @@ function renderFlagsGame() {
   $('flagsCountryCard').innerHTML = `
     <div class="flags-card" style="--continent-color:${col}">
       <div class="flags-card-inner">
-        <span class="flags-continent-badge" style="background:${col}">${correct.continent}</span>
+        <span class="flags-continent-badge" style="background:${continentTextColor(correct.continent)}">${correct.continent}</span>
         <h2 class="flags-country-name">${correct.name}</h2>
         <p class="flags-capital">🏙️ ${correct.capital}</p>
         <p class="flags-prompt">Ποια είναι η σημαία αυτής της χώρας;</p>
       </div>
-      <div class="flags-drop-zone" id="flagsDropZone" aria-label="Σέρε εδώ τη σωστή σημαία">
-        <span>⬇ Σέρε ή πάτησε τη σωστή σημαία εδώ</span>
+      <div class="flags-drop-zone" id="flagsDropZone" aria-label="Σύρε εδώ τη σωστή σημαία">
+        <span>⬇ Σύρε ή πάτησε τη σωστή σημαία εδώ</span>
       </div>
     </div>`;
 
@@ -442,7 +466,7 @@ function renderFlagsGame() {
       <span class="flag-name">${c.name}</span>
     </button>`).join('');
 
-  $('flagsFeedback').textContent = 'Πάτησε ή σέρε τη σωστή σημαία!';
+  $('flagsFeedback').textContent = 'Πάτησε ή σύρε τη σωστή σημαία!';
   $('flagsFeedback').className = 'flags-feedback';
 
   bindFlagOptions();
@@ -484,8 +508,11 @@ function bindFlagOptions() {
 }
 
 function checkFlag(flagId) {
+  // Αν η σωστή σημαία βρέθηκε ήδη, αγνοούμε νέα "ρίψη" (αλλιώς ξεκινούσαν δύο νέοι γύροι)
+  if (flagsSolved) return;
   const fb = $('flagsFeedback');
   if (flagId === flagsCountryId) {
+    flagsSolved = true;
     const c = byId(flagsCountryId);
     fb.textContent = `Τέλεια σύνδεση! ${c.flag} — ${c.name}! 🎉`;
     fb.className = 'flags-feedback correct';
@@ -493,7 +520,14 @@ function checkFlag(flagId) {
     $('flagsDropZone').innerHTML = `<span style="font-size:3rem">${c.flag}</span>`;
     $$('.flag-option').forEach(b => { b.disabled = true; });
     visitCountry(flagsCountryId);
-    setTimeout(newFlagsRound, 1800);
+    setTimeout(() => {
+      newFlagsRound();
+      // Το κουμπί που πατήθηκε χάθηκε — δίνουμε το focus στην πρώτη νέα σημαία
+      if (document.activeElement === document.body && $('flags').classList.contains('active')) {
+        const first = document.querySelector('.flag-option');
+        if (first) first.focus();
+      }
+    }, 1800);
   } else {
     fb.textContent = 'Δοκίμασε ξανά, αυτή η σημαία ταξίδεψε αλλού! ✈️';
     fb.className = 'flags-feedback wrong';
@@ -521,7 +555,7 @@ function renderStamps() {
   const stampHTML = visited.map(id => {
     const c = byId(id);
     if (!c) return '';
-    const col = continentColor(c.continent);
+    const col = continentTextColor(c.continent);
     const rot = (Math.random() * 10 - 5).toFixed(1);
     return `<div class="stamp discovered" style="--rot:${rot}deg;--col:${col}">
       <span class="stamp-flag">${c.flag}</span>
@@ -545,7 +579,7 @@ function renderContinentProgress() {
     const col = continentColor(cont);
     return `<div class="cont-bar">
       <div class="cont-bar-label">
-        <span style="color:${col}">${cont}</span>
+        <span style="color:${continentTextColor(cont)}">${cont}</span>
         <span>${done}/${total}</span>
       </div>
       <div class="mini-meter"><div class="mini-fill" style="width:${pct}%;background:${col}"></div></div>
@@ -591,7 +625,10 @@ function bindCollections() {
   $$('.album-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       albumTab = btn.dataset.album;
-      $$('.album-tab').forEach(b => b.classList.toggle('active', b === btn));
+      $$('.album-tab').forEach(b => {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-selected', String(b === btn)); // ποια καρτέλα είναι επιλεγμένη
+      });
       renderCollections();
     });
   });
@@ -633,6 +670,8 @@ function bindSettings() {
     state = { ...structuredClone(DEFAULT_STATE), settings: kept };
     saveState();
     renderAll();
+    // Αν ήταν ανοιχτή κάρτα χώρας, την ξαναδείχνουμε χωρίς το "✅ Στο διαβατήριο!"
+    if (selectedCountryId) renderDiscoveryCard(selectedCountryId);
     toast('Το διαβατήριο ξεκίνησε από την αρχή. ✈️');
   });
   $('soundToggle').checked = state.settings.sound;

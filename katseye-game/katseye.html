@@ -46,6 +46,9 @@
       gap: 8px;
       padding: 0 16px;
       height: 52px;
+      /* Σε μικρές οθόνες (κινητά) τα κουμπιά δεν χωράνε — τα κάνουμε να κυλάνε στο πλάι */
+      overflow-x: auto;
+      scrollbar-width: thin;
     }
     .nav-logo {
       font-size: 0.85rem;
@@ -53,10 +56,11 @@
       color: var(--pink);
       letter-spacing: 2px;
       margin-right: auto;
+      white-space: nowrap; /* το λογότυπο μένει σε μία γραμμή */
     }
     .nav-link {
       display: inline-block;
-      padding: 7px 14px;
+      padding: 9px 14px; /* αρκετά μεγάλο για να το πατάνε εύκολα τα δάχτυλα */
       border-radius: 50px;
       border: 2px solid rgba(168,85,247,0.5);
       color: #fff;
@@ -68,7 +72,8 @@
       white-space: nowrap;
     }
     .nav-link:hover { border-color: var(--pink); color: var(--pink); transform: scale(1.05); }
-    .nav-link.active { background: linear-gradient(135deg, var(--pink), var(--purple)); border-color: var(--gold); }
+    /* Σκούρα γράμματα πάνω στο ροζ/μοβ, για να διαβάζονται καλά */
+    .nav-link.active { background: linear-gradient(135deg, var(--pink), var(--purple)); border-color: var(--gold); color: var(--dark); }
 
     /* ===== STARS BG ===== */
     .stars-container {
@@ -145,7 +150,7 @@
       cursor: pointer; transition: all 0.2s;
       text-transform: uppercase; letter-spacing: 1px;
     }
-    .btn-pink { background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; }
+    .btn-pink { background: linear-gradient(135deg, var(--pink), var(--purple)); color: var(--dark); }
     .btn-gold { background: linear-gradient(135deg, var(--gold), #f59e0b); color: var(--dark); }
     .btn-cyan { background: linear-gradient(135deg, var(--cyan), #0ea5e9); color: var(--dark); }
     .btn:hover  { transform: scale(1.06); box-shadow: 0 6px 22px rgba(255,79,163,0.45); }
@@ -181,7 +186,7 @@
     }
     .sound-btn {
       background: none; border: 2px solid var(--purple); border-radius: 50%;
-      width: 36px; height: 36px; font-size: 1.1rem; cursor: pointer;
+      width: 44px; height: 44px; font-size: 1.1rem; cursor: pointer;
       color: #fff; display: flex; align-items: center; justify-content: center;
       transition: all 0.2s; flex-shrink: 0;
     }
@@ -223,7 +228,7 @@
       transition: all 0.15s; text-align: center; user-select: none;
     }
     .mob-btn:active { background: #3b0764; transform: scale(0.94); }
-    .mob-btn.dance-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); font-size: 1rem; }
+    .mob-btn.dance-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); color: var(--dark); font-size: 1rem; }
     .mob-btn.pose-btn  { background: linear-gradient(135deg, var(--gold), #f59e0b); color: var(--dark); font-size: 1rem; }
     .mob-empty { background: transparent; border: none; }
 
@@ -269,7 +274,21 @@
 
     footer {
       text-align: center; padding: 24px 0 8px;
-      color: #6b21a8; font-size: 0.85rem;
+      color: #a78bfa; font-size: 0.85rem; /* πιο ανοιχτό μοβ, για να διαβάζεται */
+    }
+
+    /* ===== ΠΡΟΣΒΑΣΙΜΟΤΗΤΑ ===== */
+    /* Καθαρό περίγραμμα όταν κάποιος κινείται με το πληκτρολόγιο (Tab) */
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+    /* Αν ο υπολογιστής ζητάει "λιγότερη κίνηση", σταματάμε τα πολλά animations */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .stars-container, #confettiCanvas { display: none; }
     }
   </style>
 </head>
@@ -284,8 +303,8 @@
     <a class="nav-link" href="../geography-game/geography.html">🌍 Γεωγραφία</a>
   </nav>
 
-  <div class="stars-container" id="starsContainer"></div>
-  <canvas id="confettiCanvas"></canvas>
+  <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
 
   <div class="page">
 
@@ -312,11 +331,11 @@
         </div>
         <div class="stat-badge" id="comboBadge">🔥 Combo x1</div>
         <div class="stat-badge" id="timeBadge">⏱ 00:00</div>
-        <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
+        <button class="sound-btn" id="soundBtn" onclick="toggleSound()" aria-label="Ήχος" aria-pressed="true">🔊</button>
       </div>
 
       <div class="canvas-wrap">
-        <canvas id="stage" width="600" height="380"></canvas>
+        <canvas id="stage" width="600" height="380" role="img" aria-label="Η σκηνή του χορού: κινήσου με τα βελάκια, χόρεψε με το SPACE, κάνε πόζα με το CTRL"></canvas>
         <div id="floatText"></div>
       </div>
 
@@ -329,11 +348,11 @@
       <!-- Mobile controls -->
       <div class="mobile-controls">
         <div class="mob-empty"></div>
-        <button class="mob-btn" id="mobUp">▲</button>
+        <button class="mob-btn" id="mobUp" aria-label="Πάνω">▲</button>
         <div class="mob-empty"></div>
-        <button class="mob-btn" id="mobLeft">◀</button>
-        <button class="mob-btn" id="mobDown">▼</button>
-        <button class="mob-btn" id="mobRight">▶</button>
+        <button class="mob-btn" id="mobLeft" aria-label="Αριστερά">◀</button>
+        <button class="mob-btn" id="mobDown" aria-label="Κάτω">▼</button>
+        <button class="mob-btn" id="mobRight" aria-label="Δεξιά">▶</button>
         <button class="mob-btn dance-btn" id="mobDance">💃 ΧΟΡΟΣ</button>
         <div class="mob-empty"></div>
         <button class="mob-btn pose-btn" id="mobPose">✨ ΠΟΖΑ</button>
@@ -351,7 +370,7 @@
           <div class="end-stat"><span class="end-stat-num" id="endTime">0s</span>⏱ Χρόνος</div>
         </div>
         <p class="end-msg" id="endMsg"></p>
-        <button class="btn btn-pink" onclick="resetGame()" style="margin-right:12px">🔄 Παίξε Ξανά!</button>
+        <button class="btn btn-pink" id="playAgainBtn" onclick="resetGame()" style="margin-right:12px">🔄 Παίξε Ξανά!</button>
         <button class="btn btn-cyan" onclick="goSelect()">👤 Άλλο Μέλος</button>
       </div>
     </div>
@@ -454,6 +473,9 @@
   //  WEB AUDIO API
   // ============================================================
   let audioCtx = null;
+  // Το "beat" περνάει από δικό του κανάλι (beatGain), ώστε να μπορούμε να το
+  // σταματήσουμε όταν κλείνει ο ήχος ή τελειώνει το παιχνίδι.
+  let beatGain = null;
 
   function ensureAudio() {
     if (!audioCtx) {
@@ -462,12 +484,12 @@
     if (audioCtx.state === "suspended") audioCtx.resume();
   }
 
-  function playNote(freq, start, dur, type, vol) {
+  function playNote(freq, start, dur, type, vol, out) {
     if (!audioCtx) return;
     const osc  = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    gain.connect(out || audioCtx.destination);
     osc.type = type || "sine";
     osc.frequency.setValueAtTime(freq, start);
     gain.gain.setValueAtTime(vol || 0.25, start);
@@ -476,17 +498,25 @@
     osc.stop(start + dur + 0.05);
   }
 
+  function stopBeat() {
+    // Αποσυνδέουμε το κανάλι του beat — οι νότες που είχαν προγραμματιστεί σωπαίνουν
+    if (beatGain) { beatGain.disconnect(); beatGain = null; }
+  }
+
   function startBeat() {
+    stopBeat(); // ποτέ δύο beats μαζί
     if (!soundEnabled || !audioCtx) return;
+    beatGain = audioCtx.createGain();
+    beatGain.connect(audioCtx.destination);
     const bpd = 60 / 120;
     const barDur = bpd * 4;
     let t = audioCtx.currentTime;
     for (let i = 0; i < 80; i++) {
       const bt = t + i * barDur;
       // Kick on every beat
-      [0, bpd, bpd*2, bpd*3].forEach(o => playNote(60, bt + o, 0.12, "sine", 0.35));
+      [0, bpd, bpd*2, bpd*3].forEach(o => playNote(60, bt + o, 0.12, "sine", 0.35, beatGain));
       // Snare on 2 & 4
-      [bpd, bpd*3].forEach(o => playNote(220, bt + o, 0.08, "sawtooth", 0.1));
+      [bpd, bpd*3].forEach(o => playNote(220, bt + o, 0.08, "sawtooth", 0.1, beatGain));
     }
   }
 
@@ -536,7 +566,9 @@
     ensureAudio();
     soundEnabled = !soundEnabled;
     document.getElementById("soundBtn").textContent = soundEnabled ? "🔊" : "🔇";
+    document.getElementById("soundBtn").setAttribute("aria-pressed", String(soundEnabled));
     if (soundEnabled && gameRunning) startBeat();
+    if (!soundEnabled) stopBeat(); // σβήνει αμέσως και το beat
   }
 
   // ============================================================
@@ -548,6 +580,10 @@
     MEMBERS.forEach(function(m, i) {
       const card = document.createElement("div");
       card.className = "member-card";
+      // Η κάρτα λειτουργεί σαν κουμπί: μπορείς να τη διαλέξεις και με Tab + Enter/Space
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-pressed", "false");
 
       const emojiEl = document.createElement("div");
       emojiEl.className = "mc-emoji";
@@ -576,6 +612,9 @@
       card.appendChild(moveEl);
 
       card.addEventListener("click", function() { selectMember(i); });
+      card.addEventListener("keydown", function(e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectMember(i); }
+      });
       grid.appendChild(card);
     });
   }
@@ -585,6 +624,7 @@
     selectedIdx = i;
     document.querySelectorAll(".member-card").forEach(function(c, idx) {
       c.classList.toggle("selected", idx === i);
+      c.setAttribute("aria-pressed", String(idx === i));
     });
     document.getElementById("startBtn").disabled = false;
     playMoveSound();
@@ -627,6 +667,8 @@
     if (animFrameId) cancelAnimationFrame(animFrameId);
     gameRunning = false;
     confettiActive = false;
+    stopBeat();
+    drawConfetti(); // καθαρίζει το κομφετί από την οθόνη
     document.getElementById("screen-end").style.display    = "none";
     document.getElementById("screen-game").style.display   = "none";
     document.getElementById("screen-select").style.display = "block";
@@ -785,10 +827,14 @@
   // ============================================================
   function triggerFinalPerformance() {
     gameRunning = false;
+    stopBeat(); // το παιχνίδι τελείωσε — σταματάει και το beat
     playFanfare();
     startConfetti();
     setTimeout(function() {
       cancelAnimationFrame(animFrameId);
+      // Σβήνουμε το κομφετί, αλλιώς μένει "παγωμένο" πάνω από την οθόνη τέλους
+      confettiActive = false;
+      drawConfetti();
       showEndScreen();
     }, 3000);
   }
@@ -804,6 +850,7 @@
     document.getElementById("endCombos").textContent = totalCombos;
     document.getElementById("endTime").textContent   = elapsed + "s";
     document.getElementById("endMsg").textContent    = m.victoryMsg;
+    document.getElementById("playAgainBtn").focus(); // για όποιον παίζει με πληκτρολόγιο
   }
 
   // ============================================================
@@ -1006,6 +1053,8 @@
   // ============================================================
   document.addEventListener("keydown", function(e) {
     keys[e.key] = true;
+    // Μόνο όταν παίζουμε "κλέβουμε" το SPACE — αλλιώς το SPACE πρέπει να πατάει κουμπιά
+    if (!gameRunning) return;
     if (e.key === " ")       { e.preventDefault(); doMove(); }
     if (e.key === "Control") { e.preventDefault(); doPose(); }
   });

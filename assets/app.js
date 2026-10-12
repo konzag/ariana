@@ -263,6 +263,8 @@
       ensureAudioCtx();
       soundEnabled = !soundEnabled;
       this.textContent = soundEnabled ? "🔊" : "🔇";
+      // Λέμε και στους αναγνώστες οθόνης αν ο ήχος είναι ανοιχτός
+      this.setAttribute("aria-pressed", String(soundEnabled));
     });
 
     // ============================================================
@@ -316,6 +318,7 @@
         const btn = document.createElement("button");
         btn.className = "member-btn";
         btn.id = "member-" + index;
+        btn.setAttribute("aria-pressed", "false"); // ποιο μέλος είναι επιλεγμένο
         btn.innerHTML = `<span class="emoji">${member.emoji}</span>${member.name}`;
         btn.onclick = () => selectMember(index);
         grid.appendChild(btn);
@@ -331,8 +334,10 @@
 
       MEMBERS.forEach((_, i) => {
         document.getElementById("member-" + i).classList.remove("active");
+        document.getElementById("member-" + i).setAttribute("aria-pressed", "false");
       });
       document.getElementById("member-" + index).classList.add("active");
+      document.getElementById("member-" + index).setAttribute("aria-pressed", "true");
       selectedMember = MEMBERS[index].name;
 
       // Ενημέρωσε την κάρτα πληροφοριών μέλους
@@ -387,6 +392,10 @@
       fb.textContent = "";
       document.getElementById("nextBtn").style.display = "none";
       document.getElementById("challengeCard").classList.remove("show");
+      // Όταν κρύβουμε την πρόκληση, ξαναδείχνουμε το μήνυμα, αλλιώς η κάρτα μένει άδεια
+      document.getElementById("challengePlaceholder").style.display = "block";
+      // Πηγαίνουμε το "focus" στην ερώτηση, για όποιον παίζει με πληκτρολόγιο
+      document.getElementById("questionBox").focus();
     }
 
     // ============================================================
@@ -423,6 +432,8 @@
       }
 
       document.getElementById("nextBtn").style.display = "inline-block";
+      // Το κουμπί που πατήθηκε απενεργοποιήθηκε — πάμε το focus στο "Επόμενη Ερώτηση"
+      document.getElementById("nextBtn").focus();
     }
 
     // ============================================================
@@ -495,6 +506,7 @@
       }
 
       section.classList.add("show");
+      title.focus(); // το focus πάει στον τίτλο των αποτελεσμάτων
     }
 
     // ============================================================
@@ -513,7 +525,7 @@
 
       MEMBERS.forEach((_, i) => {
         const btn = document.getElementById("member-" + i);
-        if (btn) btn.classList.remove("active");
+        if (btn) { btn.classList.remove("active"); btn.setAttribute("aria-pressed", "false"); }
       });
 
       document.getElementById("memberInfoCard").classList.remove("show");
@@ -523,6 +535,7 @@
       document.getElementById("resultsSection").classList.remove("show");
       document.getElementById("challengeCard").classList.remove("show");
       document.getElementById("challengePlaceholder").style.display = "block";
+      document.getElementById("member-0").focus(); // πίσω στην επιλογή μέλους
     }
 
     // ============================================================
