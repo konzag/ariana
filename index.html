@@ -28,10 +28,10 @@
   </nav>
 
   <!-- Φόντο με αιωρούμενα αστέρια -->
-  <div class="stars-container" id="starsContainer"></div>
+  <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
 
   <!-- Χορευτής στη γωνία -->
-  <div class="dancer-wrap">
+  <div class="dancer-wrap" aria-hidden="true">
     <div class="dancer" id="dancer">
       <div class="dancer-head"></div>
       <div class="dancer-body"></div>
@@ -63,7 +63,7 @@
       <div class="score-item">⭐ Αστέρια: <span class="score-num" id="scoreDisplay">0</span></div>
       <div class="score-item">❓ Ερ: <span class="score-num" id="qNumDisplay">0</span>/7</div>
       <div class="score-item">🏆 Καλύτερο: <span class="best-score-num" id="bestScoreDisplay">0</span></div>
-      <button class="sound-toggle" id="soundToggle" title="Ήχος ανοιχτός/κλειστός">🔊</button>
+      <button class="sound-toggle" id="soundToggle" title="Ήχος ανοιχτός/κλειστός" aria-label="Ήχος" aria-pressed="true">🔊</button>
     </div>
 
     <!-- ===== ΕΠΙΛΟΓΉ ΜΈΛΟΥΣ ===== -->
@@ -98,11 +98,11 @@
         <div class="progress-bar" id="progressBar" style="width:0%"></div>
       </div>
 
-      <div class="question-box" id="questionBox"></div>
+      <div class="question-box" id="questionBox" tabindex="-1"></div>
 
       <div class="options-grid" id="optionsGrid"></div>
 
-      <div class="feedback" id="feedback"></div>
+      <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
 
       <div class="btn-center">
         <button class="btn btn-cyan" id="nextBtn" onclick="nextQuestion()" style="display:none;">
@@ -119,7 +119,7 @@
         <div class="challenge-count" id="challengeCount"></div>
         <div class="challenge-text" id="challengeText"></div>
       </div>
-      <p id="challengePlaceholder" style="color:#6b21a8; font-style:italic;">
+      <p id="challengePlaceholder" style="color:#c4b5fd; font-style:italic;">
         Απάντησε σωστά σε μια ερώτηση για να ξεκλειδώσεις την πρόκληση χορού σου! 🎯
       </p>
     </div>
@@ -129,7 +129,7 @@
       <!-- Banner νέου ρεκόρ -->
       <div class="new-record-banner" id="newRecordBanner">🎉 ΝΕΟ ΡΕΚΟΡ! 🎉</div>
       <div class="results-emoji" id="resultsEmoji"></div>
-      <div class="results-title" id="resultsTitle"></div>
+      <div class="results-title" id="resultsTitle" tabindex="-1"></div>
       <div class="results-msg"   id="resultsMsg"></div>
       <div class="btn-center">
         <button class="btn btn-gold" onclick="resetGame()">Παίξε Ξανά! 🔄</button>
