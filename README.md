@@ -1,6 +1,6 @@
 # 🌟 Τα Πρώτα Projects Προγραμματισμού της Αριάνας! 🌟
 
-**Άνοιγμα online:** [https://konzag.github.io/ariana/](https://konzag.github.io/ariana/)
+**Άνοιγμα online:** [https://public.tailc01d70.ts.net/ariana/](https://public.tailc01d70.ts.net/ariana/) (από το «Τα Παιχνίδια μας», το hub με όλα τα παιχνίδια του σπιτιού· το GitHub Pages έκλεισε)
 
 **Python setup:**
 ```bash
