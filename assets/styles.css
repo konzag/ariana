@@ -1,5 +1,5 @@
 /* ===== ΓΡΑΜΜΑΤΟΣΕΙΡΈΣ & ΒΑΣΙΚΆ ΧΡΏΜΑΤΑ ===== */
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+    @import url('/static/fonts/comfortaa.css'); /* γραμματοσειρά Comfortaa από το hub (όχι Google Fonts) */
 
     /* ===== NAV BAR ===== */
     .nav-bar {
@@ -31,7 +31,7 @@
       border-radius: 50px;
       border: 2px solid rgba(168,85,247,0.5);
       color: #fff;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       font-weight: 700;
       font-size: 0.85rem;
       text-decoration: none;
@@ -55,7 +55,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       background: var(--dark);
       color: #fff;
       min-height: 100vh;
@@ -210,7 +210,7 @@
       padding: 14px 8px;
       cursor: pointer;
       color: #fff;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       font-weight: 700;
       font-size: 0.9rem;
       text-align: center;
@@ -292,7 +292,7 @@
       padding: 14px 10px;
       cursor: pointer;
       color: #fff;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       font-weight: 700;
       font-size: 0.95rem;
       text-align: center;
@@ -326,7 +326,7 @@
       padding: 14px 32px;
       border-radius: 50px;
       border: none;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       font-weight: 900;
       font-size: 1rem;
       cursor: pointer;
@@ -383,7 +383,7 @@
       cursor: pointer;
       background: none;
       border: none;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       font-size: 0.85rem;
       margin-left: 10px;
       min-height: 40px; /* μεγαλύτερος στόχος για το δάχτυλο */

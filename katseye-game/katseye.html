@@ -2,6 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8" />
+  <script src="../assets/hub-shell.js" data-game="ariana"></script> <!-- 🏠 + 🔊 του hub: πρώτο, πριν από τα άλλα scripts -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>💃 KATSEYE Dance Stage ✨</title>
@@ -13,7 +14,7 @@
   <meta name="twitter:card" content="summary" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+    @import url('/static/fonts/comfortaa.css'); /* γραμματοσειρά Comfortaa από το hub (όχι Google Fonts) */
 
     :root {
       --pink:   #ff4fa3;
@@ -27,7 +28,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       background: var(--dark);
       color: #fff;
       min-height: 100vh;
@@ -64,7 +65,7 @@
       border-radius: 50px;
       border: 2px solid rgba(168,85,247,0.5);
       color: #fff;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Nunito', 'Comfortaa', sans-serif;
       font-weight: 700;
       font-size: 0.85rem;
       text-decoration: none;
@@ -146,7 +147,7 @@
     .btn {
       display: inline-block; padding: 14px 36px;
       border-radius: 50px; border: none;
-      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.05rem;
+      font-family: 'Nunito', 'Comfortaa', sans-serif; font-weight: 900; font-size: 1.05rem;
       cursor: pointer; transition: all 0.2s;
       text-transform: uppercase; letter-spacing: 1px;
     }
@@ -224,7 +225,7 @@
       background: var(--card); border: 2px solid var(--purple);
       border-radius: 14px; padding: 14px 6px;
       font-size: 1.3rem; cursor: pointer; color: #fff;
-      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-family: 'Nunito', 'Comfortaa', sans-serif; font-weight: 900;
       transition: all 0.15s; text-align: center; user-select: none;
     }
     .mob-btn:active { background: #3b0764; transform: scale(0.94); }
