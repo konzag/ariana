@@ -293,12 +293,12 @@
 
     <!-- ===== ΚΑΡΤΕΛΕΣ ΤΑΞΕΩΝ ===== -->
     <div class="tabs">
-      <button class="tab-btn" aria-pressed="false" onclick="showTab('alpha')">Α'</button>
-      <button class="tab-btn active" id="tab-beta" aria-pressed="true" onclick="showTab('beta')">Β' ⭐</button>
-      <button class="tab-btn" aria-pressed="false" onclick="showTab('gamma')">Γ'</button>
-      <button class="tab-btn" aria-pressed="false" onclick="showTab('delta')">Δ'</button>
-      <button class="tab-btn" aria-pressed="false" onclick="showTab('epsilon')">Ε'</button>
-      <button class="tab-btn" aria-pressed="false" onclick="showTab('st')">ΣΤ'</button>
+      <button class="tab-btn" aria-pressed="false" data-tab="alpha">Α'</button>
+      <button class="tab-btn active" id="tab-beta" aria-pressed="true" data-tab="beta">Β' ⭐</button>
+      <button class="tab-btn" aria-pressed="false" data-tab="gamma">Γ'</button>
+      <button class="tab-btn" aria-pressed="false" data-tab="delta">Δ'</button>
+      <button class="tab-btn" aria-pressed="false" data-tab="epsilon">Ε'</button>
+      <button class="tab-btn" aria-pressed="false" data-tab="st">ΣΤ'</button>
     </div>
 
     <!-- ===== Α' ΔΗΜΟΤΙΚΟΥ ===== -->
@@ -499,6 +499,12 @@
         btns[idx].setAttribute("aria-pressed", "true");
       }
     }
+
+    // The games hub serves this page with a strict Content-Security-Policy, so each tab button names its
+    // class in data-tab and gets its click handler here (no inline onclick attributes). Same function as before.
+    document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
+      btn.addEventListener("click", () => showTab(btn.dataset.tab));
+    });
   </script>
 </body>
 </html>

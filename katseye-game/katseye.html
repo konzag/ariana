@@ -317,7 +317,7 @@
       </header>
       <div class="members-grid" id="membersGrid"></div>
       <div class="btn-center">
-        <button class="btn btn-pink" id="startBtn" onclick="startGame()" disabled>
+        <button class="btn btn-pink" id="startBtn" disabled>
           ▶ Ανέβα στη Σκηνή!
         </button>
       </div>
@@ -332,7 +332,7 @@
         </div>
         <div class="stat-badge" id="comboBadge">🔥 Combo x1</div>
         <div class="stat-badge" id="timeBadge">⏱ 00:00</div>
-        <button class="sound-btn" id="soundBtn" onclick="toggleSound()" aria-label="Ήχος" aria-pressed="true">🔊</button>
+        <button class="sound-btn" id="soundBtn" aria-label="Ήχος" aria-pressed="true">🔊</button>
       </div>
 
       <div class="canvas-wrap">
@@ -371,8 +371,8 @@
           <div class="end-stat"><span class="end-stat-num" id="endTime">0s</span>⏱ Χρόνος</div>
         </div>
         <p class="end-msg" id="endMsg"></p>
-        <button class="btn btn-pink" id="playAgainBtn" onclick="resetGame()" style="margin-right:12px">🔄 Παίξε Ξανά!</button>
-        <button class="btn btn-cyan" onclick="goSelect()">👤 Άλλο Μέλος</button>
+        <button class="btn btn-pink" id="playAgainBtn" style="margin-right:12px">🔄 Παίξε Ξανά!</button>
+        <button class="btn btn-cyan" id="otherMemberBtn">👤 Άλλο Μέλος</button>
       </div>
     </div>
 
@@ -1106,6 +1106,16 @@
   //  INIT
   // ============================================================
   buildCards();
+
+  // ============================================================
+  //  BUTTONS — the games hub serves this page with a strict Content-Security-Policy, so the buttons
+  //  get their click handlers here (addEventListener) instead of inline onclick attributes.
+  //  Same functions as before.
+  // ============================================================
+  document.getElementById("startBtn").addEventListener("click", () => startGame());
+  document.getElementById("soundBtn").addEventListener("click", () => toggleSound());
+  document.getElementById("playAgainBtn").addEventListener("click", () => resetGame());
+  document.getElementById("otherMemberBtn").addEventListener("click", () => goSelect());
   </script>
 </body>
 </html>

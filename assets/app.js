@@ -544,3 +544,13 @@
     createStars();
     buildMemberButtons();
     updateBestScoreDisplay(); // Διάβασε και εμφάνισε το αποθηκευμένο ρεκόρ
+
+    // ============================================================
+    //  ΚΟΥΜΠΙΆ — the games hub serves this page with a strict Content-Security-Policy, so the buttons
+    //  get their click handlers here (addEventListener) instead of inline onclick attributes.
+    //  Same functions as before.
+    // ============================================================
+    document.getElementById("startBtn").addEventListener("click", () => startGame());
+    document.getElementById("nextBtn").addEventListener("click", () => nextQuestion());
+    document.getElementById("playAgainBtn").addEventListener("click", () => resetGame());
+    document.getElementById("resetRecordBtn").addEventListener("click", () => clearBestScore());
