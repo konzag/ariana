@@ -85,7 +85,7 @@
       </div>
 
       <div class="btn-center" style="margin-top:20px;">
-        <button class="btn btn-pink" id="startBtn" onclick="startGame()" disabled>
+        <button class="btn btn-pink" id="startBtn" disabled>
           Ας Χορέψουμε! 💃
         </button>
       </div>
@@ -106,7 +106,7 @@
       <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
 
       <div class="btn-center">
-        <button class="btn btn-cyan" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+        <button class="btn btn-cyan" id="nextBtn" style="display:none;">
           Επόμενη Ερώτηση ➡️
         </button>
       </div>
@@ -133,14 +133,14 @@
       <div class="results-title" id="resultsTitle" tabindex="-1"></div>
       <div class="results-msg"   id="resultsMsg"></div>
       <div class="btn-center">
-        <button class="btn btn-gold" onclick="resetGame()">Παίξε Ξανά! 🔄</button>
+        <button class="btn btn-gold" id="playAgainBtn">Παίξε Ξανά! 🔄</button>
       </div>
     </div>
 
     <!-- ===== ΥΠΟΣΈΛΙΔΟ ===== -->
     <footer>
       Φτιαγμένο με 💖 για την Αριάνα · Το πρώτο της coding project!
-      <button class="reset-record-link" onclick="clearBestScore()">Μηδενισμός ρεκόρ</button>
+      <button class="reset-record-link" id="resetRecordBtn">Μηδενισμός ρεκόρ</button>
     </footer>
 
   </div><!-- τέλος .page -->
