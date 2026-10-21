@@ -108,7 +108,9 @@ function matches(el, selector) {
   });
 }
 
-export function loadPage(root, page) {
+// options.storage: the page's localStorage before its scripts run — a plain object of saved values
+// ({ key: 'text' }) or a ready storage object (e.g. one whose getItem/setItem throw, like a locked-down browser).
+export function loadPage(root, page, options = {}) {
   const file = path.join(root, page);
   const html = fs.readFileSync(file, 'utf8');
   const withoutScripts = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
@@ -149,8 +151,8 @@ export function loadPage(root, page) {
     return id;
   };
 
-  const storage = () => {
-    const map = new Map();
+  const storage = (initial = {}) => {
+    const map = new Map(Object.entries(initial).map(([k, v]) => [k, String(v)]));
     return {
       getItem: (k) => (map.has(k) ? map.get(k) : null),
       setItem: (k, v) => map.set(k, String(v)),
@@ -169,7 +171,8 @@ export function loadPage(root, page) {
     head: all.find((e) => e.tagName === 'HEAD') || make('head', {}),
     readyState: 'complete',
     currentScript: null,
-    getElementById: (id) => byId.get(id) || null,
+    // Elements made by the scripts get their id later (btn.id = ...), so look those up too.
+    getElementById: (id) => byId.get(id) || all.find((el) => el.id === id) || null,
     querySelectorAll: (sel) => all.filter((el) => sel.split(',').some((s) => matches(el, s))),
     querySelector: (sel) => all.find((el) => sel.split(',').some((s) => matches(el, s))) || null,
     getElementsByClassName: (c) => all.filter((el) => el.classList.contains(c)),
@@ -194,9 +197,12 @@ export function loadPage(root, page) {
     setTimeout: setTimer(false), setInterval: setTimer(true),
     clearTimeout: (id) => timers.delete(id), clearInterval: (id) => timers.delete(id),
     requestAnimationFrame: () => 0, cancelAnimationFrame() {},
-    localStorage: storage(), sessionStorage: storage(),
+    localStorage: typeof options.storage?.getItem === 'function' ? options.storage : storage(options.storage),
+    sessionStorage: storage(),
+    structuredClone,
     navigator: { userAgent: 'node', maxTouchPoints: 0, vibrate() {}, language: 'el' },
     location: { href: 'http://localhost/', pathname: '/', search: '', hash: '', reload() {} },
+    history: { replaceState() {}, pushState() {}, back() {} },
     matchMedia: () => ({ matches: false, addEventListener() {}, addListener() {} }),
     performance: { now: () => now },
     alert() {}, confirm: () => true, prompt: () => null,
@@ -266,4 +272,9 @@ export function findInlineHandlers(root) {
     const text = fs.readFileSync(path.join(root, f), 'utf8');
     return [...text.matchAll(global)].map((m) => `${f}:${text.slice(0, m.index).split('\n').length}: ${m[0]}`);
   });
+}
+
+// Read or run something inside the page (e.g. a top-level `let state` that is not a window property).
+export function evalIn(win, code) {
+  return vm.runInContext(code, win);
 }
