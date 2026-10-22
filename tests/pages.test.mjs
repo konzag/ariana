@@ -118,3 +118,21 @@ test("γεωγραφία: οι καρφίτσες του χάρτη δεν κρ�
 test("γεωγραφία: οι καρτέλες άλμπουμ ενημερώνουν το aria-selected", () => {
   assert.match(read("geography-game/js/geography.js"), /setAttribute\('aria-selected'/);
 });
+
+// ---- ARIANA-T1: το όνομα του λογότυπου στη Γεωγραφία περιέχει ό,τι γράφει (WCAG 2.5.3) ----
+// Όποιος χρησιμοποιεί φωνητικές εντολές λέει «Passport Explorer της Αριάνας», γιατί αυτό βλέπει.
+// Αν το aria-label λέει κάτι άλλο, ο σύνδεσμος δεν βρίσκεται. (Ο ίδιος έλεγχος τρέχει και με axe
+// στο tests/ui/axe.spec.ts· αυτός εδώ είναι ο γρήγορος, χωρίς browser.)
+test("το λογότυπο της Γεωγραφίας: το aria-label ξεκινά με το κείμενο που φαίνεται", () => {
+  const html = read("geography-game/geography.html");
+  const brand = html.match(/<a class="brand"[^>]*>[\s\S]*?<\/a>/)[0];
+  const label = brand.match(/aria-label="([^"]*)"/)[1];
+  // Το ορατό κείμενο: ό,τι μένει αν βγάλουμε τα tags και το διακοσμητικό 🌍.
+  const visible = brand
+    .replace(/<span class="brand-icon"[^>]*>[\s\S]*?<\/span>/, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  assert.equal(visible, "Passport Explorer της Αριάνας");
+  assert.ok(label.startsWith(visible), `aria-label «${label}» πρέπει να ξεκινά με «${visible}»`);
+});
