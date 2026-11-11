@@ -1,7 +1,7 @@
 # Ariana — Claude Context
 
 ## Project
-Interactive K-pop dance and school learning games for Ariana (8 years old).
+Interactive K-pop dance and school learning games for Ariana.
 HTML + CSS + JS (browser) + Python (terminal). Served by the family games hub «Τα Παιχνίδια μας» (konzag/games-hub)
 at `/ariana/`; GitHub Pages is closed (2026-10-14).
 
@@ -28,5 +28,5 @@ https://github.com/konzag/games-template/blob/main/GAME-STANDARD.md (copy: konza
 - Flow: feature branch → PR to `staging` → release PR `staging → main` (owner GO); the hub then bumps its submodule
 - All content in Greek
 - Code must have extensive comments so Ariana can read it someday
-- Keep age-appropriate: 8 years old, loves K-pop (KATSEYE), gymnastics, swimming, dance
+- Keep it child-friendly (primary school); loves K-pop (KATSEYE), gymnastics, swimming, dance. Never write a child's age, current class, date of birth, school or teacher in this public repo (owner decision L4-29)
 - Never add server-side code or dependencies requiring installation
