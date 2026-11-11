@@ -1,9 +1,13 @@
 # Changelog
 
-## 2026-11-02 · fix: school.html for the school year 2026-27 (L1-37, owner answer L5-05)
-- `school-game/school.html`: Ariana is in Δ' Δημοτικού in 2026-27, so the Δ' tab is the one open first and has the ⭐
-  (it was Β'); the greeting names the class and the year. Content only, the game itself is not rewritten
-  (GAME-STANDARD §9; the owner asked for this fix). No localStorage on this page.
+## 2026-11-11 · privacy: no child age or current class in this public repo (owner decision L4-29)
+- `school-game/school.html`: the greeting no longer names a class or school year; the first tab (Α') opens first
+  and no tab has a ⭐. The class picker and every panel stay the same.
+- README, CLAUDE.md and this changelog no longer state an age or a class. `tests/no-child-age.test.mjs` keeps it so.
+
+## 2026-11-02 · fix: school.html class links (L1-37)
+- `school-game/school.html`: the class tabs and links were brought up to date. Content only, the game itself is not
+  rewritten (GAME-STANDARD §9; the owner asked for this fix). No localStorage on this page.
 - Links: the Δ' links go to stintaxi.com «Δ' τάξη» and wordwall «Δ ΔΗΜΟΤΙΚΟΥ» (both checked). The wordwall links of
   Γ' and Ε' were soft 404s (redirect to the generic /community page); they now use the tags «γ-τάξη» and «ε-τάξη».
   The em dashes in the card titles became colons.

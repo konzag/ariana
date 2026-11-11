@@ -1,8 +1,9 @@
 // ============================================================
-//  Σχολικά Παιχνίδια (school-game/school.html), σχολική χρονιά 2026-27 (L1-37)
+//  Σχολικά Παιχνίδια (school-game/school.html) (L1-37, L4-29)
 //  Τρέχει με:  node --test tests/
-//   1. Η Αριάνα πάει στη Δ' Δημοτικού: αυτή η καρτέλα είναι ανοιχτή στην αρχή και έχει το ⭐,
-//      και οι σύνδεσμοί της πάνε στο υλικό της Δ' (stintaxi.com και wordwall.net).
+//   1. Η σελίδα δεν λέει ποια τάξη πάει το παιδί (L4-29): ανοίγει η πρώτη καρτέλα (Α'), καμία καρτέλα δεν έχει ⭐,
+//      ο χαιρετισμός δεν έχει τάξη ούτε σχολική χρονιά. Οι σύνδεσμοι της Δ' πάνε στο υλικό της Δ'
+//      (stintaxi.com και wordwall.net).
 //   2. Οι γραμματοσειρές είναι μέσα στο repo (school-game/fonts/*.woff2 + OFL.txt):
 //      η σελίδα δεν ζητά κανένα .css ή γραμματοσειρά από αλλού.
 //  (Ότι κάθε σύνδεσμος απαντά το ελέγχει το tools/check-links.mjs, στο CI job «links».)
@@ -17,7 +18,9 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PAGE = "school-game/school.html";
 const html = readFileSync(join(ROOT, PAGE), "utf8");
 
-// Η τάξη της χρονιάς 2026-27 (επιβεβαίωση από τον μπαμπά, L5-05)
+// Η καρτέλα που ανοίγει πρώτη: η πρώτη της σειράς, ίδια για κάθε παιδί (L4-29)
+const FIRST = "alpha";
+// Ο έλεγχος συνδέσμων παρακάτω κοιτά την καρτέλα της Δ'
 const CLASS = { tab: "delta", label: "Δ'" };
 const LINKS = [
   "https://www.stintaxi.com/delta-tau940xieta.html",
@@ -27,31 +30,27 @@ const LINKS = [
 const tabButtons = [...html.matchAll(/<button\b[^>]*class="tab-btn[^"]*"[^>]*>[\s\S]*?<\/button>/g)].map((m) => m[0]);
 const isActive = (tag) => /class="[^"]*\bactive\b/.test(tag);
 
-test("2026-27: only the Δ' tab is active, pressed and starred", () => {
+test("L4-29: the first tab (Α') is active and pressed, no tab has a star", () => {
   assert.equal(tabButtons.length, 6, "six class tabs (Α' to ΣΤ')");
   const active = tabButtons.filter(isActive);
   assert.equal(active.length, 1, "exactly one active tab");
-  assert.match(active[0], new RegExp(`data-tab="${CLASS.tab}"`));
+  assert.match(active[0], new RegExp(`data-tab="${FIRST}"`));
   assert.match(active[0], /aria-pressed="true"/);
-  assert.match(active[0], />\s*Δ' ⭐\s*</);
-  for (const b of tabButtons.filter((t) => !isActive(t))) {
-    assert.match(b, /aria-pressed="false"/, b);
-    assert.doesNotMatch(b, /⭐/, `only the class of this year has the star: ${b}`);
-  }
+  for (const t of tabButtons) assert.doesNotMatch(t, /⭐/, `no tab marks the child's class: ${t}`);
+  for (const t of tabButtons.filter((x) => !isActive(x))) assert.match(t, /aria-pressed="false"/, t);
 });
 
-test("2026-27: the Δ' panel is the one shown first", () => {
+test("L4-29: the first panel (Α') is the one shown first", () => {
   const panels = [...html.matchAll(/<div class="tab-content([^"]*)" id="tab-content-([a-z]+)"/g)];
   assert.equal(panels.length, 6);
   const shown = panels.filter((m) => /\bactive\b/.test(m[1])).map((m) => m[2]);
-  assert.deepEqual(shown, [CLASS.tab]);
+  assert.deepEqual(shown, [FIRST]);
 });
 
-test("2026-27: the greeting names Δ' Δημοτικού and the school year", () => {
+test("L4-29: the greeting names no class and no school year", () => {
   const subtitle = html.match(/<p class="subtitle">([\s\S]*?)<\/p>/)[1];
-  assert.match(subtitle, /Δ' Δημοτικού/);
-  assert.match(subtitle, /2026-27/);
-  assert.doesNotMatch(subtitle, /Β'/);
+  assert.match(subtitle, /Διάλεξε τάξη/);
+  assert.doesNotMatch(subtitle, /Δημοτικ|⭐|20\d\d/);
 });
 
 test("the Δ' panel links to the Δ' material on stintaxi and wordwall", () => {
