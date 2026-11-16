@@ -2,8 +2,8 @@
 //  Σχολικά Παιχνίδια (school-game/school.html) (L1-37, L4-29)
 //  Τρέχει με:  node --test tests/
 //   1. Η σελίδα δεν λέει ποια τάξη πάει το παιδί (L4-29): ανοίγει η πρώτη καρτέλα (Α'), καμία καρτέλα δεν έχει ⭐,
-//      ο χαιρετισμός δεν έχει τάξη ούτε σχολική χρονιά. Οι σύνδεσμοι της Δ' πάνε στο υλικό της Δ'
-//      (stintaxi.com και wordwall.net).
+//      ο χαιρετισμός δεν έχει τάξη ούτε σχολική χρονιά. Ο σύνδεσμος της Δ' πάει στο υλικό της Δ'
+//      (stintaxi.com· ο δεύτερος ιστότοπος βγήκε, owner 16/11).
 //   2. Οι γραμματοσειρές είναι μέσα στο repo (school-game/fonts/*.woff2 + OFL.txt):
 //      η σελίδα δεν ζητά κανένα .css ή γραμματοσειρά από αλλού.
 //  (Ότι κάθε σύνδεσμος απαντά το ελέγχει το tools/check-links.mjs, στο CI job «links».)
@@ -24,7 +24,6 @@ const FIRST = "alpha";
 const CLASS = { tab: "delta", label: "Δ'" };
 const LINKS = [
   "https://www.stintaxi.com/delta-tau940xieta.html",
-  "https://wordwall.net/el-gr/community/%CE%B4-%CE%B4%CE%B7%CE%BC%CE%BF%CF%84%CE%B9%CE%BA%CE%BF%CF%85",
 ];
 
 const tabButtons = [...html.matchAll(/<button\b[^>]*class="tab-btn[^"]*"[^>]*>[\s\S]*?<\/button>/g)].map((m) => m[0]);
@@ -53,12 +52,12 @@ test("L4-29: the greeting names no class and no school year", () => {
   assert.doesNotMatch(subtitle, /Δημοτικ|⭐|20\d\d/);
 });
 
-test("the Δ' panel links to the Δ' material on stintaxi and wordwall", () => {
+test("the Δ' panel links only to the Δ' material on stintaxi, in one section", () => {
   const panel = html.match(new RegExp(`id="tab-content-${CLASS.tab}"[\\s\\S]*?(?=<!-- ===== )`))[0];
   const hrefs = [...panel.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
   assert.deepEqual(hrefs, LINKS);
   assert.match(panel, /Δ' Τάξη/);
-  assert.match(panel, /Παιχνίδια Δ' Δημοτικού/);
+  assert.equal((panel.match(/class="section-block"/g) || []).length, 1, "one section, no empty slot");
 });
 
 test("no external stylesheet or font: only the repo's own fonts/comfortaa.css", () => {
@@ -83,4 +82,15 @@ test("the font files sit next to the page, with their OFL licence", () => {
   const ofl = readFileSync(join(ROOT, "school-game/fonts/OFL.txt"), "utf8");
   assert.match(ofl, /SIL OPEN FONT LICENSE Version 1\.1/i);
   assert.match(ofl, /Comfortaa/);
+});
+
+test("every class panel has one filled section: no empty slot, no button without a link (owner 16/11)", () => {
+  const panels = [...html.matchAll(/id="tab-content-([a-z]+)"([\s\S]*?)(?=<!-- ===== )/g)];
+  assert.equal(panels.length, 6);
+  for (const [, id, body] of panels) {
+    assert.equal((body.match(/class="section-block"/g) || []).length, 1, `${id}: one section`);
+    const buttons = [...body.matchAll(/<a class="btn-play"[^>]*>/g)].map((m) => m[0]);
+    assert.equal(buttons.length, 1, `${id}: one play button`);
+    assert.match(buttons[0], /href="https:\/\/www\.stintaxi\.com\/[^"]+"/, `${id}: the button opens stintaxi`);
+  }
 });

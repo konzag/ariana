@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-11-16 · fix: the second word-game site is gone from the school page (owner decision 16/11, DECISIONS §4)
+- `school-game/school.html`: every class panel lost its «🎮» section with the link to the external word-game site
+  and its «▶ Παίξε τώρα!» button, plus that button's CSS colour. Each panel now holds one section (the stintaxi
+  card); the footer follows it directly, no empty slot. Owner-approved content change (GAME-STANDARD §9 exception).
+- The CI job «links» (`tools/check-links.mjs`) now checks only stintaxi and the local pages, so the 403s of that site
+  no longer turn it red.
+- Tests: `tests/no-removed-site.test.mjs` (no file in the repo names the site; red on the old tree, 5 files) and a
+  new `tests/school-page.test.mjs` row (every panel: one section, one button, it opens stintaxi). The Δ' row now
+  expects the stintaxi link only. Test count 71 → 73, `.coverage-floor` 71 → 73.
+
 ## 2026-11-16 · feat: the hub shell in Greek and English (Block 7, owner 02/11)
 - `assets/hub-shell.js`: a third round button next to 🏠 and 🔊 switches the shell language: «EN» while Greek,
   «ΕΛ» while English. The 🏠 / 🔊 labels (title + aria-label) follow it: «Πίσω στα παιχνίδια» / «Back to games»,
@@ -19,8 +29,9 @@
 ## 2026-11-02 · fix: school.html class links (L1-37)
 - `school-game/school.html`: the class tabs and links were brought up to date. Content only, the game itself is not
   rewritten (GAME-STANDARD §9; the owner asked for this fix). No localStorage on this page.
-- Links: the Δ' links go to stintaxi.com «Δ' τάξη» and wordwall «Δ ΔΗΜΟΤΙΚΟΥ» (both checked). The wordwall links of
-  Γ' and Ε' were soft 404s (redirect to the generic /community page); they now use the tags «γ-τάξη» and «ε-τάξη».
+- Links: the Δ' links go to stintaxi.com «Δ' τάξη» and a second word-game site «Δ ΔΗΜΟΤΙΚΟΥ» (both checked). That site's
+  links of Γ' and Ε' were soft 404s (redirect to its generic /community page); they then used other tags.
+  (That site was removed on 2026-11-16, see above.)
   The em dashes in the card titles became colons.
 - Fonts: `school-game/fonts/` holds Comfortaa 500/700 (Greek + Latin woff2, @fontsource 5.3.0, the same files the
   hub serves) with `OFL.txt` (SIL OFL 1.1); the page imports `fonts/comfortaa.css` instead of the hub path.
