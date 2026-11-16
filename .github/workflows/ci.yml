@@ -63,7 +63,7 @@ jobs:
           path: tests/ui/test-results/
           retention-days: 14
 
-  # Every link on school-game/school.html answers (L1-37): stintaxi + wordwall per class, and the local pages.
+  # Every link on school-game/school.html answers (L1-37): stintaxi per class, and the local pages.
   # Needs the internet, so it is its own job: a red «links» = a site moved or is down, not a code bug.
   links:
     name: links
