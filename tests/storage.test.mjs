@@ -104,7 +104,8 @@ test('storage keys are frozen', () => {
     assert.deepEqual(games, ['ariana'], `${page}: data-game="ariana"`);
     keys.add(`game.${games[0]}.sound`);
   }
-  assert.deepEqual([...keys].sort(), ['ariana_best_score', 'ariana_geography_v2', 'game.ariana.sound']);
+  // games.lang: the shell language (EL + EN), one key shared by every game of the hub (Block 7).
+  assert.deepEqual([...keys].sort(), ['ariana_best_score', 'ariana_geography_v2', 'game.ariana.sound', 'games.lang']);
 });
 
 // Plays the whole KATSEYE quiz with `right` correct answers (10 stars each), up to the results screen.
