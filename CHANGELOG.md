@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-16 · feat: the hub shell in Greek and English (Block 7, owner 02/11)
+- `assets/hub-shell.js`: a third round button next to 🏠 and 🔊 switches the shell language: «EN» while Greek,
+  «ΕΛ» while English. The 🏠 / 🔊 labels (title + aria-label) follow it: «Πίσω στα παιχνίδια» / «Back to games»,
+  «Ήχος» / «Sound». The choice is kept on the device in `games.lang` (one key for every game of the hub, try/catch,
+  Greek when unset or invalid). Only the shell changes language: the games themselves stay Greek and `<html lang>`
+  is untouched (GAME-STANDARD §9); the bar carries its own `lang`.
+- Tests: `tests/hub-shell-lang.test.mjs` (5 node tests) and `tests/ui/lang.spec.ts` (5 browser tests: default Greek,
+  switch + persist + reload, invalid value, storage that throws, axe on the bar in English), red on the old shell.
+  `tests/storage.test.mjs` lists the new key. K9 `el-en-strings` is now present (allowlist entry removed).
+  Test count 61 → 71, `.coverage-floor` 61 → 71.
+
 ## 2026-11-11 · privacy: no child age or current class in this public repo (owner decision L4-29)
 - `school-game/school.html`: the greeting no longer names a class or school year; the first tab (Α') opens first
   and no tab has a ⭐. The class picker and every panel stay the same.
